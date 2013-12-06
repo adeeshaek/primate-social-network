@@ -74,7 +74,6 @@ class SeedGenerator:
 		for row_index in range (self.STARTING_ROW, seedsheet.nrows):
 			
 			#get parameters
-			age_class = seedsheet.cell_value(row_index, 1)
 			sex = seedsheet.cell_value(row_index, 2)
 			age_in_years = seedsheet.cell_value(row_index, 3)
 			rank = seedsheet.cell_value(row_index, 4)
@@ -90,7 +89,7 @@ class SeedGenerator:
 			friend = read_CSV(friend)
 
 			#create new agent
-			this_agent = AgentClass(age_in_years, age_class, sex, \
+			this_agent = AgentClass(age_in_years, sex, \
 				rank, parent, sister, aggressive, friend)
 
 			#add agent to group
