@@ -73,7 +73,7 @@ class LifeTable:
 	defines life-table data.
 
 	container for 2 dictionaries of this structure:
-	life_table[age_in_years] = (age_class, qx, bx, lx, lxbx)
+	life_table[age_in_years] = (qx, bx)
 
 	the 2 dictionaries are for males and females. 
 	"""

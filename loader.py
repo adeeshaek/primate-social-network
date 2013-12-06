@@ -17,6 +17,19 @@ structured as follows:
 import xlrd
 from classes import LifeTable
 
+def load_data():
+	"""
+	convenient method to quickly load data from excel file
+
+	returns
+	-------
+	data from the excel sheet as described by class Loader
+	"""
+	loader = Loader()
+	excel_data = loader.load_data()
+
+	return excel_data
+
 class Loader:
 	"""
 	loads data from the excel document on the following areas:
@@ -50,7 +63,9 @@ class Loader:
 		#the life table is the first sheet
 		life_table_sheet = book.sheet_by_index(0)
 
-		return life_table_sheet
+		life_table_dict = self.load_life_table(life_table_sheet)
+
+		return life_table_dict
 
 	def load_life_table(self, life_table_sheet):
 		"""
@@ -76,9 +91,29 @@ class Loader:
 		-------
 		a LifeTable object
 		"""
+		end_flag = True #used to let user customize number of rows in excel
+						 #file by setting an END flag at the end of the table
 
 		life_table = LifeTable()
 
-		for row_index in range (self.STARTING_ROW, seedsheet.nrows):
+		for row_index in range (self.STARTING_ROW, life_table_sheet.nrows):
 
+			if life_table_sheet.cell_value(row_index,0) == 'END':
+				end_flag = False
 
+			if end_flag:
+				#parameters for female
+				age = life_table_sheet.cell_value(row_index,1)
+				qx = life_table_sheet.cell_value(row_index,3)
+				bx = life_table_sheet.cell_value(row_index,4)
+
+				life_table.female_life_table[age] = (qx, bx)
+
+				#parameters for male
+				age = life_table_sheet.cell_value(row_index,9)
+				qx = life_table_sheet.cell_value(row_index,11)
+				bx = life_table_sheet.cell_value(row_index,12)
+
+				life_table.male_life_table[age] = (qx, bx)			
+
+		return life_table

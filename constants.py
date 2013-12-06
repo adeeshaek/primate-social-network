@@ -13,14 +13,24 @@ definitions of age classes
 """
 contains a list of definitions for constants used in the simulation
 """
-AGECLASS_DICT = {
-	"inf" : "AGECLASS_INFANT",
-	"juv" : "AGECLASS_JUVENILE",
-	"subad" : "AGECLASS_SUBADULT",
-	"yng ad" : "AGECLASS_YOUNGADULT",
-	"md ad" : "AGECLASS_MEDIUMADULT",
-	"old ad" : "AGECLASS_OLDADULT",
-	"sen ad" : "AGECLASS_SENILEADULT"}
+AGECLASS_FEMALE = {
+	0 : "inf",
+	2 : "juv",
+	5 : "ya",
+	10 : "yngtomid",
+	15 : "mid",
+	20 : "old",
+	25 : "sen"}
+
+AGECLASS_MALE = {
+	0 : "inf",
+	2 : "juv",
+	5 : "subad",
+	7 : "ya",
+	10 : "yngtomid",
+	15 : "mid",
+	20 : "old",
+	25 : "sen"}
 
 SEX_DICT = {
 	"m" : "SEX_MALE", "f" : "SEX_FEMALE"}
