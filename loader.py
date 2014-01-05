@@ -157,10 +157,28 @@ class Loader:
 			elif end_flag:
 				age = dispersal_table_sheet.cell_value(row_index,1)
 	
+				#emigration
 				chance_of_emigration =\
 					dispersal_table_sheet.cell_value(row_index,2)
-
 				dispersal_table.emigration[age] = chance_of_emigration
+
+				#immigration
+				chance_of_acceptance =\
+					dispersal_table_sheet.cell_value(row_index,3)
+
+				chance_of_death_first_rejection =\
+					dispersal_table_sheet.cell_value(row_index,4)
+
+				chance_of_acceptance_first_rejection =\
+					dispersal_table_sheet.cell_value(row_index,5)				
+
+				chance_of_death_second_rejection =\
+					dispersal_table_sheet.cell_value(row_index,6)	
+
+				dispersal_table.immigration[age] = (chance_of_acceptance,
+					chance_of_death_first_rejection, 
+					chance_of_acceptance_first_rejection,
+					chance_of_death_second_rejection)			
 
 		return dispersal_table
 
