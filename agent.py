@@ -19,22 +19,22 @@ class AgentClass:
 		"""
 		constructor
 		-----------
-			parameters
-			----------
-			number - the identification number of the individual in the group
-			sex - sex of the individual as defined in constants.py
-			age - age of individual in years
-			rank - whether or not the individual is the alpha male/female
+		parameters
+		----------
+		number - the identification number of the individual in the group
+		sex - sex of the individual as defined in constants.py
+		age - age of individual in years
+		rank - whether or not the individual is the alpha male/female
 
-			relationship-related parameters
-			-------------------------------
-			parent - the parent of this individual
-			sister - the sister(s) of this individual. Multiple entries separated by
-			comma.
-			aggressive - aggressive relationships formed by this individual. Binary
-			value.
-			friendship - friendships formed by this individual. Binary value. Multiple
-			entries separated by commas.
+		relationship-related parameters
+		-------------------------------
+		parent - the parent of this individual
+		sister - the sister(s) of this individual. Multiple entries separated by
+		comma.
+		aggressive - aggressive relationships formed by this individual. Binary
+		value.
+		friendship - friendships formed by this individual. Binary value. Multiple
+		entries separated by commas.
 		"""
 		#make sure age class and sex are valid
 		assert (constants.SEX_DICT.has_key(sex))
@@ -56,6 +56,8 @@ class AgentClass:
 			self.is_alpha 
 
 		return output_string
+
+	
 
 
 

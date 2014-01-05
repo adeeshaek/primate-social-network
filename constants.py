@@ -20,7 +20,8 @@ AGECLASS_FEMALE = {
 	10 : "yngtomid",
 	15 : "mid",
 	20 : "old",
-	25 : "sen"}
+	25 : "sen"
+	}
 
 AGECLASS_MALE = {
 	0 : "inf",
@@ -30,9 +31,12 @@ AGECLASS_MALE = {
 	10 : "yngtomid",
 	15 : "mid",
 	20 : "old",
-	25 : "sen"}
+	25 : "sen"
+	}
 
 SEX_DICT = {
-	"m" : "SEX_MALE", "f" : "SEX_FEMALE"}
+	"m" : "SEX_MALE",
+	"f" : "SEX_FEMALE"
+	}
 
 RANK_ALPHA = "A"
