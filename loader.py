@@ -15,7 +15,7 @@ structured as follows:
 """
 
 import xlrd
-from classes import LifeTable
+from classes import LifeTable, DispersalTable
 
 def load_data():
 	"""
@@ -117,3 +117,66 @@ class Loader:
 				life_table.male_life_table[age] = (qx, bx)			
 
 		return life_table
+
+	def load_dispersal_table(self, dispersal_table_sheet):
+		"""
+		loads dispersal table into memory.
+		"""
+		end_flag = True #used to let user customize number of rows in excel
+						 #file by setting an END flag at the end of the table
+
+		dispersal_table = DispersalTable()
+
+		for row_index in range (self.STARTING_ROW, dispersal_table_sheet.nrows):
+
+			if dispersal_table_sheet.cell_value(row_index,0) == 'END':
+				end_flag = False
+
+			if end_flag:
+				#parameters for female
+				age = dispersal_table_sheet.cell_value(row_index,1)
+				qx = dispersal_table_sheet.cell_value(row_index,3)
+				bx = dispersal_table_sheet.cell_value(row_index,4)
+
+				life_table.female_life_table[age] = (qx, bx)
+
+				#parameters for male
+				age = dispersal_table_sheet.cell_value(row_index,9)
+				qx = dispersal_table_sheet.cell_value(row_index,11)
+				bx = dispersal_table_sheet.cell_value(row_index,12)
+
+				life_table.male_life_table[age] = (qx, bx)			
+
+		return life_table
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
