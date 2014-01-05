@@ -15,7 +15,8 @@ structured as follows:
 """
 
 import xlrd
-from classes import LifeTable, DispersalTable
+from lifetable import LifeTable
+from dispersaltable import DispersalTable
 
 def load_data():
 	"""
@@ -40,9 +41,25 @@ class Loader:
 	"""
 
 	life_table = None
+	dispersal_table = None
 
 	EXCEL_FILENAME = "Excel Files/life_table.xlsx"
 	STARTING_ROW = 2 #the first 2 rows are headers, so reader must avoid them
+
+	def test(self):
+		"""
+		convenience class used for testing
+		"""
+		#load the excel book
+		book = xlrd.open_workbook(self.EXCEL_FILENAME)
+
+		#load dispersaltable
+		dispersal_table_sheet = book.sheet_by_index(1)
+		self.dispersal_table = self.load_dispersal_table(dispersal_table_sheet)
+
+		print self.dispersal_table.emigration
+
+		print self.dispersal_table.immigration
 
 	def load_data(self):
 		"""
@@ -51,7 +68,7 @@ class Loader:
 		returns
 		-------
 		dictionary with the following structure
-			|- LifeTable object
+			|- "life_table_dict" : LifeTable object
 			|- DispersalTable object
 			|- FriendshipTable object
 			|- DominanceTable object
@@ -60,12 +77,13 @@ class Loader:
 		#load the excel book
 		book = xlrd.open_workbook(self.EXCEL_FILENAME)
 
-		#the life table is the first sheet
+		#load lifetable
 		life_table_sheet = book.sheet_by_index(0)
+		self.life_table = self.load_life_table(life_table_sheet)
 
-		life_table_dict = self.load_life_table(life_table_sheet)
-
-		return life_table_dict
+		#load dispersaltable
+		dispersal_table_sheet = book.sheet_by_index(1)
+		self.dispersal_table = self.load_dispersal_table(dispersal_table_sheet)
 
 	def load_life_table(self, life_table_sheet):
 		"""
@@ -121,6 +139,10 @@ class Loader:
 	def load_dispersal_table(self, dispersal_table_sheet):
 		"""
 		loads dispersal table into memory.
+
+		This table contains data on emigration and immigration for males
+		by age class. Since females do not leave the group in our 
+		model, this table only concerns males.
 		"""
 		end_flag = True #used to let user customize number of rows in excel
 						 #file by setting an END flag at the end of the table
@@ -132,22 +154,16 @@ class Loader:
 			if dispersal_table_sheet.cell_value(row_index,0) == 'END':
 				end_flag = False
 
-			if end_flag:
-				#parameters for female
+			elif end_flag:
 				age = dispersal_table_sheet.cell_value(row_index,1)
-				qx = dispersal_table_sheet.cell_value(row_index,3)
-				bx = dispersal_table_sheet.cell_value(row_index,4)
+	
+				chance_of_emigration =\
+					dispersal_table_sheet.cell_value(row_index,2)
 
-				life_table.female_life_table[age] = (qx, bx)
+				dispersal_table.emigration[age] = chance_of_emigration
 
-				#parameters for male
-				age = dispersal_table_sheet.cell_value(row_index,9)
-				qx = dispersal_table_sheet.cell_value(row_index,11)
-				bx = dispersal_table_sheet.cell_value(row_index,12)
+		return dispersal_table
 
-				life_table.male_life_table[age] = (qx, bx)			
-
-		return life_table
 
 
 
