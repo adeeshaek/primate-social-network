@@ -3,11 +3,11 @@ Monkey Group Simulation Project
 
 This project aims to simulate a population of monkeys in the wild, and determine the effect of catch-and-release programs on their social networks. 
 
-The project is conducted by Marcy S. Weber, and Adeesha Ekanayake
+The project is conducted by [Marcy S. Weber](http://marcysweber.com), and [Adeesha Ekanayake](http://adeeshaek.com).
 
 Implementation details
 ----------------------
-1. Unit tests are in nosetest
+1. Unit tests can be run using nosetest
 
 2. Groups of Monkeys are represented in an array. Python arrays are arrays of references, and the array representing a group is an array of references to elements of class AgentClass. 
 
