@@ -7,12 +7,16 @@ seed.py
 -------
 This class is used to generate a seed group agents. The seed group is defined
 using the excel file defined in this class
+
+rules for relationships are defined in the test class located at the bottom 
+of this module
 """
 
 import xlrd
 import constants
 from common import read_CSV
 from classes import AgentClass
+
 
 def load_group():
 	"""
@@ -95,8 +99,12 @@ class SeedGenerator:
 			#add agent to group
 			group.append(this_agent)
 
-		return group
+		#iterate through the group once more, and change parent, sibling,
+		#friend, and aggressive references to pointers instead of numbers
+		#for i in range (len(group)):
 
+
+		return group
 
 
 

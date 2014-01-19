@@ -57,6 +57,14 @@ class AgentClass:
 
 		return output_string
 
+	def __copy__(self):
+		new_agent = AgentClass(self.age, self.sex, self.is_alpha, self.parent,
+			self.sisters, self.aggressive, self.friends)
+		return new_agent
+
+
+
+
 	
 
 

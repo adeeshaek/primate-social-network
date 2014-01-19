@@ -40,3 +40,9 @@ SEX_DICT = {
 	}
 
 RANK_ALPHA = "A"
+
+#the age at which each sex reaches adulthood
+ADULTHOOD_AGE = {
+	"m" : 7,
+	"f" : 5
+}
