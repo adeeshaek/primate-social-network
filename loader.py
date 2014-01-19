@@ -27,9 +27,9 @@ def load_data():
 	data from the excel sheet as described by class Loader
 	"""
 	loader = Loader()
-	excel_data = loader.load_data()
+	loader.load_data()
 
-	return excel_data
+	return loader
 
 class Loader:
 	"""

@@ -1,7 +1,7 @@
 import unittest
 import common
 
-class TestAgent(unittest.TestCase):
+class TestCommon(unittest.TestCase):
 
 	def test_read_CSV(self):
 		#input of '' should return []
