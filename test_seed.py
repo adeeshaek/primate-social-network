@@ -17,13 +17,14 @@ class TestSeedGroup(unittest.TestCase):
 
 		for agent in self.seed_group:
 
-			if (agent.sex == "SEX_MALE"):
-				adulthood_age = male_adulthood_age
-			else:
-				adulthood_age = female_adulthood_age
+			if (agent != None):
+				if (agent.sex == "SEX_MALE"):
+					adulthood_age = male_adulthood_age
+				else:
+					adulthood_age = female_adulthood_age
 
-			if (agent.age < adulthood_age):
-				self.assertIsNotNone(agent.parent)
+				if (agent.age < adulthood_age):
+					self.assertIsNotNone(agent.parent)
 
 	def test_sisters(self):
 		#there must be at least one pair of sisters in the seed
@@ -31,6 +32,6 @@ class TestSeedGroup(unittest.TestCase):
 		one_sister_found = False 
 
 		for agent in self.seed_group:
-
-			if (agent.sisters != None):
-				one_sister_found = True
+			if (agent != None):
+				if (agent.sisters != None):
+					one_sister_found = True

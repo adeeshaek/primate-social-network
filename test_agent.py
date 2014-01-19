@@ -1,6 +1,6 @@
 import unittest
 import agent
-from copy import copy
+from copy import copy, deepcopy
 
 class TestAgent(unittest.TestCase):
 
@@ -31,3 +31,22 @@ class TestAgent(unittest.TestCase):
 		self.assertNotEqual(self.my_agent.is_alpha, new_agent.is_alpha)
 
 
+	def test_deep_copy(self):
+		first_list = []
+		first_list.append(self.my_agent)
+
+		second_list = deepcopy(first_list)
+
+		self.assertEqual(first_list[0].age, second_list[0].age)
+		self.assertEqual(first_list[0].sex, second_list[0].sex)
+		self.assertEqual(first_list[0].is_alpha, second_list[0].is_alpha)
+
+		#alter the age, sex and is_alpha of new_agent
+		second_list[0].age = 1
+		second_list[0].sex = "f"
+		second_list[0].is_alpha = ""
+
+		#check if the other agent has also been affected
+		self.assertNotEqual(first_list[0].age, second_list[0].age)
+		self.assertNotEqual(first_list[0].sex, second_list[0].sex)
+		self.assertNotEqual(first_list[0].is_alpha, second_list[0].is_alpha)

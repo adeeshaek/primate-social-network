@@ -74,6 +74,9 @@ class SeedGenerator:
 
 		group = [] #list of agents defining the group
 
+		group.append(None) #add a none at the top of the array so that elements
+						#can be referenced by index.
+
 		#iterate through the rows
 		for row_index in range (self.STARTING_ROW, seedsheet.nrows):
 			
@@ -98,11 +101,6 @@ class SeedGenerator:
 
 			#add agent to group
 			group.append(this_agent)
-
-		#iterate through the group once more, and change parent, sibling,
-		#friend, and aggressive references to pointers instead of numbers
-		#for i in range (len(group)):
-
 
 		return group
 
