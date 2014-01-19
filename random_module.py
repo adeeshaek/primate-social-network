@@ -22,6 +22,10 @@ class RandomModule(random.Random):
 		parameters
 		----------
 		probability: the probability of the event, between 0 and 1
+
+		returns
+		-------
+		True if dieroll is successful, or False if not
 		"""
 		#+1 prevents occasional failures when probability is 1
 		#because of the +1, the ceiling must be a relatively big
@@ -36,4 +40,15 @@ class RandomModule(random.Random):
 		else:
 			return False
 
+class FakeRandomModule(RandomModule):
+	"""
+	used for testing methods that use randomness. This method overloads
+	roll so that it always returns true
+	"""
+
+	def roll(self, probability):
+		"""
+		fake roll method that always returns true
+		"""
+		return True
 

@@ -29,7 +29,7 @@ class AgentClass:
 
 		relationship-related parameters
 		-------------------------------
-		parent - the parent of this individual
+		parent - the mother of this individual
 		sister - the sister(s) of this individual. Multiple entries separated by
 		comma.
 		aggressive - aggressive relationships formed by this individual. Binary
@@ -47,6 +47,17 @@ class AgentClass:
 		self.sisters = sisters
 		self.aggressive = aggressive
 		self.friends = friends
+
+		#make sure sisters, aggressive, friends are empty lists not
+		#null references
+		if self.sisters == None:
+			self.sisters = []
+
+		if self.aggressive == None:
+			self.aggressive = []
+
+		if self.friends == None:
+			self.friends = []
 
 	def __str__(self):
 		"""

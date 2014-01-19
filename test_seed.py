@@ -35,3 +35,5 @@ class TestSeedGroup(unittest.TestCase):
 			if (agent != None):
 				if (agent.sisters != None):
 					one_sister_found = True
+
+		self.assertTrue(one_sister_found)
