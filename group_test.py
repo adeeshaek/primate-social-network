@@ -32,7 +32,7 @@ class TestAgentGroup(unittest.TestCase):
 		self.group.add_agent(real_target_female)
 		self.group.add_agent(focus_male)
 
-	def test_add_agent(self):
+	def test_add_and_remove_agent(self):
 		self.add_agents()
 
 		for key in self.tracking_dict:
@@ -41,18 +41,42 @@ class TestAgentGroup(unittest.TestCase):
 
 		self.remove_agents()
 
+		for key in self.tracking_dict:
+			self.assertTrue
+			(self.tracking_dict[key] not in self.group.whole_set)
+
 	def test_promote_agent(self):
 		self.add_agents()
-
-		#of_age_male = self.tracking_dict["OM3"]
+		of_age_male = self.tracking_dict["OM3"]
+		underage_female = self.tracking_dict["UF2"]
+		underage_male = self.tracking_dict["UM2"]
 
 		#promote of age male
-		#self.group.promote_agent(of_age_male)
-
+		self.group.promote_agent(of_age_male)
 		#check age
-		#self.assertEqual(of_age_male.age, 9)
+		self.assertEqual(of_age_male.age, 9)
+
+		#promote underage male and female
+		self.group.promote_agent(underage_male)
+		self.group.promote_agent(underage_female)
+
+		#check if they are no longer in the underage set
+		self.assertFalse(underage_male in self.group.underage_set)
+		self.assertFalse(underage_female in self.group.underage_set)
+
+		#check that they are now in the respective sexed sets
+		self.assertTrue(underage_male in self.group.male_set)
+		self.assertTrue(underage_female in self.group.female_set)
+
+		#check if age has been correctly incremented
+		self.assertEqual(underage_female.age, 5)
+		self.assertEqual(underage_male.age, 7)
 
 		self.remove_agents()
+
+	def test_mark_agents_as_sisters(self):
+		
+
 
 	def add_agents(self):
 		underage_male_2 =\
@@ -74,9 +98,10 @@ class TestAgentGroup(unittest.TestCase):
 			agent = self.tracking_dict[key]
 			self.group.remove_agent(agent)
 
-
-
-
+	def mark_agents_as_sisters(self):
+		agent_a = self.group.agent_array[5]		
+		agent_b = self.group.agent_array[6]
+		
 
 
 
