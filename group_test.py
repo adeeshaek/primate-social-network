@@ -74,6 +74,20 @@ class TestAgentGroup(unittest.TestCase):
 
 		self.remove_agents()
 
+	def test_mark_agents_as_friends(self):
+		friend_a = self.group.agent_array[5]
+		friend_b = self.group.agent_array[6]
+
+		self.mark_agents_as_friends()
+
+		#check that they are aggressive
+		self.assertTrue(friend_a in self.group.in_relationships_set)
+		self.assertTrue(friend_b in self.group.in_relationships_set)
+		self.assertEqual(friend_a.friends[0], friend_b)
+		self.assertEqual(friend_b.friends[0], friend_a)		
+
+		self.unmark_agents_as_friends()
+
 	def test_mark_agents_as_aggressive(self):
 		male_a = self.group.agent_array[3]
 		male_b = self.group.agent_array[4]
@@ -102,7 +116,6 @@ class TestAgentGroup(unittest.TestCase):
 		#unmark as sisters 
 		self.unmark_agents_as_sisters()
 
-
 	def add_agents(self):
 		underage_male_2 =\
 			AgentClass(6, "m", None, 0, [], [], [])#1
@@ -122,6 +135,21 @@ class TestAgentGroup(unittest.TestCase):
 		for key in self.tracking_dict:
 			agent = self.tracking_dict[key]
 			self.group.remove_agent(agent)
+
+	def mark_agents_as_friends(self):
+		friend_a = self.group.agent_array[5]
+		friend_b = self.group.agent_array[6]
+		#mark 5 and 6 as sisters 
+		self.group.mark_agents_as_friends(friend_a, friend_b)
+
+	def unmark_agents_as_friends(self):
+		friend_a = self.group.agent_array[5]
+		friend_b = self.group.agent_array[6]
+		friend_a.friends = [] #clear the list of sisters
+		friend_b.friends = []
+		#remove from set manually
+		self.group.in_relationships_set.remove(friend_a) 
+		self.group.in_relationships_set.remove(friend_b)
 
 	def mark_agents_as_sisters(self):
 		sister_a = self.group.agent_array[5]
