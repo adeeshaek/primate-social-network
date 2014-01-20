@@ -105,16 +105,18 @@ class AgentGroup():
 		-------
 		list of unrelated members, or [] if there are none
 		"""
-		whole_group = (female_set.union(male_set)).difference(agent)
+		#note that underage members are not in the sexed sets
+		#first check if agent is male or female
+		if (agent.sex == "m"):
+			eligible_females =\
+			 self.female_set.difference(self.in_relationships_set)
+			eligible_females = eligible_females.difference(agent.parent)
+			return eligible_females
 
-		#get the union of all the relatives
-		related_members =\
-		 set(agent.aggressive).union(set(agent.friends)
-		 	.union(set(agent.sisters)))
-
-		unrelated_members = whole_group.difference(related_members)
-
-		return unrelated_members 
+		else:
+			eligible_males =\
+			 self.male_set.difference(self.in_relationships_set)
+			return eligible_males
 
 	def mark_agents_as_friends(self, agent_a, agent_b):
 		"""

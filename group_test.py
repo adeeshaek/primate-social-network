@@ -17,9 +17,10 @@ class TestAgentGroup(unittest.TestCase):
 		of_age_male_2 = AgentClass(6, "m", None, 0, [], [], [])#4
 		of_age_female_1 = AgentClass(6, "m", None, 0, [], [], [])#5
 		of_age_female_2 = AgentClass(6, "m", None, 0, [], [], [])#6
-		fake_target_male = AgentClass(9, "m", None, 0, [], [], [])#7
-		real_target_female = AgentClass(9, "f", None, 0, [], [], [])#8
-		focus_male = AgentClass(8, "m", None, 0, [], [], [])#9
+		#target_male = AgentClass(9, "m", None, 0, [], [], [])#7
+		#target_female = AgentClass(9, "f", None, 0, [], [], [])#8
+		focus_male = AgentClass(8, "m", None, 0, [], [], [])#7
+		focus_female = AgentClass(8, "f", None, 0, [], [], [])#8
 
 		self.group.add_agent(parent)
 		self.group.add_agent(underage_male_1)
@@ -28,9 +29,8 @@ class TestAgentGroup(unittest.TestCase):
 		self.group.add_agent(of_age_male_2)
 		self.group.add_agent(of_age_female_1)
 		self.group.add_agent(of_age_female_2)
-		self.group.add_agent(fake_target_male)
-		self.group.add_agent(real_target_female)
 		self.group.add_agent(focus_male)
+		self.group.add_agent(focus_female)
 
 	def test_add_and_remove_agent(self):
 		self.add_agents()
@@ -73,6 +73,10 @@ class TestAgentGroup(unittest.TestCase):
 		self.assertEqual(underage_male.age, 7)
 
 		self.remove_agents()
+
+	def test_get_unrelated_members_of_age(self):
+		focus_male = self.group.agent_array[7]
+		focus_female = self.group.agent_array[8]
 
 	def test_mark_agents_as_friends(self):
 		friend_a = self.group.agent_array[5]
