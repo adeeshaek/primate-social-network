@@ -23,6 +23,11 @@ class AgentGroup():
 	in_relationships_set = set()
 	whole_set = set()
 
+	def __init__(self):
+		self.agent_array = []
+		#ensures the array can be accessed in order
+		self.agent_array.append(None)
+
 	def promote_agent(self, agent):
 		"""
 		makes an agent older, and if need be, removes them from the
