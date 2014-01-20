@@ -75,8 +75,29 @@ class TestAgentGroup(unittest.TestCase):
 		self.remove_agents()
 
 	def test_get_unrelated_members_of_age(self):
+		self.mark_agents_as_friends()
+		self.mark_agents_as_aggressive()
+		self.mark_agents_as_sisters()
 		focus_male = self.group.agent_array[7]
 		focus_female = self.group.agent_array[8]
+
+		male_agents_friends =\
+		 self.group.get_unrelated_members_of_age(focus_male)
+
+		female_agents_friends =\
+		 self.group.get_unrelated_members_of_age(focus_female)
+
+		for friend in male_agents_friends:
+			print str(friend)
+
+		self.assertEqual(len(male_agents_friends), 1)
+		self.assertEqual(len(female_agents_friends), 1)
+		self.assertEqual(male_agents_friends[0], focus_female)
+		self.assertEqual(female_agents_friends[0], focus_male)
+
+		self.unmark_agents_as_friends()
+		self.unmark_agents_as_aggressive()
+		self.unmark_agents_as_sisters()
 
 	def test_mark_agents_as_friends(self):
 		friend_a = self.group.agent_array[5]
@@ -84,7 +105,7 @@ class TestAgentGroup(unittest.TestCase):
 
 		self.mark_agents_as_friends()
 
-		#check that they are aggressive
+		#check that they are friends
 		self.assertTrue(friend_a in self.group.in_relationships_set)
 		self.assertTrue(friend_b in self.group.in_relationships_set)
 		self.assertEqual(friend_a.friends[0], friend_b)

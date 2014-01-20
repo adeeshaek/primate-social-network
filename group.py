@@ -110,7 +110,8 @@ class AgentGroup():
 		if (agent.sex == "m"):
 			eligible_females =\
 			 self.female_set.difference(self.in_relationships_set)
-			eligible_females = eligible_females.difference(agent.parent)
+			eligible_females =\
+			 eligible_females.difference(set([agent.parent]))
 			return eligible_females
 
 		else:

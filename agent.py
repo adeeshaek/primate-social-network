@@ -65,7 +65,7 @@ class AgentClass:
 		"""
 		output_string = "age:" + str(self.age) +\
 			" sex:" + self.sex + " alpha: " + \
-			self.is_alpha 
+			str(self.is_alpha)
 
 		return output_string
 
