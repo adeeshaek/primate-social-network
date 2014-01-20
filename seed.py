@@ -15,7 +15,7 @@ of this module
 import xlrd
 import constants
 from common import read_CSV
-from classes import AgentClass
+from agent import AgentClass
 
 
 def load_group():
