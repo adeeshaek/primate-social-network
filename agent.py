@@ -75,7 +75,9 @@ class AgentClass:
 		return new_agent
 
 	def __deepcopy__(self, memo):
-		return copy.copy(self)
+		new_agent = AgentClass(self.age, self.sex, self.is_alpha, self.parent,
+			self.sisters, self.aggressive, self.friends)
+		return new_agent
 
 
 

@@ -7,7 +7,13 @@ group.py
 --------
 represents a group of agents. Refers to the agents using an array,
 but also maintains set structure for set operations
+
+NOTE: Throughout this method it is assumed that 
+	FEMALE_MINIMUM_AGE < MALE_MINIMUM_AGE
 """
+
+FEMALE_MINIMUM_AGE = 5
+MALE_MINIMUM_AGE = 7
 
 class AgentGroup():
 	agent_array = [] #array of references to group members
@@ -17,7 +23,7 @@ class AgentGroup():
 	in_relationships_set = set()
 	whole_set = set()
 
-	def promote_agent(agent):
+	def promote_agent(self, agent):
 		"""
 		makes an agent older, and if need be, removes them from the
 		underage_set
@@ -26,15 +32,15 @@ class AgentGroup():
 		----------
 		agent: agent to promote
 		"""
-		if agent.age > 7:
+		if agent.age > MALE_MINIMUM_AGE:
 			agent.age = agent.age + 1
 
-		elif agent.age == 6 and agent.sex == "m":
+		elif agent.age == (MALE_MINIMUM_AGE - 1) and agent.sex == "m":
 			self.underage_set.remove(agent)
 			self.male_set.add(agent)
 			agent.age = agent.age + 1
 
-		elif agent.age == 4 and agent.sex == "f":
+		elif agent.age == (FEMALE_MINIMUM_AGE - 1) and agent.sex == "f":
 			self.underage_set.remove(agent)
 			self.female_set.add(agent)
 			agent.age = agent.age + 1
@@ -51,10 +57,10 @@ class AgentGroup():
 		self.agent_array.append(agent)
 		self.whole_set.add(agent)
 
-		if (agent.age < 5):
+		if (agent.age < FEMALE_MINIMUM_AGE):
 			self.underage_set.add(agent)
 
-		elif (agent.age < 7 and agent.sex == "m"):
+		elif (agent.age < MALE_MINIMUM_AGE and agent.sex == "m"):
 			self.underage_set.add(agent)
 
 		elif (agent.sex == "m"):
@@ -72,7 +78,15 @@ class AgentGroup():
 		----------
 		agent: agent to remove
 		"""
-		if (agent in male_set):
+		self.whole_set.remove(agent)
+
+		if (agent.age < FEMALE_MINIMUM_AGE):
+			self.underage_set.remove(agent)
+
+		elif (agent.age < MALE_MINIMUM_AGE and agent.sex == "m"):
+			self.underage_set.remove(agent)
+
+		elif (agent in self.male_set):
 			self.male_set.remove(agent)
 
 		else:

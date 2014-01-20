@@ -33,11 +33,33 @@ class TestAgentGroup(unittest.TestCase):
 		self.group.add_agent(focus_male)
 
 	def test_add_agent(self):
+		self.add_agents()
+
+		for key in self.tracking_dict:
+			self.assertTrue
+			(self.tracking_dict[key] in self.group.whole_set)
+
+		self.remove_agents()
+
+	def test_promote_agent(self):
+		self.add_agents()
+
+		#of_age_male = self.tracking_dict["OM3"]
+
+		#promote of age male
+		#self.group.promote_agent(of_age_male)
+
+		#check age
+		#self.assertEqual(of_age_male.age, 9)
+
+		self.remove_agents()
+
+	def add_agents(self):
 		underage_male_2 =\
 			AgentClass(6, "m", None, 0, [], [], [])#1
 		underage_female_2 =\
 			AgentClass(4, "f", None, 0, [], [], [])#2
-		of_age_male_3 = AgentClass(6, "m", None, 0, [], [], [])
+		of_age_male_3 = AgentClass(8, "m", None, 0, [], [], [])
 
 		self.group.add_agent(underage_male_2)
 		self.group.add_agent(underage_female_2)
@@ -47,6 +69,17 @@ class TestAgentGroup(unittest.TestCase):
 		self.tracking_dict["UF2"] = underage_female_2
 		self.tracking_dict["OM3"] = of_age_male_3
 
+	def remove_agents(self):
 		for key in self.tracking_dict:
-			self.assertTrue(self.tracking_dict[key] in self.group.whole_set)
+			agent = self.tracking_dict[key]
+			self.group.remove_agent(agent)
+
+
+
+
+
+
+
+
+
 	
