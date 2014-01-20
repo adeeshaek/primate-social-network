@@ -74,6 +74,12 @@ class AgentGroup():
 		else:
 			self.female_set.add(agent)
 
+		#check if agent has a parent. If it does, move 
+		#to the has_relationship_category
+		if (agent.parent != None):
+			self.in_relationships_set.add(
+				self.agent_array[agent.parent])
+
 	def remove_agent(self, agent):
 		"""
 		removes agent from the group. This method consolidates
@@ -115,7 +121,7 @@ class AgentGroup():
 		if (agent.sex == "m"):
 			eligible_females =\
 			 self.female_set.difference(self.in_relationships_set)
-			eligible_females.remove(self.agent_array[agent.parent])
+			#eligible_females.remove(self.agent_array[agent.parent])
 			return eligible_females
 
 		else:
