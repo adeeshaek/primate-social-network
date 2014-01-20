@@ -74,8 +74,33 @@ class TestAgentGroup(unittest.TestCase):
 
 		self.remove_agents()
 
+	def test_mark_agents_as_aggressive(self):
+		male_a = self.group.agent_array[3]
+		male_b = self.group.agent_array[4]
+
+		self.mark_agents_as_aggressive()
+
+		#check that they are aggressive
+		self.assertTrue(male_a in self.group.in_relationships_set)
+		self.assertTrue(male_b in self.group.in_relationships_set)
+		self.assertEqual(male_a.aggressive[0], male_b)
+		self.assertEqual(male_b.aggressive[0], male_a)		
+
+		self.unmark_agents_as_aggressive()
+
 	def test_mark_agents_as_sisters(self):
-		
+		sister_a = self.group.agent_array[5]
+		sister_b = self.group.agent_array[6]
+		self.mark_agents_as_sisters()
+
+		#check that they are sisters
+		self.assertTrue(sister_a in self.group.in_relationships_set)
+		self.assertTrue(sister_b in self.group.in_relationships_set)
+		self.assertEqual(sister_a.sisters[0], sister_b)
+		self.assertEqual(sister_b.sisters[0], sister_a)
+
+		#unmark as sisters 
+		self.unmark_agents_as_sisters()
 
 
 	def add_agents(self):
@@ -99,12 +124,31 @@ class TestAgentGroup(unittest.TestCase):
 			self.group.remove_agent(agent)
 
 	def mark_agents_as_sisters(self):
-		agent_a = self.group.agent_array[5]		
-		agent_b = self.group.agent_array[6]
-		
+		sister_a = self.group.agent_array[5]
+		sister_b = self.group.agent_array[6]
+		#mark 5 and 6 as sisters 
+		self.group.mark_agents_as_sisters(sister_a, sister_b)
 
+	def unmark_agents_as_sisters(self):
+		sister_a = self.group.agent_array[5]
+		sister_b = self.group.agent_array[6]
+		sister_a.sisters = [] #clear the list of sisters
+		sister_b.sisters = []
+		#remove from set manually
+		self.group.in_relationships_set.remove(sister_a) 
+		self.group.in_relationships_set.remove(sister_b)
 
+	def mark_agents_as_aggressive(self):
+		male_a = self.group.agent_array[3]
+		male_b = self.group.agent_array[4]
+		#mark 5 and 6 as sisters 
+		self.group.mark_agents_as_aggressive(male_a, male_b)
 
-
-
-	
+	def unmark_agents_as_aggressive(self):
+		male_a = self.group.agent_array[3]
+		male_b = self.group.agent_array[4]
+		male_a.aggressive = [] #clear the list of sisters
+		male_b.aggressive = []
+		#remove from set manually
+		self.group.in_relationships_set.remove(male_a) 
+		self.group.in_relationships_set.remove(male_b)

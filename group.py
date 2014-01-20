@@ -116,7 +116,7 @@ class AgentGroup():
 
 		return unrelated_members 
 
-	def mark_agents_as_friends(agent_a, agent_b):
+	def mark_agents_as_friends(self, agent_a, agent_b):
 		"""
 		marks 2 agents as being each other's friends
 
@@ -129,7 +129,7 @@ class AgentGroup():
 		self.in_relationships_set.add(agent_a)
 		self.in_relationships_set.add(agent_b)
 
-	def mark_agents_as_sisters(agent_a, agent_b):
+	def mark_agents_as_sisters(self, agent_a, agent_b):
 		"""
 		marks 2 agents as being each other's sisters
 
