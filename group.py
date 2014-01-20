@@ -110,8 +110,7 @@ class AgentGroup():
 		if (agent.sex == "m"):
 			eligible_females =\
 			 self.female_set.difference(self.in_relationships_set)
-			eligible_females =\
-			 eligible_females.difference(set([agent.parent]))
+			eligible_females.remove(self.agent_array[agent.parent])
 			return eligible_females
 
 		else:
@@ -171,4 +170,11 @@ class AgentGroup():
 		"""
 		self.in_relationships_set.add(agent)
 
-		
+	def __del__(self):
+		del self.agent_array[0:len(self.agent_array)]
+		self.female_set.clear()
+		self.male_set.clear()
+		self.underage_set.clear() 
+		self.in_relationships_set.clear()
+		self.whole_set.clear()
+

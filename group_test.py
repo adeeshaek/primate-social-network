@@ -15,8 +15,8 @@ class TestAgentGroup(unittest.TestCase):
 			AgentClass(4, "f", None, 0, [], [], [])#2
 		of_age_male_1 = AgentClass(6, "m", None, 0, [], [], [])#3
 		of_age_male_2 = AgentClass(6, "m", None, 0, [], [], [])#4
-		of_age_female_1 = AgentClass(6, "m", None, 0, [], [], [])#5
-		of_age_female_2 = AgentClass(6, "m", None, 0, [], [], [])#6
+		of_age_female_1 = AgentClass(6, "f", None, 0, [], [], [])#5
+		of_age_female_2 = AgentClass(6, "f", None, 0, [], [], [])#6
 		#target_male = AgentClass(9, "m", None, 0, [], [], [])#7
 		#target_female = AgentClass(9, "f", None, 0, [], [], [])#8
 		focus_male = AgentClass(8, "m", None, 0, [], [], [])#7
@@ -31,6 +31,11 @@ class TestAgentGroup(unittest.TestCase):
 		self.group.add_agent(of_age_female_2)
 		self.group.add_agent(focus_male)
 		self.group.add_agent(focus_female)
+
+	def tearDown(self):
+		#if not for this snipppet, the group will not clear itself
+		#del self.group.agent_array[0:len(self.group.agent_array)]
+		del self.group
 
 	def test_add_and_remove_agent(self):
 		self.add_agents()
@@ -82,13 +87,10 @@ class TestAgentGroup(unittest.TestCase):
 		focus_female = self.group.agent_array[8]
 
 		male_agents_friends =\
-		 self.group.get_unrelated_members_of_age(focus_male)
+		 list(self.group.get_unrelated_members_of_age(focus_male))
 
 		female_agents_friends =\
-		 self.group.get_unrelated_members_of_age(focus_female)
-
-		for friend in male_agents_friends:
-			print str(friend)
+		 list(self.group.get_unrelated_members_of_age(focus_female))
 
 		self.assertEqual(len(male_agents_friends), 1)
 		self.assertEqual(len(female_agents_friends), 1)
@@ -97,7 +99,6 @@ class TestAgentGroup(unittest.TestCase):
 
 		self.unmark_agents_as_friends()
 		self.unmark_agents_as_aggressive()
-		self.unmark_agents_as_sisters()
 
 	def test_mark_agents_as_friends(self):
 		friend_a = self.group.agent_array[5]
@@ -205,3 +206,6 @@ class TestAgentGroup(unittest.TestCase):
 		#remove from set manually
 		self.group.in_relationships_set.remove(male_a) 
 		self.group.in_relationships_set.remove(male_b)
+
+if __name__ == '__main__':
+	unittest.main()
