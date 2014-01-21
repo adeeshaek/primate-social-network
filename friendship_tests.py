@@ -39,4 +39,6 @@ class TestFriendships(unittest.TestCase):
 		self.assertEqual(friendships.make_friend(underage_female,
 		 group, fake_random_module), None)
 
-				
+		#
+
+		
