@@ -15,7 +15,7 @@ class TestSeedGroup(unittest.TestCase):
 		female_adulthood_age = constants.ADULTHOOD_AGE["f"]
 		adulthood_age = 0
 
-		for agent in self.seed_group:
+		for agent in self.seed_group.whole_set:
 
 			if (agent != None):
 				if (agent.sex == "SEX_MALE"):
@@ -31,7 +31,7 @@ class TestSeedGroup(unittest.TestCase):
 		#only two females can be sisters
 		one_sister_found = False 
 
-		for agent in self.seed_group:
+		for agent in self.seed_group.whole_set:
 			if (agent != None):
 				if (agent.sisters != None):
 					one_sister_found = True

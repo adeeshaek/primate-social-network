@@ -72,10 +72,7 @@ class SeedGenerator:
 		#the seed is looked for in the first sheet of the workbook
 		seedsheet = book.sheet_by_index(0) 
 
-		group = [] #list of agents defining the group
-
-		group.append(None) #add a none at the top of the array so that elements
-						#can be referenced by index.
+		group = AgentGroup()
 
 		#iterate through the rows
 		for row_index in range (self.STARTING_ROW, seedsheet.nrows):
@@ -100,7 +97,7 @@ class SeedGenerator:
 				rank, parent, sister, aggressive, friend)
 
 			#add agent to group
-			group.append(this_agent)
+			group.add_agent(this_agent)
 
 		return group
 

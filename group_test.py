@@ -29,6 +29,7 @@ class TestAgentGroup(unittest.TestCase):
 		self.group.add_agent(of_age_female_2)
 		self.group.add_agent(focus_male)
 		self.group.add_agent(focus_female)
+		self.group.mark_as_in_relationship(parent)
 
 	def tearDown(self):
 		#if not for this snipppet, the group will not clear itself

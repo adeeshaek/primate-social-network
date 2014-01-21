@@ -28,6 +28,17 @@ class AgentGroup():
 		#ensures the array can be accessed in order
 		self.agent_array.append(None)
 
+	def mark_as_in_relationship(self, agent):
+		"""
+		marks an agent as being in a relationship, 
+		by moving it to the in_relationships_set
+
+		parameters
+		----------
+		agent: agent to mark as being a parent
+		"""
+		self.in_relationships_set.add(agent)
+
 	def promote_agent(self, agent):
 		"""
 		makes an agent older, and if need be, removes them from the
@@ -73,12 +84,6 @@ class AgentGroup():
 
 		else:
 			self.female_set.add(agent)
-
-		#check if agent has a parent. If it does, move 
-		#to the has_relationship_category
-		if (agent.parent != None):
-			self.in_relationships_set.add(
-				self.agent_array[agent.parent])
 
 	def remove_agent(self, agent):
 		"""
