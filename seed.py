@@ -99,6 +99,13 @@ class SeedGenerator:
 			#add agent to group
 			group.add_agent(this_agent)
 
+		#make a pass through the group marking parents
+		for agent in group.agent_array:
+			if (agent):
+				if (agent.parent != None and agent.parent != ''):
+					group.mark_as_parent(
+						group.agent_array[int(agent.parent)])
+
 		return group
 
 

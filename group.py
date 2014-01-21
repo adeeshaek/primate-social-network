@@ -28,6 +28,17 @@ class AgentGroup():
 		#ensures the array can be accessed in order
 		self.agent_array.append(None)
 
+	def mark_as_parent(self, agent):
+		"""
+		marks an agent as being a parent 
+		by marking as being in a relationship
+
+		parameters
+		----------
+		agent: agent to mark as being a parent
+		"""
+		self.mark_as_in_relationship(agent)
+
 	def mark_as_in_relationship(self, agent):
 		"""
 		marks an agent as being in a relationship, 
@@ -35,7 +46,7 @@ class AgentGroup():
 
 		parameters
 		----------
-		agent: agent to mark as being a parent
+		agent: agent to mark as being in a relationship
 		"""
 		self.in_relationships_set.add(agent)
 

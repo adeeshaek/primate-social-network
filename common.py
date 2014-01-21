@@ -37,3 +37,5 @@ def read_CSV(inputValue):
 		int_array.append(int(inputValue)) #make it int to keep type consistent
 
 	return int_array
+
+
