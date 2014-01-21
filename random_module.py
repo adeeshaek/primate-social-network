@@ -43,7 +43,8 @@ class RandomModule(random.Random):
 class FakeRandomModule(RandomModule):
 	"""
 	used for testing methods that use randomness. This method overloads
-	roll so that it always returns true
+	roll so that it always returns true, and overloads random.shuffle,
+	so that it always returns the first element of the target list
 	"""
 
 	def roll(self, probability):
@@ -51,4 +52,17 @@ class FakeRandomModule(RandomModule):
 		fake roll method that always returns true
 		"""
 		return True
+
+	def shuffle(self, list_to_shuffle):
+		"""
+		overrides the method random.shuffle, and returns the 
+		first element of the list_to_shuffle, to make tests
+		return a predictable result
+
+		parameters
+		----------
+		list_to_shuffle: target list to shuffle
+		"""
+		return list_to_shuffle[0]
+
 

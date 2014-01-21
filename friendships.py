@@ -47,11 +47,16 @@ def make_friend(agent, group, random_module):
 	group: the agent's group
 	random_module: used to calculate chance
 	"""
-
+	#any agent whose age is < 5 is underage
 	if (agent.age < 5):
 		return None
 
+	#male agents where age < 7 are underage
 	elif (agent.age < 7 and agent.sex == "m"):
+		return None
+
+	#friends can't already have a relationship
+	elif (agent in group.in_relationships_set):
 		return None
 
 	else:
@@ -61,9 +66,8 @@ def make_friend(agent, group, random_module):
 		if random_module.roll(probability):
 			list_of_candidates =\
 			 group.get_unrelated_members_of_age(agent)	
-
 			new_friend =\
-			 random_module.shuffle(list_of_candidates)[0]
+			 random_module.shuffle(list(list_of_candidates))
 
 			return new_friend
 
