@@ -1,5 +1,5 @@
-Primate Social Network Simulation Project
-=========================================
+Primate Social Network Simulation Project (pre-release)
+=======================================================
 
 This project aims to simulate a population of monkeys in the wild, and determine the effect of catch-and-release programs on their social networks. 
 
