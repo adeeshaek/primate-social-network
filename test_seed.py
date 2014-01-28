@@ -37,3 +37,12 @@ class TestSeedGroup(unittest.TestCase):
 					one_sister_found = True
 
 		self.assertTrue(one_sister_found)
+
+	def test_index(self):
+		#test the index of each individual to make sure it
+		#refers to the correct one
+		for agent in self.seed_group.whole_set:
+			self.assertEquals(agent, 
+				self.seed_group.agent_array[agent.index])
+
+

@@ -94,9 +94,10 @@ class SeedGenerator:
 
 			#create new agent
 			this_agent = AgentClass(age_in_years, sex, \
-				rank, parent, sister, aggressive, friend)
-
+				rank, parent, sister, aggressive, friend, row_index - 1)
+			#group.agent_array is indexed from 1, so add 1 to the row index
 			#add agent to group
+			
 			group.add_agent(this_agent)
 
 		#make a pass through the group marking parents

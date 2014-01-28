@@ -43,9 +43,7 @@ class TestAgentGroup(unittest.TestCase):
 
 		found = underage_male in self.group.whole_set
 		self.assertFalse(found)
-
 		self.group.add_agent(underage_male)
-
 		self.remove_agents()
 
 	def test_add_and_remove_agent(self):

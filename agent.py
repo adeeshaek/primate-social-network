@@ -16,7 +16,7 @@ class AgentClass:
 	number = 0
 
 	def __init__(self, age, sex, is_alpha, parent, sisters, 
-		aggressive, friends):
+		aggressive, friends, index=0):
 		"""
 		constructor
 		-----------
@@ -36,6 +36,7 @@ class AgentClass:
 		value.
 		friendship - friendships formed by this individual. Binary value. Multiple
 		entries separated by commas.
+		index - the index of this agent in the group.agent_array
 		"""
 		#make sure age class and sex are valid
 		assert (constants.SEX_DICT.has_key(sex))
@@ -47,6 +48,7 @@ class AgentClass:
 		self.sisters = sisters
 		self.aggressive = aggressive
 		self.friends = friends
+		self.index = index
 
 		#make sure sisters, aggressive, friends are empty lists not
 		#null references

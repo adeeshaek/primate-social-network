@@ -12,6 +12,8 @@ NOTE: Throughout this method it is assumed that
 	FEMALE_MINIMUM_AGE < MALE_MINIMUM_AGE
 """
 
+from agent import AgentClass
+
 FEMALE_MINIMUM_AGE = 5
 MALE_MINIMUM_AGE = 7
 
@@ -27,6 +29,40 @@ class AgentGroup():
 		self.agent_array = []
 		#ensures the array can be accessed in order
 		self.agent_array.append(None)
+
+	def give_birth_to_agent(self, parent_agent, random_module):
+		"""
+		makes a female agent into a parent, by generating a 
+		new infant, and marking the parent_agent as a parent
+
+		parameters
+		----------
+		parent_agent: agent who is about to give birth
+		random_module: used to generate randomness
+		"""
+		#make sure that parent is female
+		assert parent_agent.sex == "f"
+
+		#generate a new infant
+		PROBABILITY_OF_MALE = 0.5
+
+		child_sex = "f"
+
+		if (random_module.roll(PROBABILITY_OF_MALE)):
+			child_sex = "m"
+
+
+	def mark_agent_as_dead(self, agent):
+		"""
+		marks an agent as having died. Since the self.all_agents
+		set contains all living agents, by removing the agent
+		from this set, you mark him or her as having died
+
+		parameters
+		----------
+		agent: agent to mark as dead
+		"""
+		self.whole_set.remove(agent)
 
 	def mark_as_parent(self, agent):
 		"""
@@ -195,14 +231,6 @@ class AgentGroup():
 		agent: the agent whom to mark as having a related_members
 		"""
 		self.in_relationships_set.add(agent)
-
-	def mark_agent_as_dead(self, agent):
-		"""
-		marks an agent as having died. Since the self.all_agents
-		set contains all living agents, by removing the agent
-		from this set, you mark him or her as having died
-		"""
-		self.whole_set.remove(agent)
 
 	def __del__(self):
 		del self.agent_array[0:len(self.agent_array)]
