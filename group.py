@@ -196,6 +196,14 @@ class AgentGroup():
 		"""
 		self.in_relationships_set.add(agent)
 
+	def mark_agent_as_dead(self, agent):
+		"""
+		marks an agent as having died. Since the self.all_agents
+		set contains all living agents, by removing the agent
+		from this set, you mark him or her as having died
+		"""
+		self.whole_set.remove(agent)
+
 	def __del__(self):
 		del self.agent_array[0:len(self.agent_array)]
 		self.female_set.clear()

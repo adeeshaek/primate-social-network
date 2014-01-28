@@ -36,6 +36,18 @@ class TestAgentGroup(unittest.TestCase):
 		#del self.group.agent_array[0:len(self.group.agent_array)]
 		del self.group
 
+	def test_kill_agent(self):
+		self.add_agents()
+		underage_male = self.tracking_dict["UM2"]
+		self.group.mark_agent_as_dead(underage_male)
+
+		found = underage_male in self.group.whole_set
+		self.assertFalse(found)
+
+		self.group.add_agent(underage_male)
+
+		self.remove_agents()
+
 	def test_add_and_remove_agent(self):
 		self.add_agents()
 
