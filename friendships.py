@@ -45,7 +45,7 @@ def make_friend(agent, group, random_module):
 	----------
 	agent: the method checks if this agent can make a new friend
 	group: the agent's group
-	random_module: used to calculate chance
+	random_module: used to calculate chance}}}}
 	"""
 	#any agent whose age is < 5 is underage
 	if (agent.age < 5):

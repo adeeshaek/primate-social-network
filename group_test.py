@@ -13,8 +13,8 @@ class TestAgentGroup(unittest.TestCase):
 			AgentClass(6, "m", None, 1, [], [], [])#2
 		underage_female_1 =\
 			AgentClass(4, "f", None, 1, [], [], [])#3
-		of_age_male_1 = AgentClass(6, "m", None, 1, [], [], [])#4
-		of_age_male_2 = AgentClass(6, "m", None, 1, [], [], [])#5
+		of_age_male_1 = AgentClass(7, "m", None, 1, [], [], [])#4
+		of_age_male_2 = AgentClass(7, "m", None, 1, [], [], [])#5
 		of_age_female_1 = AgentClass(6, "f", None, 1, [], [], [])#6
 		of_age_female_2 = AgentClass(6, "f", None, 1, [], [], [])#7
 		focus_male = AgentClass(8, "m", None, 1, [], [], [])#8
@@ -32,9 +32,18 @@ class TestAgentGroup(unittest.TestCase):
 		self.group.mark_as_parent(parent)
 
 	def tearDown(self):
-		#if not for this snipppet, the group will not clear itself
+		#if not for this snippet, the group will not clear itself
 		#del self.group.agent_array[0:len(self.group.agent_array)]
 		del self.group
+
+	def test_females_to_male(self):
+		females_to_male = self.group.get_females_to_male()
+		print (len(self.group.male_set))
+		self.assertEqual(1, females_to_male)
+
+		self.add_agents()
+		self.assertEqual(1, females_to_male)
+		self.remove_agents()
 
 	def test_give_birth_to_agent(self):
 		parent = self.group.agent_array[1]

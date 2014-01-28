@@ -13,6 +13,7 @@ NOTE: Throughout this method it is assumed that
 """
 
 from agent import AgentClass
+import copy
 
 FEMALE_MINIMUM_AGE = 5
 MALE_MINIMUM_AGE = 7
@@ -30,6 +31,33 @@ class AgentGroup():
 		#ensures the array can be accessed in order
 		self.agent_array.append(None)
 
+	def __deepcopy__(self, memo):
+		new_group = AgentGroup()
+		new_group.agent_array =\
+		 copy.deepcopy(self.agent_array)
+		new_group.female_set =\
+		 copy.deepcopy(self.female_set)
+		new_group.male_set =\
+		 copy.deepcopy(self.male_set)
+		new_group.underage_set =\
+		 copy.deepcopy(self.underage_set)
+		new_group.in_relationships_set =\
+		 copy.deepcopy(self.in_relationships_set)
+		new_group.whole_set =\
+		 copy.deepcopy(self.whole_set)
+		return new_group
+
+	def get_females_to_male(self):
+		"""
+		gets the number of females to a single male
+		in this group
+		"""
+		females = len(self.female_set)
+		males = len(self.male_set)
+		females_to_male = int(females/males)
+
+		return females_to_male
+
 	def give_birth_to_agent(
 		self, parent_agent, random_module, 
 		group):
@@ -41,7 +69,7 @@ class AgentGroup():
 		----------
 		parent_agent: agent who is about to give birth
 		random_module: used to generate randomness
-		group: reference to the group
+		group: group to add the new child into
 		"""
 		#make sure that parent is female
 		assert parent_agent.sex == "f"
