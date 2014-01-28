@@ -30,7 +30,9 @@ class AgentGroup():
 		#ensures the array can be accessed in order
 		self.agent_array.append(None)
 
-	def give_birth_to_agent(self, parent_agent, random_module):
+	def give_birth_to_agent(
+		self, parent_agent, random_module, 
+		group):
 		"""
 		makes a female agent into a parent, by generating a 
 		new infant, and marking the parent_agent as a parent
@@ -39,18 +41,23 @@ class AgentGroup():
 		----------
 		parent_agent: agent who is about to give birth
 		random_module: used to generate randomness
+		group: reference to the group
 		"""
 		#make sure that parent is female
 		assert parent_agent.sex == "f"
 
 		#generate a new infant
 		PROBABILITY_OF_MALE = 0.5
-
 		child_sex = "f"
-
 		if (random_module.roll(PROBABILITY_OF_MALE)):
 			child_sex = "m"
+		agent_index = len(group.agent_array)
+		child_agent = AgentClass(
+			0, child_sex, None, parent_agent.index, None,
+			None, None, agent_index)
 
+		#add the new infant to the group
+		group.add_agent(child_agent)
 
 	def mark_agent_as_dead(self, agent):
 		"""

@@ -54,6 +54,7 @@ class LifeTable:
 
 		chance_of_birth_by_proportion = 120 - (10 * females_to_male)
 		"""
+
 		chance_of_birth_by_age = self.female_life_table[age][1]
 
 		chance_of_birth_by_proportion = 120 - (10 * females_to_male)

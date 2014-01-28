@@ -1,7 +1,7 @@
 import unittest
 from group import AgentGroup
 from agent import AgentClass
-
+from random_module import FakeRandomModule
 class TestAgentGroup(unittest.TestCase):
 
 	def setUp(self):
@@ -35,6 +35,21 @@ class TestAgentGroup(unittest.TestCase):
 		#if not for this snipppet, the group will not clear itself
 		#del self.group.agent_array[0:len(self.group.agent_array)]
 		del self.group
+
+	def test_give_birth_to_agent(self):
+		parent = self.group.agent_array[1]
+		current_number_of_agents =\
+		 len(self.group.agent_array)
+		fake_random_module = FakeRandomModule()
+		self.group.give_birth_to_agent(
+			parent, fake_random_module, self.group)
+		self.assertEquals(len(self.group.agent_array), 
+			current_number_of_agents + 1)
+		child = self.group.agent_array[
+		len(self.group.agent_array) - 1]
+		self.assertEquals(child.sex, 'm')
+		self.group.mark_agent_as_dead(child)
+
 
 	def test_kill_agent(self):
 		self.add_agents()
