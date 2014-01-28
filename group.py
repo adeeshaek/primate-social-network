@@ -30,7 +30,7 @@ class AgentGroup():
 		self.agent_array = []
 		#ensures the array can be accessed in order
 		self.agent_array.append(None)
-
+	
 	def __deepcopy__(self, memo):
 		new_group = AgentGroup()
 		new_group.agent_array =\
