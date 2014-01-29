@@ -11,7 +11,7 @@ class TestAgent(unittest.TestCase):
 		is_alpha = "A"
 		
 		self.my_agent = agent.AgentClass(age, sex, is_alpha, 
-			None, None, None, None)
+			None, None, None, None, 0)
 
 	def test_copy(self):
 		new_agent = copy(self.my_agent)

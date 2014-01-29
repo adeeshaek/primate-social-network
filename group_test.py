@@ -8,17 +8,24 @@ class TestAgentGroup(unittest.TestCase):
 		self.group = AgentGroup()
 		self.tracking_dict = {} #used to track specific references
 
-		parent = AgentClass(12, "f", "A", None, [], [], [])#1
+		parent = AgentClass(
+		 12, "f", "A", None, [], [], [], 1)#1
 		underage_male_1 =\
-			AgentClass(6, "m", None, 1, [], [], [])#2
+			AgentClass(6, "m", None, 1, [], [], [], 2)#2
 		underage_female_1 =\
-			AgentClass(4, "f", None, 1, [], [], [])#3
-		of_age_male_1 = AgentClass(7, "m", None, 1, [], [], [])#4
-		of_age_male_2 = AgentClass(7, "m", None, 1, [], [], [])#5
-		of_age_female_1 = AgentClass(6, "f", None, 1, [], [], [])#6
-		of_age_female_2 = AgentClass(6, "f", None, 1, [], [], [])#7
-		focus_male = AgentClass(8, "m", None, 1, [], [], [])#8
-		focus_female = AgentClass(8, "f", None, 1, [], [], [])#9
+			AgentClass(4, "f", None, 1, [], [], [], 3)#3
+		of_age_male_1 = AgentClass(
+		 7, "m", None, 1, [], [], [], 4)#4
+		of_age_male_2 = AgentClass(
+		 7, "m", None, 1, [], [], [], 5)#5
+		of_age_female_1 = AgentClass(
+		 6, "f", None, 1, [], [], [], 6)#6
+		of_age_female_2 = AgentClass(
+		 6, "f", None, 1, [], [], [], 7)#7
+		focus_male = AgentClass(
+		 8, "m", None, 1, [], [], [], 8)#8
+		focus_female = AgentClass(
+		 8, "f", None, 1, [], [], [], 9)#9
 
 		self.group.add_agent(parent)
 		self.group.add_agent(underage_male_1)
@@ -177,10 +184,11 @@ class TestAgentGroup(unittest.TestCase):
 
 	def add_agents(self):
 		underage_male_2 =\
-			AgentClass(6, "m", None, 1, [], [], [])#1
+			AgentClass(6, "m", None, 1, [], [], [], 10)#1
 		underage_female_2 =\
-			AgentClass(4, "f", None, 1, [], [], [])#2
-		of_age_male_3 = AgentClass(8, "m", None, 1, [], [], [])
+			AgentClass(4, "f", None, 1, [], [], [], 11)#2
+		of_age_male_3 =\
+		 AgentClass(8, "m", None, 1, [], [], [] , 12)
 
 		self.group.add_agent(underage_male_2)
 		self.group.add_agent(underage_female_2)

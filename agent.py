@@ -13,10 +13,10 @@ class AgentClass:
 	sisters = []
 	aggressive = []
 	friends = []
-	number = 0
+	index = 0
 
 	def __init__(self, age, sex, is_alpha, parent, sisters, 
-		aggressive, friends, index=0):
+		aggressive, friends, index):
 		"""
 		constructor
 		-----------

@@ -15,15 +15,20 @@ class TestFriendships(unittest.TestCase):
 	def test_make_friend(self):
 		fake_random_module = FakeRandomModule()
 
-		parent = AgentClass(12, "f", "A", None, None, None, None)#0
+		parent = AgentClass(
+		 12, "f", "A", None, None, None, None, 1)#0
 		underage_male =\
-			AgentClass(6, "m", None, 0, None, None, None)#1
+			AgentClass(6, "m", None, 0, None, None, None, 2)#1
 		underage_female =\
-			AgentClass(4, "f", None, 0, None, None, None)#2
-		of_age_male_1 = AgentClass(8, "m", None, 0, [], [], [])#3
-		of_age_male_2 = AgentClass(8, "m", None, 0, [], [], [])#4
-		of_age_female_1 = AgentClass(6, "f", None, 0, [], [], [])#5
-		of_age_female_2 = AgentClass(6, "f", None, 0, [], [], [])#6
+			AgentClass(4, "f", None, 0, None, None, None, 3)#2
+		of_age_male_1 = AgentClass(
+		 8, "m", None, 0, [], [], [], 4)#3
+		of_age_male_2 = AgentClass(
+		 8, "m", None, 0, [], [], [], 5)#4
+		of_age_female_1 = AgentClass(
+		 6, "f", None, 0, [], [], [], 6)#5
+		of_age_female_2 = AgentClass(
+		 6, "f", None, 0, [], [], [], 7)#6
 
 		group = AgentGroup()
 		group.add_agent(parent)
