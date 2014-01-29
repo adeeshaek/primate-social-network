@@ -15,23 +15,22 @@ class TestSeedGroup(unittest.TestCase):
 		female_adulthood_age = constants.ADULTHOOD_AGE["f"]
 		adulthood_age = 0
 
-		for agent in self.seed_group.whole_set:
+		for agent_index in self.seed_group.whole_set:
+			agent = self.seed_group.agent_array[agent_index]
+			if (agent.sex == "SEX_MALE"):
+				adulthood_age = male_adulthood_age
+			else:
+				adulthood_age = female_adulthood_age
 
-			if (agent != None):
-				if (agent.sex == "SEX_MALE"):
-					adulthood_age = male_adulthood_age
-				else:
-					adulthood_age = female_adulthood_age
-
-				if (agent.age < adulthood_age):
-					self.assertIsNotNone(agent.parent)
+			if (agent.age < adulthood_age):
+				self.assertIsNotNone(agent.parent)
 
 	def test_sisters(self):
 		#there must be at least one pair of sisters in the seed
 		#only two females can be sisters
 		one_sister_found = False 
-
-		for agent in self.seed_group.whole_set:
+		for agent_index in self.seed_group.whole_set:
+			agent = self.seed_group.agent_array[agent_index]
 			if (agent != None):
 				if (agent.sisters != None):
 					one_sister_found = True
@@ -41,8 +40,8 @@ class TestSeedGroup(unittest.TestCase):
 	def test_index(self):
 		#test the index of each individual to make sure it
 		#refers to the correct one
-		for agent in self.seed_group.whole_set:
-			self.assertEquals(agent, 
-				self.seed_group.agent_array[agent.index])
+		for agent_index in self.seed_group.whole_set:
+			self.assertEquals(agent_index, 
+				self.seed_group.agent_array[agent_index].index)
 
 

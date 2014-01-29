@@ -53,8 +53,8 @@ class TestFriendships(unittest.TestCase):
 		result_for_male = friendships.make_friend(
 			of_age_male_1, group, fake_random_module)
 		truth_value_for_male =\
-		 result_for_male == of_age_female_1 or \
-		  result_for_male == of_age_female_2
+		 result_for_male == of_age_female_1.index or \
+		  result_for_male == of_age_female_2.index
 		self.assertTrue(truth_value_for_male)
 
 		#there should be one of the two random males for the
@@ -62,8 +62,8 @@ class TestFriendships(unittest.TestCase):
 		result_for_female = friendships.make_friend(
 			of_age_female_1, group, fake_random_module)
 		truth_value_for_female =\
-		 result_for_female == of_age_male_1 or \
-		  result_for_female == of_age_male_2
+		 result_for_female == of_age_male_1.index or \
+		  result_for_female == of_age_male_2.index
 		self.assertTrue(truth_value_for_female)
 
 if __name__ == '__main__':

@@ -30,7 +30,7 @@ class AgentGroup():
 		self.agent_array = []
 		#ensures the array can be accessed in order
 		self.agent_array.append(None)
-	
+
 	def __deepcopy__(self, memo):
 		new_group = AgentGroup()
 		new_group.agent_array =\
@@ -97,7 +97,7 @@ class AgentGroup():
 		----------
 		agent: agent to mark as dead
 		"""
-		self.whole_set.remove(agent)
+		self.whole_set.remove(agent.index)
 
 	def mark_as_parent(self, agent):
 		"""
@@ -108,7 +108,7 @@ class AgentGroup():
 		----------
 		agent: agent to mark as being a parent
 		"""
-		self.mark_as_in_relationship(agent)
+		self.mark_as_in_relationship(agent.index)
 
 	def mark_as_in_relationship(self, agent):
 		"""
@@ -134,13 +134,13 @@ class AgentGroup():
 			agent.age = agent.age + 1
 
 		elif agent.age == (MALE_MINIMUM_AGE - 1) and agent.sex == "m":
-			self.underage_set.remove(agent)
-			self.male_set.add(agent)
+			self.underage_set.remove(agent.index)
+			self.male_set.add(agent.index)
 			agent.age = agent.age + 1
 
 		elif agent.age == (FEMALE_MINIMUM_AGE - 1) and agent.sex == "f":
-			self.underage_set.remove(agent)
-			self.female_set.add(agent)
+			self.underage_set.remove(agent.index)
+			self.female_set.add(agent.index)
 			agent.age = agent.age + 1
 
 	def add_agent(self, agent):
@@ -153,19 +153,20 @@ class AgentGroup():
 		agent: agent to add
 		"""
 		self.agent_array.append(agent)
-		self.whole_set.add(agent)
+		self.whole_set.add(agent.index)
 
 		if (agent.age < FEMALE_MINIMUM_AGE):
-			self.underage_set.add(agent)
+			self.underage_set.add(agent.index)
 
-		elif (agent.age < MALE_MINIMUM_AGE and agent.sex == "m"):
-			self.underage_set.add(agent)
+		elif (
+			agent.age < MALE_MINIMUM_AGE and agent.sex == "m"):
+			self.underage_set.add(agent.index)
 
 		elif (agent.sex == "m"):
-			self.male_set.add(agent)
+			self.male_set.add(agent.index)
 
 		else:
-			self.female_set.add(agent)
+			self.female_set.add(agent.index)
 
 	def remove_agent(self, agent):
 		"""
@@ -176,19 +177,19 @@ class AgentGroup():
 		----------
 		agent: agent to remove
 		"""
-		self.whole_set.remove(agent)
+		self.whole_set.remove(agent.index)
 
 		if (agent.age < FEMALE_MINIMUM_AGE):
-			self.underage_set.remove(agent)
+			self.underage_set.remove(agent.index)
 
 		elif (agent.age < MALE_MINIMUM_AGE and agent.sex == "m"):
-			self.underage_set.remove(agent)
+			self.underage_set.remove(agent.index)
 
-		elif (agent in self.male_set):
-			self.male_set.remove(agent)
+		elif (agent.index in self.male_set):
+			self.male_set.remove(agent.index)
 
 		else:
-			self.female_set.remove(agent)
+			self.female_set.remove(agent.index)
 
 	def get_unrelated_members_of_age(self, agent):
 		"""
@@ -207,12 +208,14 @@ class AgentGroup():
 		#first check if agent is male or female
 		if (agent.sex == "m"):
 			eligible_females =\
-			 self.female_set.difference(self.in_relationships_set)
+			 self.female_set.difference(
+			 	self.in_relationships_set)
 			return eligible_females
 
 		else:
 			eligible_males =\
-			 self.male_set.difference(self.in_relationships_set)
+			 self.male_set.difference(
+			 	self.in_relationships_set)
 			return eligible_males
 
 	def mark_agents_as_friends(self, agent_a, agent_b):
@@ -223,10 +226,10 @@ class AgentGroup():
 		----------
 		agent_a, agent_b: agents to mark as friends
 		"""
-		agent_a.friends.append(agent_b)
-		agent_b.friends.append(agent_a)
-		self.in_relationships_set.add(agent_a)
-		self.in_relationships_set.add(agent_b)
+		agent_a.friends.append(agent_b.index)
+		agent_b.friends.append(agent_a.index)
+		self.in_relationships_set.add(agent_a.index)
+		self.in_relationships_set.add(agent_b.index)
 
 	def mark_agents_as_sisters(self, agent_a, agent_b):
 		"""
@@ -236,10 +239,10 @@ class AgentGroup():
 		----------
 		agent_a, agent_b: agents to mark as sisters
 		"""
-		agent_a.sisters.append(agent_b)
-		agent_b.sisters.append(agent_a)
-		self.in_relationships_set.add(agent_a)
-		self.in_relationships_set.add(agent_b)
+		agent_a.sisters.append(agent_b.index)
+		agent_b.sisters.append(agent_a.index)
+		self.in_relationships_set.add(agent_a.index)
+		self.in_relationships_set.add(agent_b.index)
 
 	def mark_agents_as_aggressive(self, agent_a, agent_b):
 		"""
@@ -250,10 +253,10 @@ class AgentGroup():
 		----------
 		agent_a, agent_b: agents in aggressive relationship
 		"""	
-		agent_a.aggressive.append(agent_b)
-		agent_b.aggressive.append(agent_a)
-		self.in_relationships_set.add(agent_a)
-		self.in_relationships_set.add(agent_b)
+		agent_a.aggressive.append(agent_b.index)
+		agent_b.aggressive.append(agent_a.index)
+		self.in_relationships_set.add(agent_a.index)
+		self.in_relationships_set.add(agent_b.index)
 
 	def mark_agents_as_having_a_relationship(self, agent):
 		"""
@@ -265,7 +268,7 @@ class AgentGroup():
 		----------
 		agent: the agent whom to mark as having a related_members
 		"""
-		self.in_relationships_set.add(agent)
+		self.in_relationships_set.add(agent.index)
 
 	def __del__(self):
 		del self.agent_array[0:len(self.agent_array)]
