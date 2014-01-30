@@ -81,7 +81,7 @@ class AgentGroup():
 			child_sex = "m"
 		agent_index = len(group.agent_array)
 		child_agent = AgentClass(
-			0, child_sex, None, parent_agent.index, None,
+			1, child_sex, None, parent_agent.index, None,
 			None, None, agent_index)
 
 		#add the new infant to the group

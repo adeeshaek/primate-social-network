@@ -16,7 +16,7 @@ import copy
 import loader
 from random_module import RandomModule
 
-NUMBER_OF_GENERATIONS = 1
+NUMBER_OF_GENERATIONS = 10
 
 def main():
 	#import Seed and lifetable data
