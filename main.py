@@ -16,7 +16,7 @@ import copy
 import loader
 from random_module import RandomModule
 
-NUMBER_OF_GENERATIONS = 5
+NUMBER_OF_GENERATIONS = 1
 
 def main():
 	#import Seed and lifetable data
@@ -30,6 +30,8 @@ def main():
 	new_generation = None
 
 	for i in range (0, NUMBER_OF_GENERATIONS):
+		females_to_male =\
+		 this_generation.get_females_to_male()
 
 		#copy the group 
 		new_generation = copy.deepcopy(this_generation)
@@ -44,8 +46,6 @@ def main():
 
 			#check for birth
 			if (agent_index in this_generation.female_set):
-				females_to_male =\
-				 this_generation.get_females_to_male()
 				chance_of_giving_birth =\
 				 lifetable.chance_of_birth(
 				 	females_to_male, this_agent.age)
@@ -54,9 +54,13 @@ def main():
 				if (random_module.roll(chance_of_giving_birth)):
 					new_generation.give_birth_to_agent(
 						new_agent, random_module, new_generation)
+
 			#check for death
+			chance_of_death = lifetable.chance_of_death(
+				females_to_male, this_agent.age, this_agent.sex)
 
-
+			if (random_module.roll(chance_of_death)):
+				new_generation.mark_agent_as_dead(new_agent)
 			#check for dispersal
 
 		#set the old gen to the new one
