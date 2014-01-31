@@ -103,17 +103,35 @@ class AgentGroup():
 
 		#if agent is a parent and if the child is 
 		#still underage, kill the child as well
+		for child in agent.children:
+			if (child in self.underage_set):
+				self.mark_agent_as_dead(
+					self.agent_array[child])
 
-	def mark_as_parent(self, agent):
+	def mark_as_parent(self, agent, child_or_children):
 		"""
 		marks an agent as being a parent 
-		by marking as being in a relationship
+		by marking as being in a relationship and
+		adding the child's index to the parent's list
+		of children
 
 		parameters
 		----------
 		agent: agent to mark as being a parent
+		child_or_children: agent to mark as child,
+		 or list of indices representing children
 		"""
 		self.mark_as_in_relationship(agent.index)
+
+		#make sure the child or children don't already
+		#have a parent
+		#duck typing!
+		try:
+			agent.chidren = agent.children.union(
+				child_or_children)
+
+		except TypeError:
+			agent.children.add(child_or_children.index)
 
 	def mark_as_in_relationship(self, agent):
 		"""

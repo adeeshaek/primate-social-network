@@ -36,7 +36,8 @@ class TestAgentGroup(unittest.TestCase):
 		self.group.add_agent(of_age_female_2)
 		self.group.add_agent(focus_male)
 		self.group.add_agent(focus_female)
-		self.group.mark_as_parent(parent)
+		self.group.mark_as_parent(parent,
+			[2,3,4,5,6,7,8,9])
 
 	def tearDown(self):
 		#if not for this snippet, the group will not clear itself
@@ -66,14 +67,46 @@ class TestAgentGroup(unittest.TestCase):
 		self.assertEquals(child.sex, 'm')
 		self.group.mark_agent_as_dead(child)
 
+	def test_mark_agent_as_parent(self):
+		self.add_agents()
+		underage_male = self.tracking_dict['UM2']
+		parent_agent = AgentClass(
+		 12, "f", "A", None, [], [], [], 13)#1
+
+		self.group.mark_as_parent(parent_agent,
+			underage_male)
+
+		self.assertTrue(parent_agent.index in 
+			self.group.in_relationships_set)
+		self.assertTrue(underage_male.index in
+			parent_agent.children)
+
+		self.remove_agents()
 
 	def test_kill_agent(self):
+		#test killing single underage male
 		self.add_agents()
 		underage_male = self.tracking_dict["UM2"]
 		self.group.mark_agent_as_dead(underage_male)
 
 		found = underage_male in self.group.whole_set
 		self.assertFalse(found)
+		self.group.add_agent(underage_male)
+		self.remove_agents()
+
+		#test killing a parent
+		self.add_agents()
+		parent_agent = AgentClass(
+		 12, "f", "A", None, [], [], [], 13)#1
+		self.group.add_agent(parent_agent)
+		underage_male = self.tracking_dict["UM2"]
+		self.group.mark_as_parent(parent_agent,
+			underage_male)
+		self.group.mark_agent_as_dead(parent_agent)
+		self.assertTrue(underage_male not in
+			self.group.whole_set)
+
+		#add the agent back
 		self.group.add_agent(underage_male)
 		self.remove_agents()
 

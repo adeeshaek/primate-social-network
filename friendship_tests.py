@@ -38,7 +38,7 @@ class TestFriendships(unittest.TestCase):
 		group.add_agent(of_age_male_2)
 		group.add_agent(of_age_female_1)
 		group.add_agent(of_age_female_2)
-		group.mark_as_parent(parent)
+		group.mark_as_parent(parent, [2,3,4,5,6,7])
 
 		#underage male shouldn't be able to make friendships
 		self.assertEqual(friendships.make_friend(underage_male,

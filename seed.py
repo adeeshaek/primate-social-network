@@ -97,7 +97,7 @@ class SeedGenerator:
 				rank, parent, sister, aggressive, friend, row_index - 1)
 			#group.agent_array is indexed from 1, so add 1 to the row index
 			#add agent to group
-			
+
 			group.add_agent(this_agent)
 
 		#make a pass through the group marking parents
@@ -105,7 +105,8 @@ class SeedGenerator:
 			if (agent):
 				if (agent.parent != None and agent.parent != ''):
 					group.mark_as_parent(
-						group.agent_array[int(agent.parent)])
+						group.agent_array[int(agent.parent)],
+						agent)
 
 		return group
 

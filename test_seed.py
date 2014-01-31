@@ -24,6 +24,7 @@ class TestSeedGroup(unittest.TestCase):
 
 			if (agent.age < adulthood_age):
 				self.assertIsNotNone(agent.parent)
+				
 
 	def test_sisters(self):
 		#there must be at least one pair of sisters in the seed
