@@ -99,7 +99,15 @@ class AgentGroup():
 		----------
 		agent: agent to mark as dead
 		"""
-		self.whole_set.remove(agent.index)
+		#since this method recursively marks all
+		#children as being dead, it can be called 
+		#several times for a given agent in a single
+		#run. Hence, don't panic if the agent is already
+		#dead when the method is called
+		try:
+			self.whole_set.remove(agent.index)
+		except KeyError:
+			pass
 
 		#if agent is a parent and if the child is 
 		#still underage, kill the child as well
