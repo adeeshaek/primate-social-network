@@ -6,6 +6,14 @@ Adeesha Ekanayake
 main.py
 -------
 Main run loop
+
+To do:
+* Convert single group into several groups. [x]
+* Add analytics 
+* When parent dies, kill child of that parent if 
+	below a target age
+* Group fission and death
+* Consider dispersal
 """
 
 from agent import AgentClass
@@ -17,53 +25,65 @@ import loader
 from random_module import RandomModule
 
 NUMBER_OF_GENERATIONS = 10
+NUMBER_OF_SEED_GROUPS = 5
 
 def main():
 	#import Seed and lifetable data
-	this_generation = seed.load_group()
+	seed_group = seed.load_group()
 	table_data = loader.load_data()
 	lifetable = table_data.life_table
 	dispersal_table =\
 	 table_data.dispersal_table
 	random_module = RandomModule()
 
+	all_groups = []
+	this_generation = None
 	new_generation = None
 
-	for i in range (0, NUMBER_OF_GENERATIONS):
-		females_to_male =\
-		 this_generation.get_females_to_male()
+	#assign all_groups by creating several copies of the 
+	#seed generation
+	for i in range(0, NUMBER_OF_SEED_GROUPS):
+		all_groups.append(seed_group)
 
-		#copy the group 
-		new_generation = copy.deepcopy(this_generation)
-		for agent_index in this_generation.whole_set:
-			this_agent =\
-			 this_generation.agent_array[agent_index]
-			new_agent =\
-			 new_generation.agent_array[agent_index]
+	
+	#run the simulation for each sub_group.
+	for this_generation in all_groups:	
 
-			#increment age
-			new_generation.promote_agent(new_agent)
+		for i in range (0, NUMBER_OF_GENERATIONS):
+			females_to_male =\
+			 this_generation.get_females_to_male()
 
-			#check for birth
-			check_for_birth(this_generation, new_generation,
-				this_agent, new_agent, females_to_male,
-				agent_index, lifetable, random_module)
+			#copy the group 
+			new_generation = copy.deepcopy(this_generation)
+			for agent_index in this_generation.whole_set:
+				this_agent =\
+				 this_generation.agent_array[agent_index]
+				new_agent =\
+				 new_generation.agent_array[agent_index]
 
-			#check for death
-			check_for_death(lifetable, females_to_male, 
-				this_agent, new_agent, new_generation,
-				random_module)
-			
-			#check for dispersal
+				#increment age
+				new_generation.promote_agent(new_agent)
 
-		#set the old gen to the new one
-		del(this_generation)
-		this_generation = copy.deepcopy(new_generation)
+				#check for birth
+				check_for_birth(this_generation, new_generation,
+					this_agent, new_agent, females_to_male,
+					agent_index, lifetable, random_module)
 
-		if (i == NUMBER_OF_GENERATIONS - 1):
-			#print the new generation
-			for agent_index in new_generation.whole_set:
-				print this_generation.agent_array[agent_index]
+				#check for death
+				check_for_death(lifetable, females_to_male, 
+					this_agent, new_agent, new_generation,
+					random_module)
+
+				#check for dispersal
+
+			#set the old gen to the new one
+			del(this_generation)
+			this_generation = copy.deepcopy(new_generation)
+
+			if (i == NUMBER_OF_GENERATIONS - 1):
+				#print the new generation
+				for agent_index in new_generation.whole_set:
+					print this_generation.agent_array[agent_index]
 
 def check_for_death(lifetable, females_to_male, this_agent,
 	new_agent, new_generation, random_module):

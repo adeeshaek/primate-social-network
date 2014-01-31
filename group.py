@@ -14,9 +14,7 @@ NOTE: Throughout this method it is assumed that
 
 from agent import AgentClass
 import copy
-
-FEMALE_MINIMUM_AGE = 5
-MALE_MINIMUM_AGE = 7
+import constants
 
 class AgentGroup():
 	agent_array = [] #array of references to group members
@@ -30,6 +28,10 @@ class AgentGroup():
 		self.agent_array = []
 		#ensures the array can be accessed in order
 		self.agent_array.append(None)
+
+		#get the minimum ages from constants.py
+		self.FEMALE_MINIMUM_AGE = constants.ADULTHOOD_AGE['f']
+		self.MALE_MINIMUM_AGE = constants.ADULTHOOD_AGE['m']
 
 	def __deepcopy__(self, memo):
 		new_group = AgentGroup()
@@ -99,6 +101,9 @@ class AgentGroup():
 		"""
 		self.whole_set.remove(agent.index)
 
+		#if agent is a parent and if the child is 
+		#still underage, kill the child as well
+
 	def mark_as_parent(self, agent):
 		"""
 		marks an agent as being a parent 
@@ -130,15 +135,15 @@ class AgentGroup():
 		----------
 		agent: agent to promote
 		"""
-		if agent.age > MALE_MINIMUM_AGE:
+		if agent.age > self.MALE_MINIMUM_AGE:
 			agent.age = agent.age + 1
 
-		elif agent.age == (MALE_MINIMUM_AGE - 1) and agent.sex == "m":
+		elif agent.age == (self.MALE_MINIMUM_AGE - 1) and agent.sex == "m":
 			self.underage_set.remove(agent.index)
 			self.male_set.add(agent.index)
 			agent.age = agent.age + 1
 
-		elif agent.age == (FEMALE_MINIMUM_AGE - 1) and agent.sex == "f":
+		elif agent.age == (self.FEMALE_MINIMUM_AGE - 1) and agent.sex == "f":
 			self.underage_set.remove(agent.index)
 			self.female_set.add(agent.index)
 			agent.age = agent.age + 1
@@ -155,11 +160,11 @@ class AgentGroup():
 		self.agent_array.append(agent)
 		self.whole_set.add(agent.index)
 
-		if (agent.age < FEMALE_MINIMUM_AGE):
+		if (agent.age < self.FEMALE_MINIMUM_AGE):
 			self.underage_set.add(agent.index)
 
 		elif (
-			agent.age < MALE_MINIMUM_AGE and agent.sex == "m"):
+			agent.age < self.MALE_MINIMUM_AGE and agent.sex == "m"):
 			self.underage_set.add(agent.index)
 
 		elif (agent.sex == "m"):
@@ -179,10 +184,10 @@ class AgentGroup():
 		"""
 		self.whole_set.remove(agent.index)
 
-		if (agent.age < FEMALE_MINIMUM_AGE):
+		if (agent.age < self.FEMALE_MINIMUM_AGE):
 			self.underage_set.remove(agent.index)
 
-		elif (agent.age < MALE_MINIMUM_AGE and agent.sex == "m"):
+		elif (agent.age < self.MALE_MINIMUM_AGE and agent.sex == "m"):
 			self.underage_set.remove(agent.index)
 
 		elif (agent.index in self.male_set):
