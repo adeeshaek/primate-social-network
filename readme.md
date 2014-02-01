@@ -7,7 +7,7 @@ The project is conducted by [Marcy S. Weber](http://marcysweber.com), and [Adees
 
 Implementation details
 ----------------------
-1. The main 
+1. The main run loop is in main.py. It conducts a simulation.
 
 2. Unit tests can be run using nosetest
 
