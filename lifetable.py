@@ -35,7 +35,7 @@ class LifeTable:
 		chance_of_death_by_age = 0
 		chance_of_death_by_proportion = 0
 
-		if (sex == "SEX_FEMALE"):
+		if (sex == "f"):
 			chance_of_death_by_age = self.female_life_table[age][0]
 			chance_of_death_by_proportion =\
 			 (120 - (10 * females_to_male))/100.0
