@@ -11,9 +11,11 @@ To do:
 * Convert single group into several groups. [x]
 * Add analytics 
 * When parent dies, kill child of that parent if 
-	below a target age
+	below a target age [x]
 * Group fission and death
 * Consider dispersal
+* Consider adding and removing new friendships
+* Removing friendships?
 """
 
 from agent import AgentClass
@@ -75,6 +77,8 @@ def main():
 					random_module)
 
 				#check for dispersal
+
+				#check for friendships
 
 			#set the old gen to the new one
 			del(this_generation)
