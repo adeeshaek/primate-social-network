@@ -10,6 +10,8 @@ Main run loop
 To do:
 * Convert single group into several groups. [x]
 * Add analytics 
+	- Age: Avg, StdD
+	- Edges per individual: Avg, StdD
 * When parent dies, kill child of that parent if 
 	below a target age [x]
 * Group fission and death
@@ -25,6 +27,7 @@ import seed
 import copy
 import loader
 from random_module import RandomModule
+import math
 
 NUMBER_OF_GENERATIONS = 10
 NUMBER_OF_SEED_GROUPS = 5
@@ -42,21 +45,30 @@ def main():
 	this_generation = None
 	new_generation = None
 
+	#create analytics lists
+	age_record_list = []
+
 	#assign all_groups by creating several copies of the 
 	#seed generation
 	for i in range(0, NUMBER_OF_SEED_GROUPS):
 		all_groups.append(seed_group)
-
 	
-	#run the simulation for each sub_group.
-	for this_generation in all_groups:	
+	for i in range (0, NUMBER_OF_GENERATIONS):
 
-		for i in range (0, NUMBER_OF_GENERATIONS):
+		#analytics
+		this_age_record = []
+		
+		#run the simulation for each sub_group.
+		for i in range(0, len(all_groups)):	
+			this_generation = all_groups[i]
+
 			females_to_male =\
 			 this_generation.get_females_to_male()
 
 			#copy the group 
+			print this_generation
 			new_generation = copy.deepcopy(this_generation)
+
 			for agent_index in this_generation.whole_set:
 				this_agent =\
 				 this_generation.agent_array[agent_index]
@@ -80,14 +92,22 @@ def main():
 
 				#check for friendships
 
-			#set the old gen to the new one
-			del(this_generation)
-			this_generation = copy.deepcopy(new_generation)
+				#analytics
+				this_age_record.append(this_agent.age)
 
+			#set the old gen to the new one
+			"""
+			Assignment not working
+			"""
+			del(this_generation)
+			all_groups[i] = new_generation
 			if (i == NUMBER_OF_GENERATIONS - 1):
 				#print the new generation
 				for agent_index in new_generation.whole_set:
 					print this_generation.agent_array[agent_index]
+
+		age_record_list.append(this_age_record)
+	save_age_stats(age_record_list)
 
 def check_for_death(lifetable, females_to_male, this_agent,
 	new_agent, new_generation, random_module):
@@ -139,6 +159,44 @@ def check_for_birth(
 			new_generation.give_birth_to_agent(
 				new_agent, random_module, new_generation)
 
+def save_age_stats(data_list):
+	"""
+	collates and saves age-related stats.
+
+	parameters
+	----------
+	data_list: list of lists, each containing the 
+		age of each agent in the population for one
+		generation
+	"""
+	output_list = []
+
+	for generation in data_list:
+		average_age = 0
+		standard_deviation_aggregate = 0
+		number_of_agents = len(generation)
+
+		#first calculate the average age
+		for agent_age in generation:
+			average_age += agent_age
+
+		average_age = average_age/number_of_agents
+
+		#now calculate standard dev
+		for agent_age in generation:
+			standard_deviation_increment =\
+			 math.pow((agent_age - average_age), 2)
+			standard_deviation_aggregate +=\
+			 standard_deviation_increment
+
+		standard_deviation = math.sqrt(
+			(standard_deviation_aggregate/number_of_agents)
+			)
+
+		output_list.append((average_age, standard_deviation))
+
+	#save the average age
+	print output_list
 
 if __name__ == '__main__':
 	main()
