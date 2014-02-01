@@ -45,7 +45,7 @@ class LifeTable:
 			chance_of_death_by_proportion =\
 			 (70 + (10 * females_to_male))/100.0
 
-		chance_of_death = chance_of_death_by_age * chance_of_death_by_proportion
+		chance_of_death = chance_of_death_by_age #* chance_of_death_by_proportion
 
 		return chance_of_death
 
@@ -61,7 +61,7 @@ class LifeTable:
 
 		chance_of_birth_by_proportion = 120 - (10 * females_to_male)
 
-		chance_of_birth = chance_of_birth_by_age * chance_of_birth_by_proportion
+		chance_of_birth = chance_of_birth_by_age #* chance_of_birth_by_proportion
 
 		return chance_of_birth
 

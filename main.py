@@ -32,8 +32,8 @@ import data_saver
 from xlwt import Workbook
 import constants
 
-NUMBER_OF_GENERATIONS = 100
-NUMBER_OF_SEED_GROUPS = 5
+NUMBER_OF_GENERATIONS = 150
+NUMBER_OF_SEED_GROUPS = 10
 
 def main():
 	#import Seed and lifetable data
@@ -58,14 +58,14 @@ def main():
 		all_groups.append(seed_group)
 	
 	for i in range (0, NUMBER_OF_GENERATIONS):
-
+		print i
 		#analytics
 		this_age_record = []
 		this_population_record = 0
 
 		#run the simulation for each sub_group.
-		for i in range(0, len(all_groups)):	
-			this_generation = all_groups[i]
+		for j in range(0, len(all_groups)):	
+			this_generation = all_groups[j]
 
 			females_to_male =\
 			 this_generation.get_females_to_male()
@@ -101,15 +101,12 @@ def main():
 				this_population_record += 1
 
 			#set the old gen to the new one
-			"""
-			Assignment not working
-			"""
 			del(this_generation)
-			all_groups[i] = new_generation
-			if (i == NUMBER_OF_GENERATIONS - 1):
-				#print the new generation
-				for agent_index in new_generation.whole_set:
-					print this_generation.agent_array[agent_index]
+			all_groups[j] = new_generation
+		if (i == NUMBER_OF_GENERATIONS - 1):
+			#print the new generation
+			for agent_index in new_generation.whole_set:
+				print this_generation.agent_array[agent_index]
 
 		age_record_list.append(this_age_record)
 		population_record_list.append(this_population_record)
