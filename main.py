@@ -29,6 +29,8 @@ import loader
 from random_module import RandomModule
 import math
 import data_saver
+from xlwt import Workbook
+import constants
 
 NUMBER_OF_GENERATIONS = 100
 NUMBER_OF_SEED_GROUPS = 5
@@ -111,9 +113,14 @@ def main():
 
 		age_record_list.append(this_age_record)
 		population_record_list.append(this_population_record)
-	save_age_stats(age_record_list)
+
+	book = Workbook()
+	save_age_stats(age_record_list, book)
 	data_saver.save_number_of_indivs(population_record_list, 
-		"ouput_data.xls")
+		book)
+	output_directory =\
+	 constants.OUTPUT_FOLDER + "output_data.xls"
+	book.save(output_directory)
 
 def check_for_death(lifetable, females_to_male, this_agent,
 	new_agent, new_generation, random_module):
@@ -165,7 +172,7 @@ def check_for_birth(
 			new_generation.give_birth_to_agent(
 				new_agent, random_module, new_generation)
 
-def save_age_stats(data_list):
+def save_age_stats(data_list, book):
 	"""
 	collates and saves age-related stats.
 
@@ -206,7 +213,7 @@ def save_age_stats(data_list):
 		output_list.append((average_age, standard_deviation))
 
 	#save the average age
-	data_saver.save_age_data(output_list, "output_data.xls")
+	data_saver.save_age_data(output_list, book)
 
 if __name__ == '__main__':
 	main()
