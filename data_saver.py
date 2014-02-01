@@ -13,7 +13,7 @@ import constants
 
 def save_age_data(data_list, book):
 	"""
-	saves data to an excel file in the specified destination
+	saves data to an excel file in the specified workbook
 
 	parameters
 	----------
@@ -36,6 +36,14 @@ def save_age_data(data_list, book):
 		age_sheet.write(i+1,2,current_generation[1])
 
 def save_number_of_indivs(data_list, book):
+	"""
+	saves data to the specified excel workbook
+
+	parameters
+	----------
+	data_list: list of integers. Each int is the pop
+		of its generation.
+	"""
 	pop_sheet = book.add_sheet('Population')
 
 	#init the sheet

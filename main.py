@@ -113,7 +113,22 @@ def main():
 
 		age_record_list.append(this_age_record)
 		population_record_list.append(this_population_record)
+		save_data(population_record_list, age_record_list)
 
+
+def save_data(population_record_list, age_record_list):
+	"""
+	saves output data to a file.
+
+	parameters
+	----------
+	population_record_list: contains data about age
+		in the form of a list of tuples. Each tuple contains
+		(average_age, standard_deviation) for a generation
+	age_record_list: contains data about population. It is
+		a list of integers representing population for a 
+		generation
+	"""
 	book = Workbook()
 	save_age_stats(age_record_list, book)
 	data_saver.save_number_of_indivs(population_record_list, 
