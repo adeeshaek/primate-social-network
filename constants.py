@@ -46,3 +46,6 @@ ADULTHOOD_AGE = {
 	"m" : 7,
 	"f" : 5
 }
+
+#the folder to which output files are saved
+OUTPUT_FOLDER = "output/"
