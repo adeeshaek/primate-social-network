@@ -35,7 +35,8 @@ def save_age_data(data_list, book):
 		age_sheet.write(i+1,1,current_generation[0])
 		age_sheet.write(i+1,2,current_generation[1])
 
-def save_number_of_indivs(data_list, book):
+def save_number_of_indivs(data_list, male_data_list,
+ book):
 	"""
 	saves data to the specified excel workbook
 
@@ -43,14 +44,17 @@ def save_number_of_indivs(data_list, book):
 	----------
 	data_list: list of integers. Each int is the pop
 		of its generation.
+	male_data_list: list of integers. Each int is the 
+		pop of its generation (males only)
 	"""
 	pop_sheet = book.add_sheet('Population')
 
 	#init the sheet
 	pop_sheet.write(0,0,'Generation')
 	pop_sheet.write(0,1,'Population')
+	pop_sheet.write(0,2,'Number of Males')
 
 	for i in range(0, len(data_list)):
 		pop_sheet.write(i+1,0,i+1)
 		pop_sheet.write(i+1,1,data_list[i])
-
+		pop_sheet.write(i+1,2,male_data_list[i])

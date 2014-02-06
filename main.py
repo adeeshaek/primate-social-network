@@ -33,7 +33,7 @@ from xlwt import Workbook
 import constants
 from counter import Counter
 
-NUMBER_OF_GENERATIONS = 100
+NUMBER_OF_GENERATIONS = 1000
 NUMBER_OF_SEED_GROUPS = 10
 
 def main():
@@ -52,9 +52,12 @@ def main():
 	#create analytics lists
 	age_record_list = []
 	population_record_list = []
+	male_population_record_list = []
 
 	death_counter = Counter() #used to make sure the correct number
 	#of deaths occur
+	birth_counter = Counter() #used to make sure the correct number 
+	#of births take place
 
 	#assign all_groups by creating several copies of the 
 	#seed generation
@@ -66,6 +69,7 @@ def main():
 		#analytics
 		this_age_record = []
 		this_population_record = 0
+		this_male_population_record = 0
 
 		#run the simulation for each sub_group.
 		for j in range(0, len(all_groups)):	
@@ -89,7 +93,8 @@ def main():
 				#check for birth
 				check_for_birth(this_generation, new_generation,
 					this_agent, new_agent, females_to_male,
-					agent_index, lifetable, random_module)
+					agent_index, lifetable, random_module,
+					birth_counter, male_population_record_list)
 
 				#check for death
 				check_for_death(lifetable, females_to_male, 
@@ -103,18 +108,24 @@ def main():
 				#analytics
 				this_age_record.append(this_agent.age)
 				this_population_record += 1
+				if (this_agent.sex == 'm'):
+					this_male_population_record += 1
 
 			#set the old gen to the new one
 			del(this_generation)
 			all_groups[j] = new_generation
 
 		age_record_list.append(this_age_record)
+		male_population_record_list.append(this_male_population_record)
 		population_record_list.append(this_population_record)
-	save_data(population_record_list, age_record_list)
+	save_data(population_record_list, male_population_record_list,
+	 age_record_list)
 
+	print birth_counter.getCount()
 	print death_counter.getCount()
 
-def save_data(population_record_list, age_record_list):
+def save_data(population_record_list, male_population_record_list,
+ age_record_list):
 	"""
 	saves output data to a file.
 
@@ -130,7 +141,7 @@ def save_data(population_record_list, age_record_list):
 	book = Workbook()
 	save_age_stats(age_record_list, book)
 	data_saver.save_number_of_indivs(population_record_list, 
-		book)
+		male_population_record_list, book)
 	output_directory =\
 	 constants.OUTPUT_FOLDER + "output_data.xls"
 	book.save(output_directory)
@@ -157,7 +168,8 @@ def check_for_death(lifetable, females_to_male, this_agent,
 
 def check_for_birth(
 	this_generation, new_generation, this_agent, new_agent,
-	females_to_male, agent_index, lifetable, random_module):
+	females_to_male, agent_index, lifetable, random_module, 
+	counter, male_population_record_list):
 	"""
 	checks if an agent is about to give birth, by getting the
 	probability of giving birth from the lifetable. If so, performs
@@ -190,6 +202,7 @@ def check_for_birth(
 		if (random_module.roll(chance_of_giving_birth)):
 			new_generation.give_birth_to_agent(
 				new_agent, random_module, new_generation)
+			counter.increment()
 
 def save_age_stats(data_list, book):
 	"""
