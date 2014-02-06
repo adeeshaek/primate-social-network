@@ -110,7 +110,7 @@ def main():
 
 		age_record_list.append(this_age_record)
 		population_record_list.append(this_population_record)
-		save_data(population_record_list, age_record_list)
+	save_data(population_record_list, age_record_list)
 
 	print death_counter.getCount()
 
