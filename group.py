@@ -104,8 +104,10 @@ class AgentGroup():
 		#several times for a given agent in a single
 		#run. Hence, don't panic if the agent is already
 		#dead when the method is called
+		marked = False
 		try:
 			self.whole_set.remove(agent.index)
+			marked = True
 		except KeyError:
 			pass
 
@@ -115,6 +117,8 @@ class AgentGroup():
 			if (child in self.underage_set):
 				self.mark_agent_as_dead(
 					self.agent_array[child])
+
+		return marked
 
 	def mark_as_parent(self, agent, child_or_children):
 		"""

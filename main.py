@@ -31,8 +31,9 @@ import math
 import data_saver
 from xlwt import Workbook
 import constants
+from counter import Counter
 
-NUMBER_OF_GENERATIONS = 150
+NUMBER_OF_GENERATIONS = 100
 NUMBER_OF_SEED_GROUPS = 10
 
 def main():
@@ -51,6 +52,9 @@ def main():
 	#create analytics lists
 	age_record_list = []
 	population_record_list = []
+
+	death_counter = Counter() #used to make sure the correct number
+	#of deaths occur
 
 	#assign all_groups by creating several copies of the 
 	#seed generation
@@ -90,7 +94,7 @@ def main():
 				#check for death
 				check_for_death(lifetable, females_to_male, 
 					this_agent, new_agent, new_generation,
-					random_module)
+					random_module, death_counter)
 
 				#check for dispersal
 
@@ -103,15 +107,12 @@ def main():
 			#set the old gen to the new one
 			del(this_generation)
 			all_groups[j] = new_generation
-		if (i == NUMBER_OF_GENERATIONS - 1):
-			#print the new generation
-			for agent_index in new_generation.whole_set:
-				print this_generation.agent_array[agent_index]
 
 		age_record_list.append(this_age_record)
 		population_record_list.append(this_population_record)
 		save_data(population_record_list, age_record_list)
 
+	print death_counter.getCount()
 
 def save_data(population_record_list, age_record_list):
 	"""
@@ -135,7 +136,7 @@ def save_data(population_record_list, age_record_list):
 	book.save(output_directory)
 
 def check_for_death(lifetable, females_to_male, this_agent,
-	new_agent, new_generation, random_module):
+	new_agent, new_generation, random_module, counter):
 	"""
 	checks if an agent should die by getting the probability
 	from the lifetable, then performing a dieroll for that
@@ -144,9 +145,11 @@ def check_for_death(lifetable, females_to_male, this_agent,
 	"""
 	chance_of_death = lifetable.chance_of_death(
 		females_to_male, this_agent.age, this_agent.sex)
-
 	if (random_module.roll(chance_of_death)):
+		if(
 		new_generation.mark_agent_as_dead(new_agent)
+		):
+			counter.increment()
 
 def check_for_birth(
 	this_generation, new_generation, this_agent, new_agent,
