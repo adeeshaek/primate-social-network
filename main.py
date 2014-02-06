@@ -142,6 +142,10 @@ def check_for_death(lifetable, females_to_male, this_agent,
 	from the lifetable, then performing a dieroll for that
 	probability. If true is returned, the agent in the 
 	new_generation is marked as being dead
+
+	parameters
+	----------
+	
 	"""
 	chance_of_death = lifetable.chance_of_death(
 		females_to_male, this_agent.age, this_agent.sex)

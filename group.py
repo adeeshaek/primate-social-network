@@ -113,11 +113,12 @@ class AgentGroup():
 
 		#if agent is a parent and if the child is 
 		#still underage, kill the child as well
+		"""
 		for child in agent.children:
 			if (child in self.underage_set):
 				self.mark_agent_as_dead(
 					self.agent_array[child])
-
+		"""
 		return marked
 
 	def mark_as_parent(self, agent, child_or_children):
