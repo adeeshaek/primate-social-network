@@ -36,7 +36,8 @@ def save_age_data(data_list, book):
 		age_sheet.write(i+1,2,current_generation[1])
 
 def save_number_of_indivs(data_list, male_data_list,
- female_data_list, book):
+ female_data_list, birth_rate_list, death_rate_list,
+ real_birth_rate_list, real_death_rate_list, book):
 	"""
 	saves data to the specified excel workbook
 
@@ -54,9 +55,17 @@ def save_number_of_indivs(data_list, male_data_list,
 	pop_sheet.write(0,1,'Population')
 	pop_sheet.write(0,2,'Number of Males')
 	pop_sheet.write(0,3,'Number of Females')
+	pop_sheet.write(0,4,'Chance of birth')
+	pop_sheet.write(0,5,'Chance of death')
+	pop_sheet.write(0,6,'birth rate')
+	pop_sheet.write(0,7,'death rate')
 
 	for i in range(0, len(data_list)):
 		pop_sheet.write(i+1,0,i+1)
 		pop_sheet.write(i+1,1,data_list[i])
 		pop_sheet.write(i+1,2,male_data_list[i])
 		pop_sheet.write(i+1,3,female_data_list[i])
+		pop_sheet.write(i+1,4,birth_rate_list[i])
+		pop_sheet.write(i+1,5,death_rate_list[i])
+		pop_sheet.write(i+1,6,real_birth_rate_list[i])
+		pop_sheet.write(i+1,7,real_death_rate_list[i])
