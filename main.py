@@ -34,7 +34,7 @@ import constants
 from counter import Counter
 
 NUMBER_OF_GENERATIONS = 50
-NUMBER_OF_SEED_GROUPS = 10
+NUMBER_OF_SEED_GROUPS = 500
 
 def main():
 	#import Seed and lifetable data
