@@ -33,7 +33,7 @@ from xlwt import Workbook
 import constants
 from counter import Counter
 
-NUMBER_OF_GENERATIONS = 100
+NUMBER_OF_GENERATIONS = 50
 NUMBER_OF_SEED_GROUPS = 10
 
 def main():
@@ -60,6 +60,8 @@ def main():
 	real_birth_rate_list = []
 	real_death_rate_list = []
 
+	edges_per_agent_list = []
+
 	death_counter = Counter() #used to make sure the correct number
 	#of deaths occur
 	birth_counter = Counter() #used to make sure the correct number 
@@ -77,6 +79,7 @@ def main():
 		this_population_record = 0
 		this_male_population_record = 0
 		this_female_population_record = 0
+		this_edges_per_agent = 0
 		this_birth_rate_record = []
 		this_death_rate_record = []
 
@@ -133,6 +136,8 @@ def main():
 				#check for friendships
 
 				#analytics
+				this_edges_per_agent += this_agent.edges()
+
 				this_age_record.append(this_agent.age)
 				this_population_record += 1
 
@@ -144,6 +149,10 @@ def main():
 			#set the old gen to the new one
 			del(this_generation)
 			all_groups[j] = new_generation
+
+		average_edges_per_agent =\
+		 float(this_edges_per_agent)/this_population_record
+		edges_per_agent_list.append(average_edges_per_agent)
 
 		real_death_rate_list.append(
 			float(death_counter.getCount())/this_population_record)
@@ -158,27 +167,30 @@ def main():
 		average_birth_rate = 0
 		for i in range(0, len(this_birth_rate_record)):
 			average_birth_rate += this_birth_rate_record[i]
-		average_birth_rate = average_birth_rate / len(this_birth_rate_record)
+		average_birth_rate =\
+		 average_birth_rate / len(this_birth_rate_record)
 
 		average_death_rate = 0
 		for i in range(0, len(this_death_rate_record)):
 			average_death_rate += this_death_rate_record[i]
-		average_death_rate = average_death_rate / len(this_death_rate_record)
+		average_death_rate =\
+		 average_death_rate / len(this_death_rate_record)
 		death_rate_record_list.append(average_death_rate)
 		birth_rate_record_list.append(average_birth_rate)
 
 	save_data(population_record_list, male_population_record_list,
 	 female_population_record_list, age_record_list, 
 	 birth_rate_record_list, death_rate_record_list,
-	 real_birth_rate_list, real_death_rate_list)
-
+	 real_birth_rate_list, real_death_rate_list,
+	 edges_per_agent_list)
 
 	print (birth_counter.getCount())
 	print (death_counter.getCount())
 
 def save_data(population_record_list, male_population_record_list,
  female_population_record_list, age_record_list, average_birth_rate,
- average_death_rate, real_birth_rate_list, real_death_rate_list):
+ average_death_rate, real_birth_rate_list, real_death_rate_list,
+ average_edges_per_agent):
 	"""
 	saves output data to a file.
 
@@ -196,7 +208,8 @@ def save_data(population_record_list, male_population_record_list,
 	data_saver.save_number_of_indivs(population_record_list, 
 		male_population_record_list, female_population_record_list,
 		average_birth_rate, average_death_rate, 
-		real_birth_rate_list, real_death_rate_list, book)
+		real_birth_rate_list, real_death_rate_list,
+		average_edges_per_agent, book)
 	output_directory =\
 	 constants.OUTPUT_FOLDER + "output_data.xls"
 	book.save(output_directory)

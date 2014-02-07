@@ -96,8 +96,16 @@ class AgentClass:
 			self.index, new_children)
 		return new_agent
 
+	def edges(self):
+		"""
+		returns the number of relationships this agent has.
+		counts the number of sisters, friends, aggressives,
+		children.
+		"""
+		number_of_edges = len(self.sisters) + len(self.friends) +\
+		 len(self.aggressive) + len(self.children)
 
-
+		return number_of_edges
 	
 
 
