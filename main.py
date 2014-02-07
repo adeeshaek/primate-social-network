@@ -132,6 +132,9 @@ def main():
 					random_module, death_counter)
 
 				#check for dispersal
+				check_for_dispersal(dispersal_table, females_to_male,
+					this_agent, this_generation, all_groups, 
+					random_module)
 
 				#check for friendships
 
@@ -271,6 +274,49 @@ def check_for_birth(
 			new_generation.give_birth_to_agent(
 				new_agent, random_module, new_generation)
 			counter.increment()
+
+def check_for_dispersal(dispersal_table, females_to_male,
+	this_agent, new_agent, this_generation, all_groups, 
+	random_module):
+	"""
+	checks if this agent is due to be ejected from his group
+	and established in a new one by determining the probability
+	of dispersal using the dispersal table, then tossing a coin
+	with that chance. If the 'coin-toss' comes up heads, the 
+	simulation ejects the male from this group. 
+
+	Next, the simulation randomly shuffles all the other groups 
+	and checks if the male is accepted into a group. This is done 
+	by checking each group in turn. For each group, the 
+	probability of acceptance is first calculated using the 
+	dispersal_table. Then, a coin toss of that probability is 
+	made. If the toss results in a 'heads', the male is added
+	to the new group. 
+
+	If the male is not added to this group, the next group in the
+	shuffled set is selected and this process is repeated. If
+	the male is rejected from all groups, it is marked as dead.
+
+	returns 
+	-------
+	true if the agent is being ejected from this group
+	"""
+	#check if mature male
+	if (this_agent in this_generation.male_set):
+		
+		#find the probability of emigration
+		probability_of_emigration =\
+		 dispersal_table.chance_of_emigration(
+		 	females_to_male, this_agent.age)
+		#toss a coin with that probability
+		toss =\
+		 random_module.roll(probability_of_emigration)
+
+		#if toss comes up heads, male is emigrating
+		if (toss):
+			this_generation.mark_agent_as_dead(new_agent)
+
+
 
 def save_age_stats(data_list, book):
 	"""
