@@ -33,8 +33,8 @@ from xlwt import Workbook
 import constants
 from counter import Counter
 
-NUMBER_OF_GENERATIONS = 1000
-NUMBER_OF_SEED_GROUPS = 10
+NUMBER_OF_GENERATIONS = 100
+NUMBER_OF_SEED_GROUPS = 200
 
 def main():
 	#import Seed and lifetable data
@@ -53,6 +53,7 @@ def main():
 	age_record_list = []
 	population_record_list = []
 	male_population_record_list = []
+	female_population_record_list = []
 
 	death_counter = Counter() #used to make sure the correct number
 	#of deaths occur
@@ -70,6 +71,7 @@ def main():
 		this_age_record = []
 		this_population_record = 0
 		this_male_population_record = 0
+		this_female_population_record = 0
 
 		#run the simulation for each sub_group.
 		for j in range(0, len(all_groups)):	
@@ -108,8 +110,11 @@ def main():
 				#analytics
 				this_age_record.append(this_agent.age)
 				this_population_record += 1
-				if (this_agent.sex == 'm'):
+
+				if (this_agent.index in this_generation.male_set):
 					this_male_population_record += 1
+				elif (this_agent.index in this_generation.female_set):
+					this_female_population_record += 1
 
 			#set the old gen to the new one
 			del(this_generation)
@@ -117,15 +122,17 @@ def main():
 
 		age_record_list.append(this_age_record)
 		male_population_record_list.append(this_male_population_record)
+		female_population_record_list.append(
+			this_female_population_record)
 		population_record_list.append(this_population_record)
 	save_data(population_record_list, male_population_record_list,
-	 age_record_list)
+	 female_population_record_list, age_record_list)
 
 	print birth_counter.getCount()
 	print death_counter.getCount()
 
 def save_data(population_record_list, male_population_record_list,
- age_record_list):
+ female_population_record_list, age_record_list):
 	"""
 	saves output data to a file.
 
@@ -141,7 +148,8 @@ def save_data(population_record_list, male_population_record_list,
 	book = Workbook()
 	save_age_stats(age_record_list, book)
 	data_saver.save_number_of_indivs(population_record_list, 
-		male_population_record_list, book)
+		male_population_record_list, female_population_record_list,
+		book)
 	output_directory =\
 	 constants.OUTPUT_FOLDER + "output_data.xls"
 	book.save(output_directory)
