@@ -88,6 +88,15 @@ class AgentGroup():
 
 		#add the new infant to the group
 		group.add_agent(child_agent)
+		group.mark_as_parent(parent_agent, child_agent)
+
+		#if child is female, mark sisters
+		if (child_sex == "f"):
+			sisters_list = parent_agent.children
+			for sister_index in sisters_list:
+				sister = group.agent_array[sister_index]
+				group.mark_agents_as_sisters(child_agent,
+					sister)
 
 	def mark_agent_as_dead(self, agent):
 		"""
