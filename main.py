@@ -46,6 +46,7 @@ def main():
 	random_module = RandomModule()
 
 	all_groups = []
+	all_groups_next_generation = []
 	this_generation = None
 	new_generation = None
 
@@ -71,6 +72,7 @@ def main():
 	#seed generation
 	for i in range(0, NUMBER_OF_SEED_GROUPS):
 		all_groups.append(seed_group)
+		all_groups_next_generation.append([])
 	
 	for i in range (0, NUMBER_OF_GENERATIONS):
 		print (str(i))
@@ -87,16 +89,19 @@ def main():
 		death_counter.reset()
 		birth_counter.reset()
 
+		#make a copy of all_groups, which is the next gen
+		for j in range(0, len(all_groups)):
+			all_groups_next_generation[j] =\
+			 copy.deepcopy(all_groups[j])
+
 		#run the simulation for each sub_group.
 		for j in range(0, len(all_groups)):	
 
 			this_generation = all_groups[j]
+			new_generation = all_groups_next_generation[j]
 
 			females_to_male =\
 			 this_generation.get_females_to_male()
-
-			#copy the group 
-			new_generation = copy.deepcopy(this_generation)
 
 			for agent_index in this_generation.whole_set:
 				this_agent =\
@@ -132,9 +137,11 @@ def main():
 					random_module, death_counter)
 
 				#check for dispersal
+				"""
 				check_for_dispersal(dispersal_table, females_to_male,
 					this_agent, this_generation, all_groups, 
 					random_module)
+				"""
 
 				#check for friendships
 
@@ -149,9 +156,10 @@ def main():
 				elif (this_agent.index in this_generation.female_set):
 					this_female_population_record += 1
 
-			#set the old gen to the new one
-			del(this_generation)
-			all_groups[j] = new_generation
+		#set the old gen to the new one
+		for j in range(0, len(all_groups)):
+			all_groups[j] =\
+			 all_groups_next_generation[j]
 
 		average_edges_per_agent =\
 		 float(this_edges_per_agent)/this_population_record
