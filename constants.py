@@ -49,3 +49,6 @@ ADULTHOOD_AGE = {
 
 #the folder to which output files are saved
 OUTPUT_FOLDER = "output/"
+
+#the file to which seed 
+LOADED_PICKLE_FILE_NAME = "loaded_data.pickle"

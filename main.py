@@ -71,7 +71,7 @@ def main():
 		all_groups.append(seed_group)
 	
 	for i in range (0, NUMBER_OF_GENERATIONS):
-		print i
+		print (str(i))
 		#analytics
 		this_age_record = []
 		this_population_record = 0
@@ -173,8 +173,8 @@ def main():
 	 real_birth_rate_list, real_death_rate_list)
 
 
-	print birth_counter.getCount()
-	print death_counter.getCount()
+	print (birth_counter.getCount())
+	print (death_counter.getCount())
 
 def save_data(population_record_list, male_population_record_list,
  female_population_record_list, age_record_list, average_birth_rate,

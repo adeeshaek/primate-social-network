@@ -32,6 +32,7 @@ class LifeTable:
 		age: age in years as integer
 		sex: SEX_FEMALE or SEX_MALE
 		"""
+		age = float(age)
 		chance_of_death_by_age = 0
 		chance_of_death_by_proportion = 0
 
@@ -39,7 +40,7 @@ class LifeTable:
 			return 1 #always kill 'em if over 30 (Logans run)
 
 		if (sex == "f"):
-			chance_of_death_by_age = self.female_life_table[age][0]
+			chance_of_death_by_age = self.female_life_table[str(age)][0]
 
 			if (age < constants.ADULTHOOD_AGE['f']):
 				chance_of_death_by_proportion =\
@@ -48,7 +49,7 @@ class LifeTable:
 				chance_of_death_by_proportion = 1
 
 		else:
-			chance_of_death_by_age = self.male_life_table[age][0]
+			chance_of_death_by_age = self.male_life_table[str(age)][0]
 
 			if (age < constants.ADULTHOOD_AGE['m']):
 				chance_of_death_by_proportion =\
@@ -67,8 +68,9 @@ class LifeTable:
 
 		chance_of_birth_by_proportion = 120 - (10 * females_to_male)
 		"""
+		age = float(age)
 
-		chance_of_birth_by_age = self.female_life_table[age][1]
+		chance_of_birth_by_age = self.female_life_table[str(age)][1]
 
 		chance_of_birth_by_proportion = 120 - (10 * females_to_male)
 

@@ -125,14 +125,14 @@ class Loader:
 				qx = life_table_sheet.cell_value(row_index,3)
 				bx = life_table_sheet.cell_value(row_index,4)
 
-				life_table.female_life_table[age] = (qx, bx)
+				life_table.female_life_table[str(age)] = (qx, bx)
 
 				#parameters for male
 				age = life_table_sheet.cell_value(row_index,9)
 				qx = life_table_sheet.cell_value(row_index,11)
 				bx = life_table_sheet.cell_value(row_index,12)
 
-				life_table.male_life_table[age] = (qx, bx)			
+				life_table.male_life_table[str(age)] = (qx, bx)			
 
 		return life_table
 
@@ -175,7 +175,7 @@ class Loader:
 				chance_of_death_second_rejection =\
 					dispersal_table_sheet.cell_value(row_index,6)	
 
-				dispersal_table.immigration[age] = (chance_of_acceptance,
+				dispersal_table.immigration[str(age)] = (chance_of_acceptance,
 					chance_of_death_first_rejection, 
 					chance_of_acceptance_first_rejection,
 					chance_of_death_second_rejection)			
