@@ -85,13 +85,18 @@ class AgentClass:
 		new_agent = AgentClass(self.age, self.sex, self.is_alpha, self.parent,
 			self.sisters, self.aggressive, self.friends)
 		return new_agent
-
+	"""
 	def __deepcopy__(self, memo):
-		new_agent = AgentClass(self.age, self.sex, self.is_alpha, self.parent,
-			self.sisters, self.aggressive, self.friends)
+		new_sisters = copy.deepcopy(self.sisters)
+		new_friends = copy.deepcopy(self.friends)
+		new_aggressive = copy.deepcopy(self.aggressive)
+		new_children = copy.deepcopy(self.children)
+		new_agent = AgentClass(self.age, self.sex, self.is_alpha, 
+			self.parent, new_sisters, new_aggressive, new_friends,
+			self.index, new_children)
 		return new_agent
 
-	"""
+
 
 	
 
