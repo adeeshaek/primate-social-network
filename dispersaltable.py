@@ -35,6 +35,9 @@ class DispersalTable:
 		-------
 		chance of emigration
 		"""
+		if age > constants.MAX_AGE:
+			return 0
+
 		likelihood_by_age = self.emigration[age]
 
 		likelihood_by_number_of_females = -0.7 * females_to_male + 2.2

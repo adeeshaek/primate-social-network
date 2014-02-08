@@ -47,6 +47,9 @@ ADULTHOOD_AGE = {
 	"f" : 5
 }
 
+#any adults over this age are killed
+MAX_AGE = 30
+
 #the folder to which output files are saved
 OUTPUT_FOLDER = "output/"
 

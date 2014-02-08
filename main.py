@@ -138,12 +138,11 @@ def main():
 					random_module, death_counter)
 
 				#check for dispersal
-				"""
 				check_for_dispersal(dispersal_table, females_to_male,
 					this_agent, new_agent, this_generation,
 					new_generation, all_groups,
 					all_groups_next_generation, random_module)
-				"""
+
 				#check for friendships
 
 				#analytics
@@ -338,7 +337,7 @@ def check_for_dispersal(dispersal_table, females_to_male,
 
 			for target_group in groups_set:
 				if (random_module.roll(chance_of_acceptance)):
-					target_group.add_agent(this_agent)
+					target_group.add_new_agent(this_agent)
 					print "dispersed"
 					break #agent is now added to new gp
 			else:

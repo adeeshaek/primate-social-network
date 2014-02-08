@@ -192,7 +192,17 @@ class AgentGroup():
 			agent.age = agent.age + 1
 
 		elif agent.age == (self.MALE_MINIMUM_AGE - 1) and agent.sex == "m":
-			self.underage_set.remove(agent.index)
+			"""
+			because males are dispersed from group to group,
+			it is possible for a male on the cusp of 
+			adulthood to be moved from 1 group to another.
+			Therefore, don't panic if key not found
+			"""
+			try:
+				self.underage_set.remove(agent.index)
+			except KeyError:
+				pass
+
 			self.male_set.add(agent.index)
 			agent.age = agent.age + 1
 

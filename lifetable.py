@@ -36,7 +36,7 @@ class LifeTable:
 		chance_of_death_by_age = 0
 		chance_of_death_by_proportion = 0
 
-		if (age == 30):
+		if (age >= constants.MAX_AGE):
 			return 1 #always kill 'em if over 30 (Logans run)
 
 		if (sex == "f"):
