@@ -40,7 +40,7 @@ class DispersalTable:
 		likelihood_by_number_of_females = -0.7 * females_to_male + 2.2
 
 		likelihood_of_emigration =\
-			likelihood_by_age * likelihood_by_number_of_females
+			likelihood_by_age #* likelihood_by_number_of_females
 
 		if likelihood_of_emigration < 0:
 			likelihood_of_emigration = 0 #any number < 0 is not a valid likelihood
@@ -66,13 +66,15 @@ class DispersalTable:
 		-------
 		chance of acceptance
 		"""
-		likelihood_by_age = self.immigration[age]
+		age = float(age)
+		likelihood_by_age = self.immigration[age][0]
 
 		likelihood_by_number_of_females = females_to_male * 50
 
 		likelihood_of_immigration =\
-			likelihood_by_age * likelihood_by_number_of_females
+			likelihood_by_age #* likelihood_by_number_of_females
 
 		return likelihood_of_immigration
 
 
+	

@@ -96,7 +96,6 @@ def main():
 
 		#run the simulation for each sub_group.
 		for j in range(0, len(all_groups)):	
-
 			this_generation = all_groups[j]
 			new_generation = all_groups_next_generation[j]
 
@@ -104,6 +103,8 @@ def main():
 			 this_generation.get_females_to_male()
 
 			for agent_index in this_generation.whole_set:
+				#print str(agent_index) + ", " + str(len(this_generation.agent_array))
+
 				this_agent =\
 				 this_generation.agent_array[agent_index]
 				new_agent =\
@@ -139,10 +140,10 @@ def main():
 				#check for dispersal
 				"""
 				check_for_dispersal(dispersal_table, females_to_male,
-					this_agent, this_generation, all_groups, 
-					random_module)
+					this_agent, new_agent, this_generation,
+					new_generation, all_groups,
+					all_groups_next_generation, random_module)
 				"""
-
 				#check for friendships
 
 				#analytics
@@ -284,8 +285,8 @@ def check_for_birth(
 			counter.increment()
 
 def check_for_dispersal(dispersal_table, females_to_male,
-	this_agent, new_agent, this_generation, all_groups, 
-	random_module):
+	this_agent, new_agent, this_generation, new_generation,
+	all_groups, all_groups_next_generation, random_module):
 	"""
 	checks if this agent is due to be ejected from his group
 	and established in a new one by determining the probability
@@ -301,17 +302,20 @@ def check_for_dispersal(dispersal_table, females_to_male,
 	made. If the toss results in a 'heads', the male is added
 	to the new group. 
 
-	If the male is not added to this group, the next group in the
-	shuffled set is selected and this process is repeated. If
-	the male is rejected from all groups, it is marked as dead.
+	If the male is not added to this group, a coin toss is done to 
+	check if he should die, using the probability in the dispersal
+	table. If the toss comes up heads, the agent is left dead. If it
+	does not come up heads, the next group in the shuffled set is 
+	selected and this process is repeated. If the male is rejected 
+	from two groups, it is left marked as dead.
 
 	returns 
 	-------
 	true if the agent is being ejected from this group
 	"""
-	#check if mature male
-	if (this_agent in this_generation.male_set):
-		
+	#check if live mature male
+	if (this_agent.sex == "m"):
+
 		#find the probability of emigration
 		probability_of_emigration =\
 		 dispersal_table.chance_of_emigration(
@@ -319,12 +323,26 @@ def check_for_dispersal(dispersal_table, females_to_male,
 		#toss a coin with that probability
 		toss =\
 		 random_module.roll(probability_of_emigration)
-
 		#if toss comes up heads, male is emigrating
 		if (toss):
-			this_generation.mark_agent_as_dead(new_agent)
+			#start by marking this agent as being dead
+			new_generation.mark_agent_as_dead(new_agent)
+			#now shuffle all groups (while removing this)
+			#one. My approach is to use a set to do this
+			groups_set = set(all_groups_next_generation)
+			groups_set.remove(new_generation)
+			#now iterate through the set
+			chance_of_acceptance =\
+			 dispersal_table.chance_of_acceptance(
+			 	females_to_male, this_agent.age)
 
-
+			for target_group in groups_set:
+				if (random_module.roll(chance_of_acceptance)):
+					target_group.add_agent(this_agent)
+					print "dispersed"
+					break #agent is now added to new gp
+			else:
+				print "dead male"
 
 def save_age_stats(data_list, book):
 	"""

@@ -56,6 +56,10 @@ class AgentGroup():
 		"""
 		females = len(self.female_set)
 		males = len(self.male_set)
+
+		if (males == 0):
+			males = 0.00001 #avoid division by 0
+
 		females_to_male = int(females/males)
 
 		return females_to_male
@@ -120,12 +124,23 @@ class AgentGroup():
 		except KeyError:
 			pass
 
+		#remove agent from sexed sets, and don't panic
+		#for the same reason as above
+		try:
+			if (agent.sex == 'm'):
+				self.male_set.remove(agent.index)
+			else:
+				self.female_set.remove(agent.index)
+		except KeyError:
+			pass
+		"""
 		#if agent is a parent and if the child is 
 		#still underage, kill the child as well
 		for child in agent.children:
 			if (child in self.underage_set):
 				self.mark_agent_as_dead(
 					self.agent_array[child])
+		"""
 		return marked
 
 	def mark_as_parent(self, agent, child_or_children):
@@ -189,9 +204,25 @@ class AgentGroup():
 		else:
 			agent.age = agent.age + 1
 
+
+	def add_new_agent(self, agent):
+		"""
+		adds a new agent into a group. Called when males 
+		migrate from 1 group to another.
+		different from add_agent, in that the new agent
+		has a new index
+
+		parameters
+		----------
+		agent: agent to add
+		"""
+		index_number = len(self.agent_array)
+		agent.index = index_number
+		self.add_agent(agent)
+
 	def add_agent(self, agent):
 		"""
-		adds a new agent into the group. This method consolidates
+		adds existing agent into the group. This method consolidates
 		the adding to agent_array and sexed_set
 		
 		parameters

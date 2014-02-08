@@ -85,7 +85,7 @@ class AgentClass:
 		new_agent = AgentClass(self.age, self.sex, self.is_alpha, self.parent,
 			self.sisters, self.aggressive, self.friends)
 		return new_agent
-	"""
+
 	def __deepcopy__(self, memo):
 		new_sisters = copy.deepcopy(self.sisters)
 		new_friends = copy.deepcopy(self.friends)
@@ -95,6 +95,7 @@ class AgentClass:
 			self.parent, new_sisters, new_aggressive, new_friends,
 			self.index, new_children)
 		return new_agent
+	"""
 
 	def edges(self):
 		"""
