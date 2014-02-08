@@ -313,7 +313,8 @@ def check_for_dispersal(dispersal_table, females_to_male,
 	true if the agent is being ejected from this group
 	"""
 	#check if live mature male
-	if (this_agent.sex == "m"):
+	#make sure the new_agent isn't dead
+	if (this_agent.sex == "m") and new_agent.index in new_generation.whole_set:
 
 		#find the probability of emigration
 		probability_of_emigration =\

@@ -69,7 +69,6 @@ class DispersalTable:
 		-------
 		chance of acceptance
 		"""
-		age = float(age)
 		likelihood_by_age = self.immigration[age][0]
 
 		likelihood_by_number_of_females = females_to_male * 50
