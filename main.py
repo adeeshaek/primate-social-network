@@ -314,7 +314,7 @@ def check_for_dispersal(dispersal_table, females_to_male,
 	"""
 	#check if live mature male
 	#make sure the new_agent isn't dead
-	if (this_agent.sex == "m") and new_agent.index in new_generation.whole_set:
+	if (this_agent.sex == "m") and new_agent.index in this_generation.whole_set:
 
 		#find the probability of emigration
 		probability_of_emigration =\
@@ -323,6 +323,7 @@ def check_for_dispersal(dispersal_table, females_to_male,
 		#toss a coin with that probability
 		toss =\
 		 random_module.roll(probability_of_emigration)
+		 
 		#if toss comes up heads, male is emigrating
 		if (toss):
 			#start by marking this agent as being dead

@@ -10,3 +10,4 @@ class TestDispersalTable(unittest.TestCase):
 		#there are no negative likelihoods
 		chance = self.data.dispersal_table.chance_of_emigration(10000, 3)
 		self.assertFalse(chance < 0)
+
