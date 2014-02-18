@@ -17,26 +17,25 @@ import copy
 import constants
 
 class AgentGroup():
-	agent_array = [] #array of references to group members
+	agent_dict = {} #dictionary of references to group members
 	female_set = set()
 	male_set = set()
 	underage_set = set()
 	in_relationships_set = set()
 	whole_set = set()
+	parent_population = None
 
-	def __init__(self):
-		self.agent_array = []
-		#ensures the array can be accessed in order
-		self.agent_array.append(None)
-
+	def __init__(self, parent_population):
+		self.agent_dict = {}
+		self.parent_population = parent_population
 		#get the minimum ages from constants.py
 		self.FEMALE_MINIMUM_AGE = constants.ADULTHOOD_AGE['f']
 		self.MALE_MINIMUM_AGE = constants.ADULTHOOD_AGE['m']
 
 	def __deepcopy__(self, memo):
 		new_group = AgentGroup()
-		new_group.agent_array =\
-		 copy.deepcopy(self.agent_array)
+		new_group.agent_dict =\
+		 copy.deepcopy(self.agent_dict)
 		new_group.female_set =\
 		 copy.deepcopy(self.female_set)
 		new_group.male_set =\
@@ -85,7 +84,8 @@ class AgentGroup():
 		child_sex = "f"
 		if (random_module.roll(PROBABILITY_OF_MALE)):
 			child_sex = "m"
-		agent_index = len(group.agent_array)
+		agent_index =\
+		 self.parent_population.get_new_agent_index()
 		child_agent = AgentClass(
 			1, child_sex, None, parent_agent.index, None,
 			None, None, agent_index)
@@ -98,7 +98,7 @@ class AgentGroup():
 		if (child_sex == "f"):
 			sisters_list = parent_agent.children
 			for sister_index in sisters_list:
-				sister = group.agent_array[sister_index]
+				sister = group.agent_dict[sister_index]
 				group.mark_agents_as_sisters(child_agent,
 					sister)
 
@@ -139,7 +139,7 @@ class AgentGroup():
 		for child in agent.children:
 			if (child in self.underage_set):
 				self.mark_agent_as_dead(
-					self.agent_array[child])
+					self.agent_dict[child])
 		"""
 		return marked
 
@@ -214,32 +214,16 @@ class AgentGroup():
 		else:
 			agent.age = agent.age + 1
 
-
-	def add_new_agent(self, agent):
-		"""
-		adds a new agent into a group. Called when males 
-		migrate from 1 group to another.
-		different from add_agent, in that the new agent
-		has a new index
-
-		parameters
-		----------
-		agent: agent to add
-		"""
-		index_number = len(self.agent_array)
-		agent.index = index_number
-		self.add_agent(agent)
-
 	def add_agent(self, agent):
 		"""
 		adds existing agent into the group. This method consolidates
-		the adding to agent_array and sexed_set
+		the adding to agent_dict and sexed_set
 		
 		parameters
 		----------
 		agent: agent to add
 		"""
-		self.agent_array.append(agent)
+		self.agent_dict[agent.index] = agent
 		self.whole_set.add(agent.index)
 
 		if (agent.age < self.FEMALE_MINIMUM_AGE):
@@ -358,7 +342,7 @@ class AgentGroup():
 		self.in_relationships_set.add(agent.index)
 
 	def __del__(self):
-		del self.agent_array[0:len(self.agent_array)]
+		del self.agent_dict
 		self.female_set.clear()
 		self.male_set.clear()
 		self.underage_set.clear() 

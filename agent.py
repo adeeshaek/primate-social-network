@@ -37,7 +37,7 @@ class AgentClass:
 		value.
 		friendship - friendships formed by this individual. Binary value. Multiple
 		entries separated by commas.
-		index - the index of this agent in the group.agent_array
+		index - the index of this agent 
 		children - list of indices of this agent's children
 		"""
 		#make sure age class and sex are valid

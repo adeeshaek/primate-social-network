@@ -2,6 +2,7 @@ import unittest
 import friendships
 from agent import AgentClass
 from group import AgentGroup
+from population import Population
 from random_module import FakeRandomModule
 
 class TestFriendships(unittest.TestCase):
@@ -30,7 +31,8 @@ class TestFriendships(unittest.TestCase):
 		of_age_female_2 = AgentClass(
 		 6, "f", None, 0, [], [], [], 7)#6
 
-		group = AgentGroup()
+		population = Population()
+		group = AgentGroup(population)
 		group.add_agent(parent)
 		group.add_agent(underage_male)
 		group.add_agent(underage_female)

@@ -1,11 +1,13 @@
 import unittest
 from group import AgentGroup
+from population import Population
 from agent import AgentClass
 from random_module import FakeRandomModule
 class TestAgentGroup(unittest.TestCase):
 
 	def setUp(self):
-		self.group = AgentGroup()
+		population = Population()
+		self.group = AgentGroup(population)
 		self.tracking_dict = {} #used to track specific references
 
 		parent = AgentClass(
@@ -41,7 +43,6 @@ class TestAgentGroup(unittest.TestCase):
 
 	def tearDown(self):
 		#if not for this snippet, the group will not clear itself
-		#del self.group.agent_array[0:len(self.group.agent_array)]
 		del self.group
 
 	def test_females_to_male(self):
@@ -54,16 +55,16 @@ class TestAgentGroup(unittest.TestCase):
 		self.remove_agents()
 
 	def test_give_birth_to_agent(self):
-		parent = self.group.agent_array[1]
+		parent = self.group.agent_dict[1]
 		current_number_of_agents =\
-		 len(self.group.agent_array)
+		 len(self.group.agent_dict)
 		fake_random_module = FakeRandomModule()
 		self.group.give_birth_to_agent(
 			parent, fake_random_module, self.group)
-		self.assertEquals(len(self.group.agent_array), 
+		self.assertEquals(len(self.group.agent_dict), 
 			current_number_of_agents + 1)
-		child = self.group.agent_array[
-		len(self.group.agent_array) - 1]
+		child = self.group.agent_dict[
+		len(self.group.agent_dict) - 1]
 		self.assertEquals(child.sex, 'm')
 		self.group.mark_agent_as_dead(child)
 
@@ -162,8 +163,8 @@ class TestAgentGroup(unittest.TestCase):
 		self.mark_agents_as_friends()
 		self.mark_agents_as_aggressive()
 		self.mark_agents_as_sisters()
-		focus_male = self.group.agent_array[8]
-		focus_female = self.group.agent_array[9]
+		focus_male = self.group.agent_dict[8]
+		focus_female = self.group.agent_dict[9]
 
 		male_agents_friends =\
 		 list(self.group.get_unrelated_members_of_age(focus_male))
@@ -183,8 +184,8 @@ class TestAgentGroup(unittest.TestCase):
 		self.unmark_agents_as_aggressive()
 
 	def test_mark_agents_as_friends(self):
-		friend_a = self.group.agent_array[6]
-		friend_b = self.group.agent_array[7]
+		friend_a = self.group.agent_dict[6]
+		friend_b = self.group.agent_dict[7]
 
 		self.mark_agents_as_friends()
 
@@ -199,8 +200,8 @@ class TestAgentGroup(unittest.TestCase):
 		self.unmark_agents_as_friends()
 
 	def test_mark_agents_as_aggressive(self):
-		male_a = self.group.agent_array[4]
-		male_b = self.group.agent_array[5]
+		male_a = self.group.agent_dict[4]
+		male_b = self.group.agent_dict[5]
 
 		self.mark_agents_as_aggressive()
 
@@ -215,8 +216,8 @@ class TestAgentGroup(unittest.TestCase):
 		self.unmark_agents_as_aggressive()
 
 	def test_mark_agents_as_sisters(self):
-		sister_a = self.group.agent_array[6]
-		sister_b = self.group.agent_array[7]
+		sister_a = self.group.agent_dict[6]
+		sister_b = self.group.agent_dict[7]
 		self.mark_agents_as_sisters()
 
 		#check that they are sisters
@@ -252,14 +253,14 @@ class TestAgentGroup(unittest.TestCase):
 			self.group.remove_agent(agent)
 
 	def mark_agents_as_friends(self):
-		friend_a = self.group.agent_array[6]
-		friend_b = self.group.agent_array[7]
+		friend_a = self.group.agent_dict[6]
+		friend_b = self.group.agent_dict[7]
 		#mark 5 and 6 as sisters 
 		self.group.mark_agents_as_friends(friend_a, friend_b)
 
 	def unmark_agents_as_friends(self):
-		friend_a = self.group.agent_array[6]
-		friend_b = self.group.agent_array[7]
+		friend_a = self.group.agent_dict[6]
+		friend_b = self.group.agent_dict[7]
 		friend_a.friends = [] #clear the list of sisters
 		friend_b.friends = []
 		#remove from set manually
@@ -267,14 +268,14 @@ class TestAgentGroup(unittest.TestCase):
 		self.group.in_relationships_set.remove(friend_b.index)
 
 	def mark_agents_as_sisters(self):
-		sister_a = self.group.agent_array[6]
-		sister_b = self.group.agent_array[7]
+		sister_a = self.group.agent_dict[6]
+		sister_b = self.group.agent_dict[7]
 		#mark 5 and 6 as sisters 
 		self.group.mark_agents_as_sisters(sister_a, sister_b)
 
 	def unmark_agents_as_sisters(self):
-		sister_a = self.group.agent_array[6]
-		sister_b = self.group.agent_array[7]
+		sister_a = self.group.agent_dict[6]
+		sister_b = self.group.agent_dict[7]
 		sister_a.sisters = [] #clear the list of sisters
 		sister_b.sisters = []
 		#remove from set manually
@@ -282,14 +283,14 @@ class TestAgentGroup(unittest.TestCase):
 		self.group.in_relationships_set.remove(sister_b.index)
 
 	def mark_agents_as_aggressive(self):
-		male_a = self.group.agent_array[4]
-		male_b = self.group.agent_array[5]
+		male_a = self.group.agent_dict[4]
+		male_b = self.group.agent_dict[5]
 		#mark 5 and 6 as sisters 
 		self.group.mark_agents_as_aggressive(male_a, male_b)
 
 	def unmark_agents_as_aggressive(self):
-		male_a = self.group.agent_array[4]
-		male_b = self.group.agent_array[5]
+		male_a = self.group.agent_dict[4]
+		male_b = self.group.agent_dict[5]
 		male_a.aggressive = [] #clear the list of sisters
 		male_b.aggressive = []
 		#remove from set manually

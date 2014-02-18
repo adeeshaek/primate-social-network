@@ -18,16 +18,20 @@ from common import read_CSV
 from agent import AgentClass
 from group import AgentGroup
 
-def load_group():
+def load_group(parent_population):
 	"""
 	convenient method to quickly load group from excel file
+
+	parameters
+	----------
+	parent_population: parent population containing the group
 
 	returns
 	-------
 	group as described in excel file
 	"""
 	generator = SeedGenerator()
-	group = generator.generate_seed()
+	group = generator.generate_seed(parent_population)
 
 	return group
 
@@ -59,9 +63,14 @@ class SeedGenerator:
 	SEED_FILENAME = "Excel Files/seed.xlsx"
 	STARTING_ROW = 2 #the first two rows in the excel sheet are headers
 
-	def generate_seed(self):
+	def generate_seed(self, parent_population):
 		"""
 		generates the default sheet defined as SEED_FILENAME
+
+		parameters
+		----------
+		parent_population: the parent population containing this 
+		 group
 
 		returns
 		-------
@@ -72,7 +81,7 @@ class SeedGenerator:
 		#the seed is looked for in the first sheet of the workbook
 		seedsheet = book.sheet_by_index(0) 
 
-		group = AgentGroup()
+		group = AgentGroup(parent_population)
 
 		#iterate through the rows
 		for row_index in range (self.STARTING_ROW, seedsheet.nrows):
@@ -95,17 +104,17 @@ class SeedGenerator:
 			#create new agent
 			this_agent = AgentClass(age_in_years, sex, \
 				rank, parent, sister, aggressive, friend, row_index - 1)
-			#group.agent_array is indexed from 1, so add 1 to the row index
 			#add agent to group
 
 			group.add_agent(this_agent)
 
 		#make a pass through the group marking parents
-		for agent in group.agent_array:
-			if (agent):
+		for agent_key in group.agent_dict:
+			if (group.agent_dict[agent_key]):
+				agent = group.agent_dict[agent_key]
 				if (agent.parent != None and agent.parent != ''):
 					group.mark_as_parent(
-						group.agent_array[int(agent.parent)],
+						group.agent_dict[int(agent.parent)],
 						agent)
 
 		return group
