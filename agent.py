@@ -43,7 +43,7 @@ class AgentClass:
 		#make sure age class and sex are valid
 		assert (constants.SEX_DICT.has_key(sex))
 
-		self.age = age
+		self.age = int(age)
 		self.sex = sex
 		self.is_alpha = is_alpha
 		self.parent = parent
@@ -81,6 +81,8 @@ class AgentClass:
 
 		else:
 			selfstring = str(self.index) + " [shape=box]"
+
+		selfstring += "[label=" + str(self.age) + "]"
 
 		return selfstring
 

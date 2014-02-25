@@ -54,13 +54,14 @@ class AgentGroup():
 		returns a string with the group in dot syntax
 		"""
 		outputstring = "digraph group {\n"
-		outputstring += "layout=\"circo\";\n"
+		#outputstring += "layout=\"circo\";\n"
+		#outputstring += "edge[weight=1.2];\n"
 
 		for agent_key in self.agent_dict:
 			agent = self.agent_dict[agent_key]
 			outputstring += agent.get_dot_string()
-			outputstring += "g" + str(self.group_index) +\
-			 " -> " + str(agent_key) + " [style=dotted];\n"
+			#outputstring += "g" + str(self.group_index) +\
+			#" -> " + str(agent_key) + " [style=dotted];\n"
 
 		outputstring += "}"
 
