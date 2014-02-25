@@ -70,6 +70,34 @@ class AgentClass:
 		#make sure that children is a set
 		assert(type(self.children) is set)
 
+	def get_selfstring(self):
+		"""
+		returns the name of the agent in dot syntax
+		"""
+		selfstring = ""
+
+		if (self.sex == "m"):
+			selfstring = str(self.index)
+
+		else:
+			selfstring = str(self.index) + " [shape=box]"
+
+		return selfstring
+
+	def get_dot_string(self):
+		"""
+		returns a string with the agent in dot syntax
+		"""
+		outputstring = ""
+
+		outputstring += self.get_selfstring() + ";\n"
+
+		for child_index in self.children:
+			outputstring += str(self.index) + " -> " +\
+			 str(child_index) + "[color=red];\n"
+
+		return outputstring
+
 	def __str__(self):
 		"""
 		returns human readable class description

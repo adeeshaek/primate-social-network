@@ -17,6 +17,7 @@ import constants
 from common import read_CSV
 from agent import AgentClass
 from group import AgentGroup
+from population import Population
 
 def load_group(parent_population):
 	"""
@@ -34,6 +35,19 @@ def load_group(parent_population):
 	group = generator.generate_seed(parent_population)
 
 	return group
+
+def print_seed_group(destination_filename):
+	"""
+	prints seed group, by writing to a file in dot syntax
+	"""
+	parent_population = Population()
+	generator = SeedGenerator()
+	group = generator.generate_seed(parent_population)
+
+	dot_string = group.get_dot_string()
+
+	savefile = open(destination_filename, "wr+")
+	savefile.write(dot_string)
 
 class SeedGenerator:
 	"""
@@ -121,9 +135,8 @@ class SeedGenerator:
 
 
 
-
-
-
+if __name__ == '__main__':
+	print_seed_group("output//seed.dot")
 
 
 

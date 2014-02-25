@@ -17,6 +17,7 @@ import copy
 import constants
 
 class AgentGroup():
+	group_index = 0
 	agent_dict = {} #dictionary of references to group members
 	female_set = set()
 	male_set = set()
@@ -47,6 +48,23 @@ class AgentGroup():
 		new_group.whole_set =\
 		 copy.deepcopy(self.whole_set)
 		return new_group
+
+	def get_dot_string(self):
+		"""
+		returns a string with the group in dot syntax
+		"""
+		outputstring = "digraph group {\n"
+		outputstring += "layout=\"circo\";\n"
+
+		for agent_key in self.agent_dict:
+			agent = self.agent_dict[agent_key]
+			outputstring += agent.get_dot_string()
+			outputstring += "g" + str(self.group_index) +\
+			 " -> " + str(agent_key) + " [style=dotted];\n"
+
+		outputstring += "}"
+
+		return outputstring
 
 	def get_females_to_male(self):
 		"""
