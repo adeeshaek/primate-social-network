@@ -8,6 +8,7 @@ class TestAgentGroup(unittest.TestCase):
 	def setUp(self):
 		population = Population()
 		self.group = AgentGroup(population)
+		population.top_index = 14
 		self.tracking_dict = {} #used to track specific references
 
 		parent = AgentClass(
@@ -63,8 +64,7 @@ class TestAgentGroup(unittest.TestCase):
 			parent, fake_random_module, self.group)
 		self.assertEquals(len(self.group.agent_dict), 
 			current_number_of_agents + 1)
-		child = self.group.agent_dict[
-		len(self.group.agent_dict) - 1]
+		child = self.group.agent_dict[14]
 		self.assertEquals(child.sex, 'm')
 		self.group.mark_agent_as_dead(child)
 
