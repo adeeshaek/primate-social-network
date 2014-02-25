@@ -96,6 +96,18 @@ class AgentClass:
 			outputstring += str(self.index) + " -> " +\
 			 str(child_index) + "[color=red];\n"
 
+		for sister_index in self.sisters:
+			outputstring += str(self.index) + " -> " +\
+			 str(sister_index) + "[color=green];\n"
+
+		for aggressive_index in self.aggressive:
+			outputstring += str(self.index) + " -> " +\
+			 str(aggressive_index) + "[color=blue];\n"
+
+		for friend_index in self.friends:
+			outputstring += str(self.index) + " -> " +\
+			 str(friend_index) + "[color=orange];\n"
+
 		return outputstring
 
 	def __str__(self):
