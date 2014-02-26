@@ -34,7 +34,10 @@ class AgentGroup():
 		self.MALE_MINIMUM_AGE = constants.ADULTHOOD_AGE['m']
 
 	def __deepcopy__(self, memo):
-		new_group = AgentGroup()
+		"""
+		NOTE: parent_population set to none in new copy
+		"""
+		new_group = AgentGroup(None)
 		new_group.agent_dict =\
 		 copy.deepcopy(self.agent_dict)
 		new_group.female_set =\
@@ -49,15 +52,46 @@ class AgentGroup():
 		 copy.deepcopy(self.whole_set)
 		return new_group
 
+	def update_indices(self, top_index):
+		"""
+		intended to increment all the indices in the 
+		group by a set amount, in order to keep all indices 
+		in the population unique
+		
+		returns
+		-------
+		new top index: the highest index in the group, after
+		being incremented
+		"""
+		new_top_index = 0
+		for agent_index in self.agent_dict:
+			agent = self.agent_dict[agent_index]
+			#change the index in the dict
+			del self.agent_dict[agent_index]
+			agent.update_indices(top_index)
+			self.agent_dict[agent.index] = agent
+
+			if (agent.index > new_top_index):
+				new_top_index = agent.index
+
+		#do female set
+		#do male set
+		#do underage set
+		#do in_relationships_set
+		#do whole_set
+
+		return new_top_index
+
 	def get_dot_string(self):
 		"""
-		returns a string with the group in dot syntax
+		returns a string with a graphical representation of
+		 the group in dot syntax
 		"""
 		outputstring = "digraph group {\n"
-		#outputstring += "layout=\"circo\";\n"
+		outputstring += "layout=\"circo\";\n"
 		#outputstring += "edge[weight=1.2];\n"
 
-		for agent_key in self.agent_dict:
+		for agent_key in self.whole_set:
 			agent = self.agent_dict[agent_key]
 			outputstring += agent.get_dot_string()
 			#outputstring += "g" + str(self.group_index) +\

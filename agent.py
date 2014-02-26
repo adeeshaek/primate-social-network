@@ -86,6 +86,24 @@ class AgentClass:
 
 		return selfstring
 
+	def update_indices(self, top_index):
+		"""
+		increments all indices by top_index, to
+		keep a unique index for an individual across
+		a population
+		"""
+		self.index += top_index
+		children_list = list(self.children)
+		for i in range(len(children_list)):
+			children_list[i] += top_index
+		self.children = set(children_list)
+		for i in range(len(self.sisters)):
+			self.sisters[i] += top_index
+		for i in range(len(self.aggressive)):
+			self.aggressive[i] += top_index
+		for i in range(len(self.friends)):
+			self.friends[i] += top_index
+
 	def get_dot_string(self):
 		"""
 		returns a string with the agent in dot syntax

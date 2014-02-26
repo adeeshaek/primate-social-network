@@ -117,7 +117,8 @@ class SeedGenerator:
 
 			#create new agent
 			this_agent = AgentClass(age_in_years, sex, \
-				rank, parent, sister, aggressive, friend, row_index - 1)
+				rank, parent, sister, aggressive, friend, \
+				row_index + 1)
 			#add agent to group
 
 			group.add_agent(this_agent)

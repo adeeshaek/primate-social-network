@@ -23,6 +23,7 @@ To do:
 from agent import AgentClass
 from group import AgentGroup
 from lifetable import LifeTable
+from population import Population
 import seed
 import copy
 import loader
@@ -33,22 +34,22 @@ from xlwt import Workbook
 import constants
 from counter import Counter
 
-NUMBER_OF_GENERATIONS = 50
-NUMBER_OF_SEED_GROUPS = 10
+NUMBER_OF_GENERATIONS = 15
+NUMBER_OF_SEED_GROUPS = 1
+
+DOT_OUTPUT_DIR = "dot/"
 
 def main():
 	#import Seed and lifetable data
-	seed_group = seed.load_group()
+	this_generation_population = Population()
+	next_generation_population = None
+
+	seed_group = seed.load_group(this_generation_population)
 	table_data = loader.load_data()
 	lifetable = table_data.life_table
 	dispersal_table =\
 	 table_data.dispersal_table
 	random_module = RandomModule()
-
-	all_groups = []
-	all_groups_next_generation = []
-	this_generation = None
-	new_generation = None
 
 	#create analytics lists
 	age_record_list = []
@@ -71,8 +72,7 @@ def main():
 	#assign all_groups by creating several copies of the 
 	#seed generation
 	for i in range(0, NUMBER_OF_SEED_GROUPS):
-		all_groups.append(seed_group)
-		all_groups_next_generation.append([])
+		this_generation_population.add_group(seed_group)
 	
 	for i in range (0, NUMBER_OF_GENERATIONS):
 		print (str(i))
@@ -89,26 +89,26 @@ def main():
 		death_counter.reset()
 		birth_counter.reset()
 
-		#make a copy of all_groups, which is the next gen
-		for j in range(0, len(all_groups)):
-			all_groups_next_generation[j] =\
-			 copy.deepcopy(all_groups[j])
+		#make the next gen population a copy of this gen's pop
+		next_generation_population =\
+		 copy.deepcopy(this_generation_population)
 
 		#run the simulation for each sub_group.
-		for j in range(0, len(all_groups)):	
-			this_generation = all_groups[j]
-			new_generation = all_groups_next_generation[j]
+		for j in range(0, len(this_generation_population.groups)):	
+			this_generation = this_generation_population.groups[j]
+			new_generation = next_generation_population.groups[j]
 
 			females_to_male =\
 			 this_generation.get_females_to_male()
+
 
 			for agent_index in this_generation.whole_set:
 				#print str(agent_index) + ", " + str(len(this_generation.agent_array))
 
 				this_agent =\
-				 this_generation.agent_array[agent_index]
+				 this_generation.agent_dict[agent_index]
 				new_agent =\
-				 new_generation.agent_array[agent_index]
+				 new_generation.agent_dict[agent_index]
 
 				#increment age
 				new_generation.promote_agent(new_agent)
@@ -138,11 +138,13 @@ def main():
 					random_module, death_counter)
 
 				#check for dispersal
+				"""
 				check_for_dispersal(dispersal_table, females_to_male,
 					this_agent, new_agent, this_generation,
-					new_generation, all_groups,
-					all_groups_next_generation, random_module)
-
+					new_generation,
+					this_generation_population, 
+					next_generation_population, random_module)
+				"""
 				#check for friendships
 
 				#analytics
@@ -156,10 +158,10 @@ def main():
 				elif (this_agent.index in this_generation.female_set):
 					this_female_population_record += 1
 
+		save_data_to_dot(this_generation_population.get_dot_string(), i)
+
 		#set the old gen to the new one
-		for j in range(0, len(all_groups)):
-			all_groups[j] =\
-			 all_groups_next_generation[j]
+		this_generation_population = next_generation_population
 
 		average_edges_per_agent =\
 		 float(this_edges_per_agent)/this_population_record
@@ -285,7 +287,8 @@ def check_for_birth(
 
 def check_for_dispersal(dispersal_table, females_to_male,
 	this_agent, new_agent, this_generation, new_generation,
-	all_groups, all_groups_next_generation, random_module):
+ 	this_generation_population,
+ 	next_generation_population, random_module):
 	"""
 	checks if this agent is due to be ejected from his group
 	and established in a new one by determining the probability
@@ -330,17 +333,20 @@ def check_for_dispersal(dispersal_table, females_to_male,
 			new_generation.mark_agent_as_dead(new_agent)
 			#now shuffle all groups (while removing this)
 			#one. My approach is to use a set to do this
-			groups_set = set(all_groups_next_generation)
-			groups_set.remove(new_generation)
+			groups_set = set(this_generation_population.groups)
+			groups_set.remove(this_generation)
 			#now iterate through the set
 			chance_of_acceptance =\
 			 dispersal_table.chance_of_acceptance(
 			 	females_to_male, this_agent.age)
 
+			#fix this module!
 			for target_group in groups_set:
 				if (random_module.roll(chance_of_acceptance)):
-					target_group.add_new_agent(this_agent)
-					print "dispersed"
+					#target_group.add_new_agent(this_agent)
+					target_group_index = target_group.group_index
+					next_generation_population.groups[target_group_index].add_agent(this_agent)
+					#print "dispersed to group" + str(target_group_index)
 					break #agent is now added to new gp
 			else:
 				print "dead male"
@@ -387,6 +393,12 @@ def save_age_stats(data_list, book):
 
 	#save the average age
 	data_saver.save_age_data(output_list, book)
+
+def save_data_to_dot(dot_string, generation_number):
+	generation_number_string = '%03d' % generation_number
+	filename = DOT_OUTPUT_DIR + generation_number_string + ".dot"
+	destination_file = open(filename, "w+")
+	destination_file.write(dot_string)
 
 if __name__ == '__main__':
 	main()
