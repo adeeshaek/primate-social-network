@@ -149,11 +149,12 @@ class AgentGroup():
 
 		#if child is female, mark sisters
 		if (child_sex == "f"):
-			sisters_list = parent_agent.children
-			for sister_index in sisters_list:
-				sister = group.agent_dict[sister_index]
-				group.mark_agents_as_sisters(child_agent,
-					sister)
+			children_list = parent_agent.children
+			for child_index in children_list:
+				child = group.agent_dict[child_index]
+				if (child.sex == "f" and child.index != agent_index):
+					group.mark_agents_as_sisters(child_agent,
+					child)
 
 	def mark_agent_as_dead(self, agent):
 		"""
