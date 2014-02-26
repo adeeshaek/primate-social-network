@@ -64,6 +64,13 @@ class AgentGroup():
 		being incremented
 		"""
 		new_top_index = 0
+
+		self.female_set = set()
+		self.male_set = set()
+		self.underage_set = set()
+		self.in_relationships_set = set()
+
+
 		for agent_index in self.agent_dict:
 			agent = self.agent_dict[agent_index]
 			#change the index in the dict
@@ -74,11 +81,8 @@ class AgentGroup():
 			if (agent.index > new_top_index):
 				new_top_index = agent.index
 
-		#do female set
-		#do male set
-		#do underage set
-		#do in_relationships_set
-		#do whole_set
+			#add agent again
+			self.add_agent(agent)
 
 		return new_top_index
 
@@ -87,17 +91,13 @@ class AgentGroup():
 		returns a string with a graphical representation of
 		 the group in dot syntax
 		"""
-		outputstring = "digraph group {\n"
-		outputstring += "layout=\"circo\";\n"
-		#outputstring += "edge[weight=1.2];\n"
+		outputstring = ""
 
 		for agent_key in self.whole_set:
 			agent = self.agent_dict[agent_key]
-			outputstring += agent.get_dot_string()
-			#outputstring += "g" + str(self.group_index) +\
-			#" -> " + str(agent_key) + " [style=dotted];\n"
-
-		outputstring += "}"
+			outputstring += agent.get_dot_string(self)
+			outputstring += "g" + str(self.group_index) +\
+			" -> " + str(agent_key) + " [style=dotted];\n"
 
 		return outputstring
 

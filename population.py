@@ -73,9 +73,13 @@ class Population():
 		population in dot syntax
 		"""
 		output_string = ""
+		output_string = "digraph group {\n"
+		output_string += "size=\"20,20\";\n"
+		output_string += "layout=\"circo\";\n"
 		for group in self.groups:
 			output_string += group.get_dot_string()
-
+		output_string += "}"
+		
 		return output_string
 
 

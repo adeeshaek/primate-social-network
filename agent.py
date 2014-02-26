@@ -82,7 +82,7 @@ class AgentClass:
 		else:
 			selfstring = str(self.index) + " [shape=box]"
 
-		selfstring += "[label=" + str(self.age) + "]"
+		#selfstring += "[label=" + str(self.age) + "]"
 
 		return selfstring
 
@@ -104,7 +104,7 @@ class AgentClass:
 		for i in range(len(self.friends)):
 			self.friends[i] += top_index
 
-	def get_dot_string(self):
+	def get_dot_string(self, parent_group):
 		"""
 		returns a string with the agent in dot syntax
 		"""
@@ -113,20 +113,24 @@ class AgentClass:
 		outputstring += self.get_selfstring() + ";\n"
 
 		for child_index in self.children:
-			outputstring += str(self.index) + " -> " +\
-			 str(child_index) + "[color=red];\n"
+			if (child_index in parent_group.whole_set):
+				outputstring += str(self.index) + " -> " +\
+				 str(child_index) + "[color=red];\n"
 
 		for sister_index in self.sisters:
-			outputstring += str(self.index) + " -> " +\
-			 str(sister_index) + "[color=green];\n"
+			if sister_index in parent_group.whole_set:
+				outputstring += str(self.index) + " -> " +\
+				 str(sister_index) + "[color=green];\n"
 
 		for aggressive_index in self.aggressive:
-			outputstring += str(self.index) + " -> " +\
-			 str(aggressive_index) + "[color=blue];\n"
+			if aggressive_index in parent_group.whole_set:
+				outputstring += str(self.index) + " -> " +\
+				 str(aggressive_index) + "[color=blue];\n"
 
 		for friend_index in self.friends:
-			outputstring += str(self.index) + " -> " +\
-			 str(friend_index) + "[color=orange];\n"
+			if friend_index in parent_group.whole_set:
+				outputstring += str(self.index) + " -> " +\
+				 str(friend_index) + "[color=orange];\n"
 
 		return outputstring
 
