@@ -34,8 +34,8 @@ from xlwt import Workbook
 import constants
 from counter import Counter
 
-NUMBER_OF_GENERATIONS = 15
-NUMBER_OF_SEED_GROUPS = 2
+NUMBER_OF_GENERATIONS = 100
+NUMBER_OF_SEED_GROUPS = 10
 
 DOT_OUTPUT_DIR = "dot/"
 
