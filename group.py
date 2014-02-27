@@ -155,6 +155,11 @@ class AgentGroup():
 			1, child_sex, None, parent_agent.index, None,
 			None, None, agent_index)
 
+		#if agent is young and male, it has to be 
+		#marked as 'about to migrate'
+		if child_sex == "m":
+			child_agent.young_migration = False
+
 		#add the new infant to the group
 		group.add_agent(child_agent)
 		group.mark_as_parent(parent_agent, child_agent)
@@ -280,6 +285,9 @@ class AgentGroup():
 		else:
 			agent.age = agent.age + 1
 
+		if agent.sex == "m":
+			agent.last_migration += 1
+
 	def add_agent(self, agent):
 		"""
 		adds existing agent into the group. This method consolidates
@@ -294,6 +302,13 @@ class AgentGroup():
 
 		if (agent.age < self.FEMALE_MINIMUM_AGE):
 			self.underage_set.add(agent.index)
+
+			#if this is not a seed group, and if
+			#this is a male, then this is its 1st
+			#migration
+			if (agent.sex == "m" and \
+			 self.parent_population.generation != 0):
+				self.young_migration = True
 
 		elif (
 			agent.age < self.MALE_MINIMUM_AGE and agent.sex == "m"):

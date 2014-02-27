@@ -15,6 +15,9 @@ class AgentClass:
 	friends = []
 	children = []
 	index = 0
+	#how many years ago did it last migrate, if male?
+	last_migration = 0 
+	young_migration = True #whether it has migrated btw 5-6 ys
 
 	def __init__(self, age, sex, is_alpha, parent, sisters, 
 		aggressive, friends, index, children=None):

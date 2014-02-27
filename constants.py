@@ -41,6 +41,10 @@ SEX_DICT = {
 
 RANK_ALPHA = "A"
 
+#number of years a male can stay in a group 
+#before he is made to migrate
+MIGRATION_COUNTER_CAP = 5 
+
 #the age at which each sex reaches adulthood
 ADULTHOOD_AGE = {
 	"m" : 7,

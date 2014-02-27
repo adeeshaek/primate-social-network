@@ -295,7 +295,23 @@ def check_for_dispersal(dispersal_table, females_to_male,
 	with that chance. If the 'coin-toss' comes up heads, the 
 	simulation ejects the male from this group. 
 
-	Next, the simulation randomly shuffles all the other groups 
+	In the wild, males emigrate once between the ages of 4 and
+	6, and approximately once every 5 years after they reach 
+	adulthood.
+
+	In order to simulate this, the simulation first checks if 
+	the agent is a child. If the agent is a child who has not
+	migrated yet, the probability of emigration is then determined
+	and a coin is tossed to check for emigration. If the child
+	has migrated once, it is not made to migrate again.
+
+	If the agent is an adult, the simulation checks if the 
+	number of years since the last emigration is greater than 
+	5. If so, the probability of emigration is checked, and 
+	a coin is tossed to check for emigration.
+
+	Once a coin has been tossed, if it comes up heads,
+	the simulation randomly shuffles all the other groups 
 	and checks if the male is accepted into a group. This is done 
 	by checking each group in turn. For each group, the 
 	probability of acceptance is first calculated using the 
@@ -318,37 +334,55 @@ def check_for_dispersal(dispersal_table, females_to_male,
 	#make sure the new_agent isn't dead
 	if (this_agent.sex == "m") and new_agent.index in this_generation.whole_set:
 
+	#check if child or adult
+		if (this_agent not in this_generation.male_set):
+			#check if child has migrated
+			if this_agent.young_migration == True:
+				#if so, don't check for migration
+				return
+
+		elif (this_agent.last_migration > \
+			constants.MIGRATION_COUNTER_CAP):
+			#if the adult has been stationary for 
+			#less than 5 years, then don't bother him
+			return
+		
 		#find the probability of emigration
 		probability_of_emigration =\
 		 dispersal_table.chance_of_emigration(
 		 	females_to_male, this_agent.age)
+
 		#toss a coin with that probability
 		toss =\
 		 random_module.roll(probability_of_emigration)
-		 
+		
 		#if toss comes up heads, male is emigrating
 		if (toss):
 			#start by marking this agent as being dead
 			new_generation.mark_agent_as_dead(new_agent)
 			#now shuffle all groups (while removing this)
-			#one. My approach is to use a set to do this
-			groups_set = set(this_generation_population.groups)
-			groups_set.remove(this_generation)
-			#now iterate through the set
+			#one. 
+			groups = this_generation_population.groups
 			chance_of_acceptance =\
 			 dispersal_table.chance_of_acceptance(
 			 	females_to_male, this_agent.age)
+			max_group_index = len(groups)
+			group_indices = range(0, max_group_index)
 
-			#fix this module!
-			for i in range (0,2):
-				target_group = groups_set.pop()
-				if (random_module.roll(chance_of_acceptance)):
-					target_group_index = target_group.group_index
-					next_generation_population.groups[target_group_index].add_agent(this_agent)
-					break
-			else:
-				#this fires when a male dies
-				pass
+			tries = 0
+			while (tries < 2):
+				#shuffle groups
+				random_module.shuffle(group_indices)
+				target_group_index = group_indices[0]
+
+				if (target_group_index != this_generation.group_index):
+					if (random_module.roll(chance_of_acceptance)):
+						next_generation_population.groups[target_group_index].add_agent(new_agent)
+						return
+					else:
+						tries += 1
+
+
 
 def save_age_stats(data_list, book):
 	"""
