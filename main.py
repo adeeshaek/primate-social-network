@@ -34,7 +34,7 @@ from xlwt import Workbook
 import constants
 from counter import Counter
 
-NUMBER_OF_GENERATIONS = 100
+NUMBER_OF_GENERATIONS = 50
 NUMBER_OF_SEED_GROUPS = 10
 
 DOT_OUTPUT_DIR = "dot/"
@@ -90,6 +90,8 @@ def main():
 		birth_counter.reset()
 
 		#make the next gen population a copy of this gen's pop
+		this_generation_population.generation = i
+
 		next_generation_population =\
 		 copy.deepcopy(this_generation_population)
 
@@ -100,7 +102,6 @@ def main():
 
 			females_to_male =\
 			 this_generation.get_females_to_male()
-
 
 			for agent_index in this_generation.whole_set:
 				#print str(agent_index) + ", " + str(len(this_generation.agent_array))
@@ -138,13 +139,11 @@ def main():
 					random_module, death_counter)
 
 				#check for dispersal
-				"""
 				check_for_dispersal(dispersal_table, females_to_male,
 					this_agent, new_agent, this_generation,
 					new_generation,
 					this_generation_population, 
 					next_generation_population, random_module)
-				"""
 				#check for friendships
 
 				#analytics
@@ -341,15 +340,15 @@ def check_for_dispersal(dispersal_table, females_to_male,
 			 	females_to_male, this_agent.age)
 
 			#fix this module!
-			for target_group in groups_set:
+			for i in range (0,2):
+				target_group = groups_set.pop()
 				if (random_module.roll(chance_of_acceptance)):
-					#target_group.add_new_agent(this_agent)
 					target_group_index = target_group.group_index
 					next_generation_population.groups[target_group_index].add_agent(this_agent)
-					#print "dispersed to group" + str(target_group_index)
-					break #agent is now added to new gp
+					break
 			else:
-				print "dead male"
+				#this fires when a male dies
+				pass
 
 def save_age_stats(data_list, book):
 	"""

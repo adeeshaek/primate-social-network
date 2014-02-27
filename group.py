@@ -50,6 +50,8 @@ class AgentGroup():
 		 copy.deepcopy(self.in_relationships_set)
 		new_group.whole_set =\
 		 copy.deepcopy(self.whole_set)
+		new_group.group_index =\
+		 self.group_index
 		return new_group
 
 	def clear(self):
@@ -297,7 +299,23 @@ class AgentGroup():
 			agent.age < self.MALE_MINIMUM_AGE and agent.sex == "m"):
 			self.underage_set.add(agent.index)
 
+			"""
+			Of age males are only added during dispersal.
+			This means that we should create aggressive 
+			releationships between males, except when
+			making the seed group
+			"""
 		elif (agent.sex == "m"):
+			#randomly select male from male set to
+			#make a relationship with
+			if (self.parent_population.generation != 0 and len(self.male_set) > 1):
+				randomly_selected_male_index = self.male_set.pop()
+				randomly_selected_male =\
+				 self.agent_dict[randomly_selected_male_index]
+				self.mark_agents_as_aggressive(agent, randomly_selected_male)
+				#add random male back to the male set
+				self.male_set.add(randomly_selected_male_index)
+
 			self.male_set.add(agent.index)
 
 		else:

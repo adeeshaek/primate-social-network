@@ -82,7 +82,7 @@ class AgentClass:
 		else:
 			selfstring = str(self.index) + " [shape=box]"
 
-		#selfstring += "[label=" + str(self.age) + "]"
+		selfstring += "[label=" + str(self.age) + "]"
 
 		return selfstring
 

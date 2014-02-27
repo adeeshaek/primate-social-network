@@ -27,6 +27,7 @@ class Population():
 	groups = []
 	top_index = 0 #highest agent index in the population
 	group_top_index = 0 #highest group index in the pop
+	generation = 0
 
 	def __init__(self):
 		self.groups = []
@@ -37,6 +38,8 @@ class Population():
 		new_population = Population()
 		new_population.top_index = self.top_index
 		new_population.groups = []
+		new_population.generation =\
+		 self.generation
 		for i in range(len(self.groups)):
 			new_population.groups.append(copy.deepcopy(self.groups[i]))
 			new_population.groups[i].parent_population = new_population
@@ -58,6 +61,7 @@ class Population():
 		current_top_index = self.top_index
 		self.top_index = new_group.update_indices(current_top_index)
 		self.group_top_index += 1
+		new_group.group_index = self.group_top_index - 1
 		self.groups.append(new_group)
 
 	def get_new_agent_index(self):
