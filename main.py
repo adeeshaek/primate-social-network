@@ -370,17 +370,21 @@ def check_for_dispersal(dispersal_table, females_to_male,
 			group_indices = range(0, max_group_index)
 
 			tries = 0
-			while (tries < 2):
+			while (tries < 3):
 				#shuffle groups
 				random_module.shuffle(group_indices)
 				target_group_index = group_indices[0]
 
 				if (target_group_index != this_generation.group_index):
-					if (random_module.roll(chance_of_acceptance)):
+					if (random_module.roll(chance_of_acceptance[tries])):
 						next_generation_population.groups[target_group_index].add_agent(new_agent)
 						return
 					else:
-						tries += 1
+						#check if it dies
+						if (random_module.roll(chance_of_acceptance[tries])):
+							return
+						else:
+							tries += 2
 
 
 

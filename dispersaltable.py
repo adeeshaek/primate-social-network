@@ -69,9 +69,10 @@ class DispersalTable:
 		-------
 		chance of acceptance
 		"""
-		likelihood_by_age = self.immigration[age][0]
+		likelihood_by_age = (self.immigration[age][0],
+			self.immigration[age][1], self.immigration[age][2])
 
-		likelihood_by_number_of_females = females_to_male * 50
+		#likelihood_by_number_of_females = females_to_male * 50
 
 		likelihood_of_immigration =\
 			likelihood_by_age #* likelihood_by_number_of_females
