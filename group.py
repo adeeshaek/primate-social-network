@@ -300,6 +300,18 @@ class AgentGroup():
 		self.agent_dict[agent.index] = agent
 		self.whole_set.add(agent.index)
 
+		if (agent.sex == "m" and \
+			self.parent_population.generation != 0 and\
+			 len(self.male_set) > 1):
+			#randomly select male from male set to
+			#make aggressive relationship with
+			randomly_selected_male_index = self.male_set.pop()
+			randomly_selected_male =\
+			 self.agent_dict[randomly_selected_male_index]
+			self.mark_agents_as_aggressive(agent, randomly_selected_male)
+			#add random male back to the male set
+			self.male_set.add(randomly_selected_male_index)
+
 		if (agent.age < self.FEMALE_MINIMUM_AGE):
 			self.underage_set.add(agent.index)
 
@@ -321,15 +333,6 @@ class AgentGroup():
 			making the seed group
 			"""
 		elif (agent.sex == "m"):
-			#randomly select male from male set to
-			#make a relationship with
-			if (self.parent_population.generation != 0 and len(self.male_set) > 1):
-				randomly_selected_male_index = self.male_set.pop()
-				randomly_selected_male =\
-				 self.agent_dict[randomly_selected_male_index]
-				self.mark_agents_as_aggressive(agent, randomly_selected_male)
-				#add random male back to the male set
-				self.male_set.add(randomly_selected_male_index)
 
 			self.male_set.add(agent.index)
 
