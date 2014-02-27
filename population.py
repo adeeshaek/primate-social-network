@@ -25,8 +25,8 @@ class Population():
 	population unique
 	"""
 	groups = []
-	top_index = 0
-	group_top_index = 0
+	top_index = 0 #highest agent index in the population
+	group_top_index = 0 #highest group index in the pop
 
 	def __init__(self):
 		self.groups = []
@@ -79,7 +79,7 @@ class Population():
 		for group in self.groups:
 			output_string += group.get_dot_string()
 		output_string += "}"
-		
+
 		return output_string
 
 

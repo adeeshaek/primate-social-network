@@ -35,7 +35,7 @@ import constants
 from counter import Counter
 
 NUMBER_OF_GENERATIONS = 15
-NUMBER_OF_SEED_GROUPS = 1
+NUMBER_OF_SEED_GROUPS = 2
 
 DOT_OUTPUT_DIR = "dot/"
 
@@ -72,7 +72,7 @@ def main():
 	#assign all_groups by creating several copies of the 
 	#seed generation
 	for i in range(0, NUMBER_OF_SEED_GROUPS):
-		this_generation_population.add_group(seed_group)
+		this_generation_population.add_group(copy.deepcopy(seed_group))
 	
 	for i in range (0, NUMBER_OF_GENERATIONS):
 		print (str(i))

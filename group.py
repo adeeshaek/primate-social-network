@@ -52,6 +52,18 @@ class AgentGroup():
 		 copy.deepcopy(self.whole_set)
 		return new_group
 
+	def clear(self):
+		"""
+		removes all agents from the group, clearing it
+		completely
+		"""
+		self.female_set = set()
+		self.male_set = set()
+		self.underage_set = set()
+		self.in_relationships_set = set()
+		self.whole_set = set()
+		self.agent_dict = {}
+
 	def update_indices(self, top_index):
 		"""
 		intended to increment all the indices in the 
@@ -65,23 +77,21 @@ class AgentGroup():
 		"""
 		new_top_index = 0
 
-		self.female_set = set()
-		self.male_set = set()
-		self.underage_set = set()
-		self.in_relationships_set = set()
-
+		list_of_agents_to_add = []
 
 		for agent_index in self.agent_dict:
 			agent = self.agent_dict[agent_index]
-			#change the index in the dict
-			del self.agent_dict[agent_index]
 			agent.update_indices(top_index)
-			self.agent_dict[agent.index] = agent
 
 			if (agent.index > new_top_index):
 				new_top_index = agent.index
+		
+			list_of_agents_to_add.append(agent)
 
-			#add agent again
+		#clear the group and re-add agents
+		self.clear()
+
+		for agent in list_of_agents_to_add:
 			self.add_agent(agent)
 
 		return new_top_index
