@@ -37,8 +37,6 @@ from counter import Counter
 NUMBER_OF_GENERATIONS = 50
 NUMBER_OF_SEED_GROUPS = 10
 
-DOT_OUTPUT_DIR = "dot/"
-
 def main():
 	simulation = Simulation()
 	simulation.run_simulation()
@@ -48,6 +46,23 @@ class Simulation:
 	defines a single simulation, with a given set of activities
 	taking place in a generation
 	"""
+
+	output_xls_name = ""
+	dot_directory = ""
+
+	def __init__(self, output_xls_name="output_data.xls",
+	 dot_directory="dot/"):
+		"""
+		constructor
+
+		parameters
+		----------
+		output_xls_name: name of output excel file
+		dot_directory: directory in which dot files are saved
+		"""
+		self.output_xls_name = output_xls_name
+		self.dot_directory = dot_directory
+
 	def run_simulation(self):
 		#import Seed and lifetable data
 		this_generation_population = Population()
@@ -155,6 +170,15 @@ class Simulation:
 						next_generation_population, random_module)
 					#check for friendships
 
+					#unique changes
+					self.conduct_changes_unique_to_experiment(
+						this_generation_population, 
+						next_generation_population,
+						this_generation, new_generation, this_agent, 
+						new_agent, females_to_male, lifetable, 
+						random_module
+						)
+
 					#analytics
 					this_edges_per_agent += this_agent.edges()
 
@@ -208,33 +232,15 @@ class Simulation:
 		print (birth_counter.getCount())
 		print (death_counter.getCount())
 
-	def save_data(self,
-	 population_record_list, male_population_record_list,
-	 female_population_record_list, age_record_list, average_birth_rate,
-	 average_death_rate, real_birth_rate_list, real_death_rate_list,
-	 average_edges_per_agent):
+	def conduct_changes_unique_to_experiment(self,
+		this_generation_population, next_generation_population,
+		this_generation, new_generation, this_agent, new_agent,
+		females_to_male, lifetable, random_module):
 		"""
-		saves output data to a file.
-
-		parameters
-		----------
-		population_record_list: contains data about age
-			in the form of a list of tuples. Each tuple contains
-			(average_age, standard_deviation) for a generation
-		age_record_list: contains data about population. It is
-			a list of integers representing population for a 
-			generation
+		this method can be overloaded to add changes unique
+		to this simulation
 		"""
-		book = Workbook()
-		self.save_age_stats(age_record_list, book)
-		data_saver.save_number_of_indivs(population_record_list, 
-			male_population_record_list, female_population_record_list,
-			average_birth_rate, average_death_rate, 
-			real_birth_rate_list, real_death_rate_list,
-			average_edges_per_agent, book)
-		output_directory =\
-		 constants.OUTPUT_FOLDER + "output_data.xls"
-		book.save(output_directory)
+		pass
 
 	def check_for_death(self, lifetable, females_to_male, this_agent,
 		new_agent, new_generation, random_module, counter):
@@ -441,9 +447,37 @@ class Simulation:
 		#save the average age
 		data_saver.save_age_data(output_list, book)
 
+	def save_data(self,
+	 population_record_list, male_population_record_list,
+	 female_population_record_list, age_record_list, average_birth_rate,
+	 average_death_rate, real_birth_rate_list, real_death_rate_list,
+	 average_edges_per_agent):
+		"""
+		saves output data to a file.
+
+		parameters
+		----------
+		population_record_list: contains data about age
+			in the form of a list of tuples. Each tuple contains
+			(average_age, standard_deviation) for a generation
+		age_record_list: contains data about population. It is
+			a list of integers representing population for a 
+			generation
+		"""
+		book = Workbook()
+		self.save_age_stats(age_record_list, book)
+		data_saver.save_number_of_indivs(population_record_list, 
+			male_population_record_list, female_population_record_list,
+			average_birth_rate, average_death_rate, 
+			real_birth_rate_list, real_death_rate_list,
+			average_edges_per_agent, book)
+		output_directory =\
+		 constants.OUTPUT_FOLDER + self.output_xls_name
+		book.save(output_directory)
+
 	def save_data_to_dot(self, dot_string, generation_number):
 		generation_number_string = '%03d' % generation_number
-		filename = DOT_OUTPUT_DIR + generation_number_string + ".dot"
+		filename = self.dot_directory + generation_number_string + ".dot"
 		destination_file = open(filename, "w+")
 		destination_file.write(dot_string)
 
