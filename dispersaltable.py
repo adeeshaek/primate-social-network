@@ -20,12 +20,6 @@ class DispersalTable:
 		calculates the chance for a male to emigrate, for the given number
 		of females per male
 
-		chance of emigration = 
-			likelihood by age * likelihood by number of females
-
-		likelihood by number of females = -0.7F + 2.2, where F=number of females
-		for 1 male
-
 		parameters
 		----------
 		females_to_male: proportion of females per male in the group
@@ -58,7 +52,7 @@ class DispersalTable:
 		chance of acceptance = 
 			likelihood by age * likelihood by number of females
 
-		likelihood by number of females = 50 * females_to_male
+		likelihood by number of females = .4 * females_to_male
 
 		parameters
 		----------
@@ -70,14 +64,27 @@ class DispersalTable:
 		chance of acceptance
 		"""
 		likelihood_by_age = (self.immigration[age][0],
-			self.immigration[age][1], self.immigration[age][2])
+			self.immigration[age][1], self.immigration[age][2],
+			self.immigration[age][3])
 
-		#likelihood_by_number_of_females = females_to_male * 50
+		likelihood_by_number_of_females = females_to_male * 0.4
 
-		likelihood_of_immigration =\
-			likelihood_by_age #* likelihood_by_number_of_females
+		#likelihood by age is a 4-tuple, and elements 0 and 2 
+		#determine chance of immigration, while elements 1 and 3
+		#determine chance of death, respectively. Chance of death
+		#is not affected by the number of females in a group
 
-		return likelihood_of_immigration
+		new_likelihood_by_age_1 =\
+			likelihood_by_age[0] * likelihood_by_number_of_females
+
+		new_likelihood_by_age_2 =\
+			likelihood_by_age[2] * likelihood_by_number_of_females
+
+		new_likelihood_by_age =\
+			(new_likelihood_by_age_1, likelihood_by_age[1],
+				new_likelihood_by_age_2, likelihood_by_age[3])
+
+		return new_likelihood_by_age
 
 
 	

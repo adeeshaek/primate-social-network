@@ -45,6 +45,12 @@ RANK_ALPHA = "A"
 #before he is made to migrate
 MIGRATION_COUNTER_CAP = 5 
 
+#the maximum number of females to a male
+#there can be in a group, for a male to still
+#emigrate. If there are > 4 females per male
+#in a group, males will not emigrate in a year.
+EMIGRATION_THRESHOLD_OF_FTM = 4
+
 #the age at which each sex reaches adulthood
 ADULTHOOD_AGE = {
 	"m" : 7,

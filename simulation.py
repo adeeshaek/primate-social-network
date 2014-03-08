@@ -330,8 +330,13 @@ class Simulation:
 		to migrate again until it reaches adulthood.
 
 		If the agent is an adult, the simulation checks if the 
+		number of females to a male is more than the constant
+		EMIGRATION_THRESHOLD_OF_FTM. The male is only made to emigrate
+		if the number of females per male is less than that threshold.
+		If this is so, the simulation next checks if the 
 		number of years since the last emigration is greater than 
-		5. If so, the agent is made to emigrate.
+		5. If this is also true, a coin is tossed to determine 
+		whether the agent is made to emigrate.
 
 		Once a coin has been tossed, if it comes up heads,
 		the simulation randomly shuffles all the other groups 
@@ -365,9 +370,14 @@ class Simulation:
 					return
 
 			elif (this_agent.last_migration > \
-				constants.MIGRATION_COUNTER_CAP):
+				constants.MIGRATION_COUNTER_CAP or\
+				females_to_male > \
+				constants.EMIGRATION_THRESHOLD_OF_FTM):
 				#if the adult has been stationary for 
-				#less than 5 years, then don't bother him
+				#less than 5 years, or if the number of
+				#females in a group is greater than the
+				#threshold defined in constants, then 
+				#don't bother him
 				return
 			
 			#find the probability of emigration
@@ -404,7 +414,7 @@ class Simulation:
 							return
 						else:
 							#check if it dies
-							if (random_module.roll(chance_of_acceptance[tries])):
+							if (random_module.roll(chance_of_acceptance[tries+1])):
 								return
 							else:
 								tries += 2
