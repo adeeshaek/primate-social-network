@@ -332,6 +332,13 @@ class AgentGroup():
 					#of adult males
 					self.male_set.add(agent.index)
 
+			else: #this concerns the first gen.
+				if (agent.age < self.MALE_MINIMUM_AGE):
+					self.underage_set.add(agent.index)
+
+				else:
+					self.male_set.add(agent.index)
+
 		else:
 			assert(agent.sex == "f")
 
