@@ -39,7 +39,7 @@ def save_number_of_indivs(data_list, male_data_list,
  female_data_list, birth_rate_list, death_rate_list,
  real_birth_rate_list, real_death_rate_list,
  average_edges_per_agent, adult_males_list, adult_females_list,
- book):
+ adult_females_per_males_list, book):
 	"""
 	saves data to the specified excel workbook
 
@@ -62,8 +62,7 @@ def save_number_of_indivs(data_list, male_data_list,
 	pop_sheet.write(0,6,'birth rate')
 	pop_sheet.write(0,7,'death rate')
 	pop_sheet.write(0,8,'Edges per agent')
-	pop_sheet.write(0,9,'adult males per group')
-	pop_sheet.write(0,10,'adult females per group')
+	pop_sheet.write(0,9,'Adult females per male')
 
 	for i in range(0, len(data_list)):
 		pop_sheet.write(i+1,0,i+1)
@@ -75,5 +74,4 @@ def save_number_of_indivs(data_list, male_data_list,
 		pop_sheet.write(i+1,6,real_birth_rate_list[i])
 		pop_sheet.write(i+1,7,real_death_rate_list[i])
 		pop_sheet.write(i+1,8,average_edges_per_agent[i])
-		pop_sheet.write(i+1,9,adult_males_list[i])
-		pop_sheet.write(i+1,10,adult_females_list[i])
+		pop_sheet.write(i+1,9,adult_females_per_males_list[i])

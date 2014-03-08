@@ -91,6 +91,7 @@ class Simulation:
 		edges_per_agent_list = []
 		adult_males_list = []
 		adult_females_list = []
+		adult_females_per_males_list = []
 
 		death_counter = Counter() #used to make sure the correct number
 		#of deaths occur
@@ -202,11 +203,14 @@ class Simulation:
 
 			number_of_groups = len(this_generation_population.groups)
 
-			adult_males_list.append(
-				this_generation_adult_males/number_of_groups
-				)
-			adult_females_list.append(
-				this_generation_adult_females/number_of_groups
+			adult_males_per_group =\
+			 this_generation_adult_males/number_of_groups
+			adult_females_per_group =\
+			 this_generation_adult_females/number_of_groups
+			adult_males_list.append(adult_males_per_group)
+			adult_females_list.append(adult_females_per_group)
+			adult_females_per_males_list.append(
+				adult_females_per_group/adult_males_per_group
 				)
 
 			self.save_data_to_dot(this_generation_population.get_dot_string(), i)
@@ -248,7 +252,8 @@ class Simulation:
 		 birth_rate_record_list, death_rate_record_list,
 		 real_birth_rate_list, real_death_rate_list,
 		 edges_per_agent_list,
-		 adult_males_list, adult_females_list)
+		 adult_males_list, adult_females_list, 
+		 adult_females_per_males_list)
 
 		print (birth_counter.getCount())
 		print (death_counter.getCount())
@@ -486,7 +491,8 @@ class Simulation:
 	 population_record_list, male_population_record_list,
 	 female_population_record_list, age_record_list, average_birth_rate,
 	 average_death_rate, real_birth_rate_list, real_death_rate_list,
-	 average_edges_per_agent, adult_males_list, adult_females_list):
+	 average_edges_per_agent, adult_males_list, adult_females_list,
+	 adult_females_per_males_list):
 		"""
 		saves output data to a file.
 
@@ -506,7 +512,7 @@ class Simulation:
 			average_birth_rate, average_death_rate, 
 			real_birth_rate_list, real_death_rate_list,
 			average_edges_per_agent, adult_males_list, adult_females_list,
-			book)
+			adult_females_per_males_list, book)
 		output_directory =\
 		 constants.OUTPUT_FOLDER + self.output_xls_name
 		book.save(output_directory)
