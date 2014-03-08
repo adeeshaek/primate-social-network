@@ -89,6 +89,8 @@ class Simulation:
 		real_death_rate_list = []
 
 		edges_per_agent_list = []
+		adult_males_list = []
+		adult_females_list = []
 
 		death_counter = Counter() #used to make sure the correct number
 		#of deaths occur
@@ -108,6 +110,8 @@ class Simulation:
 			this_male_population_record = 0
 			this_female_population_record = 0
 			this_edges_per_agent = 0
+			this_generation_adult_males = 0
+			this_generation_adult_females = 0
 			this_birth_rate_record = []
 			this_death_rate_record = []
 
@@ -191,6 +195,20 @@ class Simulation:
 					elif (this_agent.index in this_generation.female_set):
 						this_female_population_record += 1
 
+				this_generation_adult_males +=\
+				 len(this_generation.male_set)
+				this_generation_adult_females +=\
+				 len(this_generation.female_set)
+
+			number_of_groups = len(this_generation_population.groups)
+
+			adult_males_list.append(
+				this_generation_adult_males/number_of_groups
+				)
+			adult_females_list.append(
+				this_generation_adult_females/number_of_groups
+				)
+
 			self.save_data_to_dot(this_generation_population.get_dot_string(), i)
 			self.save_data_to_json(this_generation_population.get_json_string(), i)
 
@@ -229,7 +247,8 @@ class Simulation:
 		 female_population_record_list, age_record_list, 
 		 birth_rate_record_list, death_rate_record_list,
 		 real_birth_rate_list, real_death_rate_list,
-		 edges_per_agent_list)
+		 edges_per_agent_list,
+		 adult_males_list, adult_females_list)
 
 		print (birth_counter.getCount())
 		print (death_counter.getCount())
@@ -361,12 +380,10 @@ class Simulation:
 		#make sure the new_agent isn't dead
 		if (this_agent.sex == "m") and new_agent.index in this_generation.whole_set:
 			#check if child or adult
-			if (this_agent not in this_generation.male_set and\
+			if (this_agent.index not in this_generation.male_set and\
 				this_agent.young_migration):
 				#check if child has migrated
 				#if so, don't check for migration
-				in_male_set = this_agent in this_generation.male_set
-				young_migration = this_agent.young_migration
 				return
 
 			elif (this_agent.last_migration < \
@@ -381,7 +398,6 @@ class Simulation:
 				return
 
 			else:
-				print "Emigrating?"
 				#find the probability of emigration
 				probability_of_emigration =\
 				 dispersal_table.chance_of_emigration(
@@ -413,7 +429,6 @@ class Simulation:
 						if (target_group_index != this_generation.group_index):
 							if (random_module.roll(chance_of_acceptance[tries])):
 								next_generation_population.groups[target_group_index].add_agent(new_agent)
-								print "Emigrated!"
 								return
 							else:
 								#check if it dies
@@ -471,7 +486,7 @@ class Simulation:
 	 population_record_list, male_population_record_list,
 	 female_population_record_list, age_record_list, average_birth_rate,
 	 average_death_rate, real_birth_rate_list, real_death_rate_list,
-	 average_edges_per_agent):
+	 average_edges_per_agent, adult_males_list, adult_females_list):
 		"""
 		saves output data to a file.
 
@@ -490,7 +505,8 @@ class Simulation:
 			male_population_record_list, female_population_record_list,
 			average_birth_rate, average_death_rate, 
 			real_birth_rate_list, real_death_rate_list,
-			average_edges_per_agent, book)
+			average_edges_per_agent, adult_males_list, adult_females_list,
+			book)
 		output_directory =\
 		 constants.OUTPUT_FOLDER + self.output_xls_name
 		book.save(output_directory)
