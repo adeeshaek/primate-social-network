@@ -300,9 +300,60 @@ class AgentGroup():
 		self.agent_dict[agent.index] = agent
 		self.whole_set.add(agent.index)
 
+		#first check if female or male
+		if (agent.sex == "m"):
+			#reset immigration counter
+			agent.last_migration = 0
+
+			#these checks do not occur during the 0th gen
+			#where adults are added to the group
+			if (self.parent_population.generation != 0):
+
+				#if male, check if agent is child or adult
+				if (agent.age < self.MALE_MINIMUM_AGE):
+					agent.young_migration = True
+					self.underage_set.add(agent.index)
+
+				else:
+					#first, get an aggressive relationship
+					if (len(self.male_set) > 0):
+						randomly_selected_male_index =\
+						 self.male_set.pop()
+						randomly_selected_male =\
+						 self.agent_dict[
+						 randomly_selected_male_index
+						 ]
+						self.mark_agents_as_aggressive(
+							agent, randomly_selected_male)
+						self.male_set.add(randomly_selected_male_index)
+
+					#even if aggressive relationship does not get
+					#added the male has to be added to the set
+					#of adult males
+					self.male_set.add(agent.index)
+
+		else:
+			assert(agent.sex == "f")
+
+			#except for the first gen, where adult agents are
+			#added to the population from the seed group
+			#adult females are NEVER added to a group
+			if (self.parent_population.generation != 0):
+				assert (agent.age == 1)
+				self.underage_set.add(agent.index)
+
+			elif agent.age > self.FEMALE_MINIMUM_AGE:
+				self.female_set.add(agent.index)
+
+			else:
+				assert (agent.age <= self.FEMALE_MINIMUM_AGE)
+				self.underage_set.add(agent.index)
+
+		"""
 		if (agent.sex == "m" and \
 			self.parent_population.generation != 0 and\
-			 len(self.male_set) > 1):
+			 len(self.male_set) > 1 and\
+			 agent.age > constants.ADULTHOOD_AGE['m']):
 			#randomly select male from male set to
 			#make aggressive relationship with
 			randomly_selected_male_index = self.male_set.pop()
@@ -330,19 +381,14 @@ class AgentGroup():
 		elif (
 			agent.age < self.MALE_MINIMUM_AGE and agent.sex == "m"):
 			self.underage_set.add(agent.index)
-
-			"""
-			Of age males are only added during dispersal.
-			This means that we should create aggressive 
-			releationships between males, except when
-			making the seed group
-			"""
+			
 		elif (agent.sex == "m"):
 
 			self.male_set.add(agent.index)
 
 		else:
 			self.female_set.add(agent.index)
+		"""
 
 	def remove_agent(self, agent):
 		"""

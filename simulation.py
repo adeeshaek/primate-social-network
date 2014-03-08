@@ -125,7 +125,6 @@ class Simulation:
 			for j in range(0, len(this_generation_population.groups)):	
 				this_generation = this_generation_population.groups[j]
 				new_generation = next_generation_population.groups[j]
-
 				females_to_male =\
 				 this_generation.get_females_to_male()
 
@@ -361,15 +360,16 @@ class Simulation:
 		#check if live mature male
 		#make sure the new_agent isn't dead
 		if (this_agent.sex == "m") and new_agent.index in this_generation.whole_set:
-
-		#check if child or adult
-			if (this_agent not in this_generation.male_set):
+			#check if child or adult
+			if (this_agent not in this_generation.male_set and\
+				this_agent.young_migration):
 				#check if child has migrated
-				if this_agent.young_migration == True:
-					#if so, don't check for migration
-					return
+				#if so, don't check for migration
+				in_male_set = this_agent in this_generation.male_set
+				young_migration = this_agent.young_migration
+				return
 
-			elif (this_agent.last_migration > \
+			elif (this_agent.last_migration < \
 				constants.MIGRATION_COUNTER_CAP or\
 				females_to_male > \
 				constants.EMIGRATION_THRESHOLD_OF_FTM):
@@ -379,45 +379,48 @@ class Simulation:
 				#threshold defined in constants, then 
 				#don't bother him
 				return
-			
-			#find the probability of emigration
-			probability_of_emigration =\
-			 dispersal_table.chance_of_emigration(
-			 	females_to_male, this_agent.age)
 
-			#toss a coin with that probability
-			toss =\
-			 random_module.roll(probability_of_emigration)
-			
-			#if toss comes up heads, male is emigrating
-			if (toss):
-				#start by marking this agent as being dead
-				new_generation.mark_agent_as_dead(new_agent)
-				#now shuffle all groups (while removing this)
-				#one. 
-				groups = this_generation_population.groups
-				chance_of_acceptance =\
-				 dispersal_table.chance_of_acceptance(
+			else:
+				print "Emigrating?"
+				#find the probability of emigration
+				probability_of_emigration =\
+				 dispersal_table.chance_of_emigration(
 				 	females_to_male, this_agent.age)
-				max_group_index = len(groups)
-				group_indices = range(0, max_group_index)
 
-				tries = 0
-				while (tries < 3):
-					#shuffle groups
-					random_module.shuffle(group_indices)
-					target_group_index = group_indices[0]
+				#toss a coin with that probability
+				toss =\
+				 random_module.roll(probability_of_emigration)
+				
+				#if toss comes up heads, male is emigrating
+				if (toss):
+					#start by marking this agent as being dead
+					new_generation.mark_agent_as_dead(new_agent)
+					#now shuffle all groups (while removing this)
+					#one. 
+					groups = this_generation_population.groups
+					chance_of_acceptance =\
+					 dispersal_table.chance_of_acceptance(
+					 	females_to_male, this_agent.age)
+					max_group_index = len(groups)
+					group_indices = range(0, max_group_index)
 
-					if (target_group_index != this_generation.group_index):
-						if (random_module.roll(chance_of_acceptance[tries])):
-							next_generation_population.groups[target_group_index].add_agent(new_agent)
-							return
-						else:
-							#check if it dies
-							if (random_module.roll(chance_of_acceptance[tries+1])):
+					tries = 0
+					while (tries < 3):
+						#shuffle groups
+						random_module.shuffle(group_indices)
+						target_group_index = group_indices[0]
+
+						if (target_group_index != this_generation.group_index):
+							if (random_module.roll(chance_of_acceptance[tries])):
+								next_generation_population.groups[target_group_index].add_agent(new_agent)
+								print "Emigrated!"
 								return
 							else:
-								tries += 2
+								#check if it dies
+								if (random_module.roll(chance_of_acceptance[tries+1])):
+									return
+								else:
+									tries += 2
 
 
 
