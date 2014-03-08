@@ -49,9 +49,10 @@ class Simulation:
 
 	output_xls_name = ""
 	dot_directory = ""
+	json_directory = ""
 
 	def __init__(self, output_xls_name="output_data.xls",
-	 dot_directory="dot/"):
+	 dot_directory="dot/", json_directory="json/"):
 		"""
 		constructor
 
@@ -62,6 +63,7 @@ class Simulation:
 		"""
 		self.output_xls_name = output_xls_name
 		self.dot_directory = dot_directory
+		self.json_directory = json_directory
 
 	def run_simulation(self):
 		#import Seed and lifetable data
@@ -191,6 +193,7 @@ class Simulation:
 						this_female_population_record += 1
 
 			self.save_data_to_dot(this_generation_population.get_dot_string(), i)
+			self.save_data_to_json(this_generation_population.get_json_string(), i)
 
 			#set the old gen to the new one
 			this_generation_population = next_generation_population
@@ -318,13 +321,17 @@ class Simulation:
 		In order to simulate this, the simulation first checks if 
 		the agent is a child. If the agent is a child who has not
 		migrated yet, the probability of emigration is then determined
-		and a coin is tossed to check for emigration. If the child
-		has migrated once, it is not made to migrate again.
+		and a coin is tossed to check for emigration. Once the child
+		is determined to be emigrating in this year, a counter is 
+		started, which measures the number of years since the last 
+		time the agent has migrated. Once the agent reaches adulthood,
+		it is made to emigrate every five years according to this counter.
+		However, once a child has migrated once, it is not made 
+		to migrate again until it reaches adulthood.
 
 		If the agent is an adult, the simulation checks if the 
 		number of years since the last emigration is greater than 
-		5. If so, the probability of emigration is checked, and 
-		a coin is tossed to check for emigration.
+		5. If so, the agent is made to emigrate.
 
 		Once a coin has been tossed, if it comes up heads,
 		the simulation randomly shuffles all the other groups 
@@ -480,6 +487,12 @@ class Simulation:
 		filename = self.dot_directory + generation_number_string + ".dot"
 		destination_file = open(filename, "w+")
 		destination_file.write(dot_string)
+
+	def save_data_to_json(self, data_string, generation_number):
+		generation_number_string = '%03d' % generation_number
+		filename = self.json_directory + generation_number_string + ".json"
+		destination_file = open(filename, "w+")
+		destination_file.write(data_string)
 
 if __name__ == '__main__':
 	main()

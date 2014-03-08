@@ -137,6 +137,30 @@ class AgentClass:
 
 		return outputstring
 
+	def get_json_name(self):
+		"""
+		returns the name of this object in JSON. This 
+		is used for visualizing populations in javascript
+		"""
+		name_dict = {"name":self.index,
+		 "age":self.age, "sex":self.sex}
+
+		return name_dict
+
+	def get_json_links(self):
+		"""
+		returns links relating to this object in JSON.
+		Used for visualizing populations in javascript
+		"""
+		output = []
+
+		for child_index in self.children:
+			output_dict = {"source":self.index,
+			"target":child_index}
+			output.append(output_dict)
+
+		return output
+
 	def __str__(self):
 		"""
 		returns human readable class description

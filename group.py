@@ -219,7 +219,7 @@ class AgentGroup():
 		marks an agent as being a parent 
 		by marking as being in a relationship and
 		adding the child's index to the parent's list
-		of children
+		of childrens
 
 		parameters
 		----------
@@ -320,7 +320,12 @@ class AgentGroup():
 			#migration
 			if (agent.sex == "m" and \
 			 self.parent_population.generation != 0):
-				self.young_migration = True
+			#the agent is marked as having migrated
+			#during its youth, and the counter which 
+			#makes it migrate every subsequent year
+			#is reset to 0
+				agent.young_migration = True
+				agent.last_migration = 0
 
 		elif (
 			agent.age < self.MALE_MINIMUM_AGE and agent.sex == "m"):
@@ -410,6 +415,8 @@ class AgentGroup():
 		----------
 		agent_a, agent_b: agents to mark as sisters
 		"""
+		assert(agent_a != agent_b)
+		assert(agent_a.index != agent_b.index)
 		agent_a.sisters.append(agent_b.index)
 		agent_b.sisters.append(agent_a.index)
 		self.in_relationships_set.add(agent_a.index)

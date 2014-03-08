@@ -1,5 +1,6 @@
 """	
 Macaque Simulation Project
+
 Adeesha Ekanayake 
 5/12/2013
 
@@ -16,6 +17,7 @@ stage of the simulation.
 """
 import collections
 import copy
+import json
 
 class Population():
 	"""
@@ -70,6 +72,24 @@ class Population():
 		"""
 		self.top_index += 1 #pre increment the top_index
 		return self.top_index - 1 #send the old top_index
+
+	def get_json_string(self):
+		"""
+		returns a string with a graphical representation of the 
+		population in json. This can be visualized using the 
+		javascript files.
+		"""
+		nodes = []
+		links = []
+
+		for group in self.groups:
+			for agent_index in group.agent_dict:
+				agent = group.agent_dict[agent_index]
+				nodes.append(agent.get_json_name())
+				links += agent.get_json_links()
+
+		return json.dumps({"nodes":nodes, "links":links})
+
 
 	def get_dot_string(self):
 		"""
