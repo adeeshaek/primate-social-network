@@ -23,4 +23,8 @@ class Counter:
 		self.count = 0
 
 	def getCount(self):
-		return self.count
+		if (self.count == 0):
+			#this is to avoid div by 0 error
+			return 0.0000001 
+		else:
+			return self.count

@@ -113,8 +113,6 @@ class Simulation:
 			this_edges_per_agent = 0
 			this_generation_adult_males = 0
 			this_generation_adult_females = 0
-			this_birth_rate_record = []
-			this_death_rate_record = []
 
 			#reset counters
 			death_counter.reset()
@@ -149,13 +147,6 @@ class Simulation:
 						chance_of_birth =\
 						 lifetable.chance_of_birth(females_to_male, 
 						 	this_agent.age)
-						this_birth_rate_record.append(chance_of_birth)
-
-					#check death_rate
-					this_death_rate_record.append(
-						lifetable.chance_of_death(
-							females_to_male, this_agent.age,
-							this_agent.sex))
 
 					#check for birth
 					self.check_for_birth(this_generation, new_generation,
@@ -233,26 +224,10 @@ class Simulation:
 				this_female_population_record)
 			population_record_list.append(this_population_record)
 
-			average_birth_rate = 0
-			for i in range(0, len(this_birth_rate_record)):
-				average_birth_rate += this_birth_rate_record[i]
-			average_birth_rate =\
-			 average_birth_rate / len(this_birth_rate_record)
-
-			average_death_rate = 0
-			for i in range(0, len(this_death_rate_record)):
-				average_death_rate += this_death_rate_record[i]
-			average_death_rate =\
-			 average_death_rate / len(this_death_rate_record)
-			death_rate_record_list.append(average_death_rate)
-			birth_rate_record_list.append(average_birth_rate)
-
 		self.save_data(population_record_list, male_population_record_list,
 		 female_population_record_list, age_record_list, 
-		 birth_rate_record_list, death_rate_record_list,
 		 real_birth_rate_list, real_death_rate_list,
 		 edges_per_agent_list,
-		 adult_males_list, adult_females_list, 
 		 adult_females_per_males_list)
 
 		print (birth_counter.getCount())
@@ -489,9 +464,9 @@ class Simulation:
 
 	def save_data(self,
 	 population_record_list, male_population_record_list,
-	 female_population_record_list, age_record_list, average_birth_rate,
-	 average_death_rate, real_birth_rate_list, real_death_rate_list,
-	 average_edges_per_agent, adult_males_list, adult_females_list,
+	 female_population_record_list, age_record_list, 
+	 real_birth_rate_list, real_death_rate_list,
+	 average_edges_per_agent, 
 	 adult_females_per_males_list):
 		"""
 		saves output data to a file.
@@ -508,10 +483,9 @@ class Simulation:
 		book = Workbook()
 		self.save_age_stats(age_record_list, book)
 		data_saver.save_number_of_indivs(population_record_list, 
-			male_population_record_list, female_population_record_list,
-			average_birth_rate, average_death_rate, 
+			male_population_record_list, female_population_record_list, 
 			real_birth_rate_list, real_death_rate_list,
-			average_edges_per_agent, adult_males_list, adult_females_list,
+			average_edges_per_agent, 
 			adult_females_per_males_list, book)
 		output_directory =\
 		 constants.OUTPUT_FOLDER + self.output_xls_name
