@@ -198,6 +198,9 @@ class Simulation:
 					len(this_generation.whole_set)
 					)
 
+			#set the old gen to the new one
+			this_generation_population = next_generation_population
+
 			group_composition_list.append(this_generation_group_composition_list)
 
 			number_of_groups = len(this_generation_population.groups)
@@ -214,9 +217,6 @@ class Simulation:
 
 			self.save_data_to_dot(this_generation_population.get_dot_string(), i)
 			self.save_data_to_json(this_generation_population.get_json_string(), i)
-
-			#set the old gen to the new one
-			this_generation_population = next_generation_population
 
 			average_edges_per_agent =\
 			 float(this_edges_per_agent)/this_population_record
