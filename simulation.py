@@ -83,8 +83,6 @@ class Simulation:
 		male_population_record_list = []
 		female_population_record_list = []
 
-		birth_rate_record_list = []
-		death_rate_record_list = []
 		real_birth_rate_list = []
 		real_death_rate_list = []
 
@@ -92,6 +90,8 @@ class Simulation:
 		adult_males_list = []
 		adult_females_list = []
 		adult_females_per_males_list = []
+
+		group_composition_list = []
 
 		death_counter = Counter() #used to make sure the correct number
 		#of deaths occur
@@ -113,6 +113,7 @@ class Simulation:
 			this_edges_per_agent = 0
 			this_generation_adult_males = 0
 			this_generation_adult_females = 0
+			this_generation_group_composition_list = []
 
 			#reset counters
 			death_counter.reset()
@@ -128,6 +129,7 @@ class Simulation:
 			for j in range(0, len(this_generation_population.groups)):	
 				this_generation = this_generation_population.groups[j]
 				new_generation = next_generation_population.groups[j]
+
 				females_to_male =\
 				 this_generation.get_females_to_male()
 
@@ -192,6 +194,12 @@ class Simulation:
 				this_generation_adult_females +=\
 				 len(this_generation.female_set)
 
+				this_generation_group_composition_list.append(
+					len(this_generation.whole_set)
+					)
+
+			group_composition_list.append(this_generation_group_composition_list)
+
 			number_of_groups = len(this_generation_population.groups)
 
 			adult_males_per_group =\
@@ -228,7 +236,8 @@ class Simulation:
 		 female_population_record_list, age_record_list, 
 		 real_birth_rate_list, real_death_rate_list,
 		 edges_per_agent_list,
-		 adult_females_per_males_list)
+		 adult_females_per_males_list,
+		 group_composition_list)
 
 		print (birth_counter.getCount())
 		print (death_counter.getCount())
@@ -462,12 +471,66 @@ class Simulation:
 		#save the average age
 		data_saver.save_age_data(output_list, book)
 
+	def save_group_composition_stats(self, data_list, book):
+		"""
+		collates and saves group composition stats.
+
+		parameters
+		----------
+		data_list: list of lists
+			data_list = [[1,2,3], [2,3,4]]
+			each sublist represents the population of 
+			all the groups in a generation. 
+			each element in a sublist is the population
+			of a group in a generation.
+			In the above example, there were two generations
+			in the simulation. Both generations had 3 groups.
+			In the 1st generation, 1 group had 1 agent,
+			another had 2, and the last had 3.
+		"""
+		output_list = []
+
+		for generation in data_list:
+			average_population = 0
+			standard_deviation_aggregate = 0
+
+			if len(generation) != 0:
+				number_of_groups = len(generation)
+			else:
+				number_of_groups = 0.00001 #avoid div by 0
+
+			#first calculate the average age
+			for group_population in generation:
+				average_population += group_population
+
+			average_population = average_population/\
+			 number_of_groups
+
+			#now calculate standard dev
+			for group_population in generation:
+				standard_deviation_increment =\
+				 math.pow((group_population - average_population), 2)
+				standard_deviation_aggregate +=\
+				 standard_deviation_increment
+
+			standard_deviation = math.sqrt(
+				(standard_deviation_aggregate/number_of_groups)
+				)
+
+			output_list.append((average_population, standard_deviation))
+
+		#save the average age
+		data_saver.save_group_composition_data(
+			output_list, book
+			)
+
 	def save_data(self,
 	 population_record_list, male_population_record_list,
 	 female_population_record_list, age_record_list, 
 	 real_birth_rate_list, real_death_rate_list,
 	 average_edges_per_agent, 
-	 adult_females_per_males_list):
+	 adult_females_per_males_list,
+	 group_composition_list):
 		"""
 		saves output data to a file.
 
@@ -482,6 +545,9 @@ class Simulation:
 		"""
 		book = Workbook()
 		self.save_age_stats(age_record_list, book)
+		self.save_group_composition_stats(
+			group_composition_list, book
+			)
 		data_saver.save_number_of_indivs(population_record_list, 
 			male_population_record_list, female_population_record_list, 
 			real_birth_rate_list, real_death_rate_list,
