@@ -167,6 +167,7 @@ class Simulation:
 						new_generation,
 						this_generation_population, 
 						next_generation_population, random_module)
+
 					#check for friendships
 
 					#unique changes
@@ -197,6 +198,11 @@ class Simulation:
 				this_generation_group_composition_list.append(
 					len(this_generation.whole_set)
 					)
+
+				#make the group check if any males have immigrated
+				#but have not formed aggressive relationships.
+				#if so, makes them form these relationships
+				this_generation.clear_aggressive_relationship_stack()
 
 			#set the old gen to the new one
 			this_generation_population = next_generation_population
@@ -363,7 +369,7 @@ class Simulation:
 
 		returns 
 		-------
-		true if the agent is being ejected from this group
+		true if the agent is leaving this group
 		"""
 		#check if live mature male
 		#make sure the new_agent isn't dead

@@ -24,6 +24,12 @@ class AgentGroup():
 	underage_set = set()
 	in_relationships_set = set()
 	whole_set = set()
+
+	#this is a stack of agents who have immigrated
+	#but are yet to form aggressive relationships
+	#agents only get added here if there are no male
+	#agents in the group when they immigrate
+	aggressive_relationship_stack = set()
 	parent_population = None
 
 	def __init__(self, parent_population):
@@ -77,6 +83,7 @@ class AgentGroup():
 		new top index: the highest index in the group, after
 		being incremented
 		"""
+		current_top_index = 0
 		new_top_index = 0
 
 		list_of_agents_to_add = []
@@ -85,7 +92,7 @@ class AgentGroup():
 			agent = self.agent_dict[agent_index]
 			agent.update_indices(top_index)
 
-			if (agent.index > new_top_index):
+			if (agent.index > current_top_index):
 				new_top_index = agent.index
 		
 			list_of_agents_to_add.append(agent)
@@ -309,23 +316,23 @@ class AgentGroup():
 			#where adults are added to the group
 			if (self.parent_population.generation != 0):
 
+				#if agent is a baby who was just born
+				if (agent.age == 1):
+					self.underage_set.add(agent.index)
+
 				#if male, check if agent is child or adult
-				if (agent.age < self.MALE_MINIMUM_AGE):
+				elif (agent.age < self.MALE_MINIMUM_AGE):
+					#since it just entered the group
+					#it must form an aggressive rel
+					self.form_aggressive_relationship_with_random_male(
+						agent)
 					agent.young_migration = True
 					self.underage_set.add(agent.index)
 
 				else:
 					#first, get an aggressive relationship
-					if (len(self.male_set) > 0):
-						randomly_selected_male_index =\
-						 self.male_set.pop()
-						randomly_selected_male =\
-						 self.agent_dict[
-						 randomly_selected_male_index
-						 ]
-						self.mark_agents_as_aggressive(
-							agent, randomly_selected_male)
-						self.male_set.add(randomly_selected_male_index)
+					self.form_aggressive_relationship_with_random_male(
+						agent)
 
 					#even if aggressive relationship does not get
 					#added the male has to be added to the set
@@ -333,7 +340,7 @@ class AgentGroup():
 					self.male_set.add(agent.index)
 
 			else: #this concerns the first gen.
-				if (agent.age < self.MALE_MINIMUM_AGE):
+				if (agent.age <= self.MALE_MINIMUM_AGE):
 					self.underage_set.add(agent.index)
 
 				else:
@@ -356,46 +363,6 @@ class AgentGroup():
 				assert (agent.age <= self.FEMALE_MINIMUM_AGE)
 				self.underage_set.add(agent.index)
 
-		"""
-		if (agent.sex == "m" and \
-			self.parent_population.generation != 0 and\
-			 len(self.male_set) > 1 and\
-			 agent.age > constants.ADULTHOOD_AGE['m']):
-			#randomly select male from male set to
-			#make aggressive relationship with
-			randomly_selected_male_index = self.male_set.pop()
-			randomly_selected_male =\
-			 self.agent_dict[randomly_selected_male_index]
-			self.mark_agents_as_aggressive(agent, randomly_selected_male)
-			#add random male back to the male set
-			self.male_set.add(randomly_selected_male_index)
-
-		if (agent.age < self.FEMALE_MINIMUM_AGE):
-			self.underage_set.add(agent.index)
-
-			#if this is not a seed group, and if
-			#this is a male, then this is its 1st
-			#migration
-			if (agent.sex == "m" and \
-			 self.parent_population.generation != 0):
-			#the agent is marked as having migrated
-			#during its youth, and the counter which 
-			#makes it migrate every subsequent year
-			#is reset to 0
-				agent.young_migration = True
-				agent.last_migration = 0
-
-		elif (
-			agent.age < self.MALE_MINIMUM_AGE and agent.sex == "m"):
-			self.underage_set.add(agent.index)
-			
-		elif (agent.sex == "m"):
-
-			self.male_set.add(agent.index)
-
-		else:
-			self.female_set.add(agent.index)
-		"""
 
 	def remove_agent(self, agent):
 		"""
@@ -474,6 +441,50 @@ class AgentGroup():
 		agent_b.sisters.append(agent_a.index)
 		self.in_relationships_set.add(agent_a.index)
 		self.in_relationships_set.add(agent_b.index)
+
+	def form_aggressive_relationship_with_random_male(
+		self, agent):
+		"""
+		males the incoming agent form aggressive rel with
+		a randomly chosen male
+
+		parameters
+		----------
+		agent: agent who is to form agg relationship
+		"""
+		if (len(self.male_set) > 0):
+			randomly_selected_male_index =\
+			 self.male_set.pop()
+			randomly_selected_male =\
+			 self.agent_dict[
+			 randomly_selected_male_index
+			 ]
+			self.mark_agents_as_aggressive(
+				agent, randomly_selected_male)
+			self.male_set.add(randomly_selected_male_index)
+
+		else:
+			self.aggressive_relationship_stack.add(agent.index)
+
+	def clear_aggressive_relationship_stack(self):
+		"""
+		if a group has no males, and then several males 
+		immigrate, they enter the group but form no aggressive
+		relationships. To fix this, at the end of each generation
+		the simulation calls this method.
+
+		The method clears the stack, asking each agent
+		to form an aggressive relationship with a randomly
+		chosen agent.
+
+		a set is used because it conforms to the stack interface
+		"""
+		while len(self.aggressive_relationship_stack) != 0:
+			target_agent_index =\
+			 self.aggressive_relationship_stack.pop()
+			target_agent = self.agent_dict[target_agent_index]
+			self.form_aggressive_relationship_with_random_male(
+				target_agent)
 
 	def mark_agents_as_aggressive(self, agent_a, agent_b):
 		"""

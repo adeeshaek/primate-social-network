@@ -60,6 +60,11 @@ ADULTHOOD_AGE = {
 #any adults over this age are killed
 MAX_AGE = 30
 
+#the maximum number of adults in a group
+#if there are more than this number, 
+#the group is split
+GROUP_SPLIT_SIZE = 36
+
 #the folder to which output files are saved
 OUTPUT_FOLDER = "output/"
 
