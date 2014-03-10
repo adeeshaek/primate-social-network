@@ -96,6 +96,8 @@ class AgentClass:
 		a population
 		"""
 		self.index += top_index
+		if self.parent:
+			self.parent += top_index
 		children_list = list(self.children)
 		for i in range(len(children_list)):
 			children_list[i] += top_index
@@ -171,22 +173,6 @@ class AgentClass:
 			str(self.index)
 
 		return output_string
-	"""
-	def __copy__(self):
-		new_agent = AgentClass(self.age, self.sex, self.is_alpha, self.parent,
-			self.sisters, self.aggressive, self.friends)
-		return new_agent
-
-	def __deepcopy__(self, memo):
-		new_sisters = copy.deepcopy(self.sisters)
-		new_friends = copy.deepcopy(self.friends)
-		new_aggressive = copy.deepcopy(self.aggressive)
-		new_children = copy.deepcopy(self.children)
-		new_agent = AgentClass(self.age, self.sex, self.is_alpha, 
-			self.parent, new_sisters, new_aggressive, new_friends,
-			self.index, new_children)
-		return new_agent
-	"""
 
 	def edges(self):
 		"""

@@ -116,6 +116,9 @@ class SeedGenerator:
 			aggressive = read_CSV(aggressive)
 			friend = read_CSV(friend)
 
+			if parent == '':
+				parent = None
+
 			#create new agent
 			this_agent = AgentClass(age_in_years, sex, \
 				rank, parent, sister, aggressive, friend, \

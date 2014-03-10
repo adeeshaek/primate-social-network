@@ -327,6 +327,7 @@ class AgentGroup():
 					self.form_aggressive_relationship_with_random_male(
 						agent)
 					agent.young_migration = True
+					agent.parent = None
 					self.underage_set.add(agent.index)
 
 				else:
@@ -337,6 +338,7 @@ class AgentGroup():
 					#even if aggressive relationship does not get
 					#added the male has to be added to the set
 					#of adult males
+					agent.parent = None
 					self.male_set.add(agent.index)
 
 			else: #this concerns the first gen.
