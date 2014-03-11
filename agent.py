@@ -12,7 +12,7 @@ class AgentClass:
 	parent = None
 	sisters = []
 	friends = []
-	children = []
+	children = set()
 	index = 0
 	#how many years ago did it last migrate, if male?
 	last_migration = 0 

@@ -62,7 +62,7 @@ class Population():
 		new_top_index = 0
 		current_top_index = self.top_index
 		self.top_index = new_group.update_indices(current_top_index)
-		self.group_top_index += 1
+		self.group_top_index += 2
 		new_group.group_index = self.group_top_index - 1
 		self.groups.append(new_group)
 

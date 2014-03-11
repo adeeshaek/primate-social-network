@@ -214,6 +214,15 @@ class AgentGroup():
 				self.remove_male_from_aggressives(agent)
 				self.male_set.remove(agent.index)
 
+				#clear the agent's parent
+				#to prevent a relationship from
+				#skewing the SNG
+				parent_agent = self.agent_dict[
+				agent.parent]
+				agent.parent = None
+				if (parent_agent.children != None):
+					parent_agent.children.remove(agent.index)
+
 			else:
 				self.female_set.remove(agent.index)
 		except KeyError:
@@ -343,12 +352,14 @@ class AgentGroup():
 				elif (agent.age < self.MALE_MINIMUM_AGE):
 					#since it just entered the group
 					#it must form an aggressive rel
+					assert(agent.parent == None)
 					self.add_male_to_aggressives(agent)
 					agent.young_migration = True
 					self.underage_set.add(agent.index)
 
 				else:
 					#first, get an aggressive relationship
+					assert(agent.parent == None)
 					self.add_male_to_aggressives(agent)
 					#even if aggressive relationship does not get
 					#added the male has to be added to the set
