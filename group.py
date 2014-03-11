@@ -129,9 +129,6 @@ class AgentGroup():
 		"""
 		outputstring = ""
 
-		outputstring += "g" + str(self.group_index) + " -> " +\
-		 str(self.aggressive_chain_head) + "[color=blue];\n"
-
 		for agent_key in self.whole_set:
 			agent = self.agent_dict[agent_key]
 			outputstring += agent.get_dot_string(self)
@@ -485,6 +482,7 @@ class AgentGroup():
 				self.agent_dict[agent.aggressive_next]
 				self.aggressive_chain_head =\
 				list_next_male.index
+				list_next_male.aggressive_prev = None
 
 		elif (agent.aggressive_prev != None):
 			if (agent.aggressive_next == None):
