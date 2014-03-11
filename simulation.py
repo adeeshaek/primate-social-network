@@ -199,11 +199,6 @@ class Simulation:
 					len(this_generation.whole_set)
 					)
 
-				#make the group check if any males have immigrated
-				#but have not formed aggressive relationships.
-				#if so, makes them form these relationships
-				this_generation.clear_aggressive_relationship_stack()
-
 			#set the old gen to the new one
 			this_generation_population = next_generation_population
 
@@ -217,6 +212,11 @@ class Simulation:
 			 this_generation_adult_females/number_of_groups
 			adult_males_list.append(adult_males_per_group)
 			adult_females_list.append(adult_females_per_group)
+			if (adult_males_per_group == 0):
+				adult_males_per_group = 0.0000001
+			if (adult_females_per_group == 0):
+				adult_females_per_group = 0.0000001
+
 			adult_females_per_males_list.append(
 				adult_females_per_group/adult_males_per_group
 				)

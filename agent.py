@@ -11,7 +11,6 @@ class AgentClass:
 	is_alpha = False
 	parent = None
 	sisters = []
-	aggressive = []
 	friends = []
 	children = []
 	index = 0
@@ -19,8 +18,12 @@ class AgentClass:
 	last_migration = 0 
 	young_migration = True #whether it has migrated btw 5-6 ys
 
+	#index of the next aggressive relationship
+	aggressive_next = None
+	aggressive_prev = None
+
 	def __init__(self, age, sex, is_alpha, parent, sisters, 
-		aggressive, friends, index, children=None):
+		friends, index, children=None):
 		"""
 		constructor
 		-----------
@@ -36,8 +39,6 @@ class AgentClass:
 		parent - the mother of this individual
 		sister - the sister(s) of this individual. Multiple entries separated by
 		comma.
-		aggressive - aggressive relationships formed by this individual. Binary
-		value.
 		friendship - friendships formed by this individual. Binary value. Multiple
 		entries separated by commas.
 		index - the index of this agent 
@@ -51,18 +52,16 @@ class AgentClass:
 		self.is_alpha = is_alpha
 		self.parent = parent
 		self.sisters = sisters
-		self.aggressive = aggressive
 		self.friends = friends
 		self.index = index
 		self.children = children
+		self.aggressive_next = None
+		self.aggressive_prev = None
 
 		#make sure sisters, aggressive, friends are empty lists not
 		#null references
 		if self.sisters == None:
 			self.sisters = []
-
-		if self.aggressive == None:
-			self.aggressive = []
 
 		if self.friends == None:
 			self.friends = []
@@ -104,10 +103,14 @@ class AgentClass:
 		self.children = set(children_list)
 		for i in range(len(self.sisters)):
 			self.sisters[i] += top_index
-		for i in range(len(self.aggressive)):
-			self.aggressive[i] += top_index
 		for i in range(len(self.friends)):
 			self.friends[i] += top_index
+
+		if (self.aggressive_next != None):
+			self.aggressive_next += top_index
+
+		if (self.aggressive_prev != None):
+			self.aggressive_prev += top_index
 
 	def get_dot_string(self, parent_group):
 		"""
@@ -127,15 +130,18 @@ class AgentClass:
 				outputstring += str(self.index) + " -> " +\
 				 str(sister_index) + "[color=green];\n"
 
-		for aggressive_index in self.aggressive:
-			if aggressive_index in parent_group.whole_set:
-				outputstring += str(self.index) + " -> " +\
-				 str(aggressive_index) + "[color=blue];\n"
-
 		for friend_index in self.friends:
 			if friend_index in parent_group.whole_set:
 				outputstring += str(self.index) + " -> " +\
 				 str(friend_index) + "[color=orange];\n"
+
+		if (self.aggressive_next != None):
+			outputstring += str(self.index) + " -> " +\
+			 str(self.aggressive_next) + "[color=blue];\n"
+
+		if (self.aggressive_prev != None):
+			outputstring += str(self.index) + " -> " +\
+			 str(self.aggressive_prev) + "[color=blue];\n"
 
 		return outputstring
 
@@ -181,7 +187,16 @@ class AgentClass:
 		children.
 		"""
 		number_of_edges = len(self.sisters) + len(self.friends) +\
-		 len(self.aggressive) + len(self.children)
+		 + len(self.children)
+
+		if (self.parent != None):
+		 number_of_edges += 1
+
+		if (self.aggressive_prev != None):
+		 number_of_edges += 1
+
+		if (self.aggressive_next != None):
+		 number_of_edges += 1
 
 		return number_of_edges
 	

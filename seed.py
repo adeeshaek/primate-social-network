@@ -121,11 +121,15 @@ class SeedGenerator:
 
 			#create new agent
 			this_agent = AgentClass(age_in_years, sex, \
-				rank, parent, sister, aggressive, friend, \
+				rank, parent, sister, friend, \
 				agent_index)
 			#add agent to group
 
 			group.add_agent(this_agent)
+
+			if (this_agent.age > constants.ADULTHOOD_AGE['m'] and\
+				this_agent.sex == 'm'):
+				group.add_male_to_aggressives(this_agent)
 
 		#make a pass through the group marking parents
 		for agent_key in group.agent_dict:

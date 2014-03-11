@@ -25,6 +25,15 @@ class AgentGroup():
 	in_relationships_set = set()
 	whole_set = set()
 
+	#aggressive relationships in a group are a chain
+	#of relationships, in order of age. The youngest
+	#agent is added to this chain as the lowest link.
+	#these relationships are represented in an implicit
+	#linked list, instead of a traditional linked list
+	#because collisions can be very common in this list
+	#, since agents can often have the same age
+	aggressive_chain_head = None
+
 	#this is a stack of agents who have immigrated
 	#but are yet to form aggressive relationships
 	#agents only get added here if there are no male
@@ -58,6 +67,12 @@ class AgentGroup():
 		 copy.deepcopy(self.whole_set)
 		new_group.group_index =\
 		 self.group_index
+		new_group.aggressive_chain_head =\
+		 self.aggressive_chain_head
+		new_group.aggressive_relationship_stack =\
+		 self.aggressive_relationship_stack
+		new_group.parent_population =\
+		 self.parent_population
 		return new_group
 
 	def clear(self):
@@ -97,6 +112,8 @@ class AgentGroup():
 		
 			list_of_agents_to_add.append(agent)
 
+		self.aggressive_chain_head += top_index
+
 		#clear the group and re-add agents
 		self.clear()
 
@@ -111,6 +128,9 @@ class AgentGroup():
 		 the group in dot syntax
 		"""
 		outputstring = ""
+
+		outputstring += "g" + str(self.group_index) + " -> " +\
+		 str(self.aggressive_chain_head) + "[color=blue];\n"
 
 		for agent_key in self.whole_set:
 			agent = self.agent_dict[agent_key]
@@ -160,7 +180,7 @@ class AgentGroup():
 		 self.parent_population.get_new_agent_index()
 		child_agent = AgentClass(
 			1, child_sex, None, parent_agent.index, None,
-			None, None, agent_index)
+			None, agent_index)
 
 		#if agent is young and male, it has to be 
 		#marked as 'about to migrate'
@@ -190,6 +210,18 @@ class AgentGroup():
 		----------
 		agent: agent to mark as dead
 		"""
+		#remove agent from sexed sets, and don't panic
+		#for the same reason as below
+		try:
+			if (agent.sex == 'm'):
+				self.remove_male_from_aggressives(agent)
+				self.male_set.remove(agent.index)
+
+			else:
+				self.female_set.remove(agent.index)
+		except KeyError:
+			pass
+
 		#since this method recursively marks all
 		#children as being dead, it can be called 
 		#several times for a given agent in a single
@@ -199,16 +231,6 @@ class AgentGroup():
 		try:
 			self.whole_set.remove(agent.index)
 			marked = True
-		except KeyError:
-			pass
-
-		#remove agent from sexed sets, and don't panic
-		#for the same reason as above
-		try:
-			if (agent.sex == 'm'):
-				self.male_set.remove(agent.index)
-			else:
-				self.female_set.remove(agent.index)
 		except KeyError:
 			pass
 		"""
@@ -280,7 +302,7 @@ class AgentGroup():
 				self.underage_set.remove(agent.index)
 			except KeyError:
 				pass
-
+			self.add_male_to_aggressives(agent)
 			self.male_set.add(agent.index)
 			agent.age = agent.age + 1
 
@@ -324,21 +346,16 @@ class AgentGroup():
 				elif (agent.age < self.MALE_MINIMUM_AGE):
 					#since it just entered the group
 					#it must form an aggressive rel
-					self.form_aggressive_relationship_with_random_male(
-						agent)
+					self.add_male_to_aggressives(agent)
 					agent.young_migration = True
-					agent.parent = None
 					self.underage_set.add(agent.index)
 
 				else:
 					#first, get an aggressive relationship
-					self.form_aggressive_relationship_with_random_male(
-						agent)
-
+					self.add_male_to_aggressives(agent)
 					#even if aggressive relationship does not get
 					#added the male has to be added to the set
 					#of adult males
-					agent.parent = None
 					self.male_set.add(agent.index)
 
 			else: #this concerns the first gen.
@@ -444,63 +461,100 @@ class AgentGroup():
 		self.in_relationships_set.add(agent_a.index)
 		self.in_relationships_set.add(agent_b.index)
 
-	def form_aggressive_relationship_with_random_male(
-		self, agent):
+	def remove_male_from_aggressives(self, agent):
 		"""
-		males the incoming agent form aggressive rel with
-		a randomly chosen male
+		removes the male from this group's chain
+		of aggressive relationships. This method is 
+		called prior to the male emigrating from the
+		group
 
 		parameters
 		----------
-		agent: agent who is to form agg relationship
+		agent: target agent
 		"""
-		if (len(self.male_set) > 0):
-			randomly_selected_male_index =\
-			 self.male_set.pop()
-			randomly_selected_male =\
-			 self.agent_dict[
-			 randomly_selected_male_index
-			 ]
-			self.mark_agents_as_aggressive(
-				agent, randomly_selected_male)
-			self.male_set.add(randomly_selected_male_index)
+		#reset the agent's agg_next and agg_prev
+		if (self.aggressive_chain_head == agent.index):
+			#agent is at head of list
+			if (agent.aggressive_next == None):
+				#agent is the only male in list
+				self.aggressive_chain_head = None
+
+			else:
+				#there are others in the list
+				list_next_male =\
+				self.agent_dict[agent.aggressive_next]
+				self.aggressive_chain_head =\
+				list_next_male.index
+
+		elif (agent.aggressive_prev != None):
+			if (agent.aggressive_next == None):
+				#agent is at tail of list
+				list_prev_male =\
+				self.agent_dict[agent.aggressive_prev]
+				list_prev_male.aggressive_next = None
+
+			else:
+				#agent is the the middle of the list
+				list_prev_male =\
+				self.agent_dict[agent.aggressive_prev]
+ 				list_next_male =\
+				self.agent_dict[agent.aggressive_next]
+				list_next_male.aggressive_prev =\
+				list_prev_male.index
+				list_prev_male.aggressive_next =\
+				list_next_male.index
+
+		agent.aggressive_next = None
+		agent.aggressive_prev = None
+
+	def add_male_to_aggressives(self, agent):
+		"""
+		adds the agent to the chain of aggressive 
+		relationships in the group
+		
+		parameters
+		----------
+		agent: target agent
+		"""
+		#make sure the agent has been removed 
+		#from the previous group correctly
+		assert(agent.aggressive_next == None)
+		assert(agent.aggressive_prev == None)
+		assert(agent.sex == 'm')
+
+		if (self.aggressive_chain_head == None):
+			self.aggressive_chain_head = agent.index
 
 		else:
-			self.aggressive_relationship_stack.add(agent.index)
+			#traverse the list until the correct spot is found
+			current_list_agent_index = self.aggressive_chain_head
+			current_list_agent =\
+			 self.agent_dict[current_list_agent_index]
 
-	def clear_aggressive_relationship_stack(self):
-		"""
-		if a group has no males, and then several males 
-		immigrate, they enter the group but form no aggressive
-		relationships. To fix this, at the end of each generation
-		the simulation calls this method.
+			while (current_list_agent.age < agent.age and\
+				current_list_agent.aggressive_next != None):
+				current_list_agent_index =\
+				 current_list_agent.aggressive_next
+				current_list_agent =\
+				 self.agent_dict[current_list_agent_index]
 
-		The method clears the stack, asking each agent
-		to form an aggressive relationship with a randomly
-		chosen agent.
+			if current_list_agent.aggressive_next == None:
+				#tail of list has been reached
+				current_list_agent.aggressive_next =\
+				 agent.index
+				agent.aggressive_prev = current_list_agent.index
 
-		a set is used because it conforms to the stack interface
-		"""
-		while len(self.aggressive_relationship_stack) != 0:
-			target_agent_index =\
-			 self.aggressive_relationship_stack.pop()
-			target_agent = self.agent_dict[target_agent_index]
-			self.form_aggressive_relationship_with_random_male(
-				target_agent)
+			else:
+				#insert in middle of list
+				agent.aggressive_next =\
+				 current_list_agent.aggressive_next
+				agent.aggressive_prev = current_list_agent.index
 
-	def mark_agents_as_aggressive(self, agent_a, agent_b):
-		"""
-		marks two agents as being in aggressive relationship with each
-		other
-
-		parameters
-		----------
-		agent_a, agent_b: agents in aggressive relationship
-		"""	
-		agent_a.aggressive.append(agent_b.index)
-		agent_b.aggressive.append(agent_a.index)
-		self.in_relationships_set.add(agent_a.index)
-		self.in_relationships_set.add(agent_b.index)
+				current_list_agent.aggressive_next =\
+				 agent.index
+				next_list_agent = self.agent_dict[
+				 agent.aggressive_next]
+				next_list_agent.aggressive_prev = agent.index
 
 	def mark_agents_as_having_a_relationship(self, agent):
 		"""
