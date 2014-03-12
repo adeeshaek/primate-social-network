@@ -95,3 +95,38 @@ def save_number_of_indivs(data_list, male_data_list,
 		pop_sheet.write(i+1,5,real_death_rate_list[i])
 		pop_sheet.write(i+1,6,average_edges_per_agent[i])
 		pop_sheet.write(i+1,7,adult_females_per_males_list[i])
+
+def save_experiment_data(book,
+	total_population_list, total_age_list, 
+	total_age_sd_list, total_groups_list,
+	total_males_to_females_list,
+	total_edges_per_agent_list):
+	
+	data_sheet = book.add_sheet('Data')
+
+	data_sheet.write(0,1,'Population')
+	data_sheet.write(0,2,'Age')
+	data_sheet.write(0,3,'Age - SD')
+	data_sheet.write(0,4,'Number of groups')
+	data_sheet.write(0,5,'Females per Male')
+	data_sheet.write(0,6,'Edges per Agent')
+
+	for i in range(0, len(total_population_list)):
+		data_sheet.write(i+1, 0, i)
+		data_sheet.write(i+1, 1, total_population_list[i])
+		data_sheet.write(i+1, 2, total_age_list[i])
+		data_sheet.write(i+1, 3, total_age_sd_list[i])
+		data_sheet.write(i+1, 4, total_groups_list[i])
+		data_sheet.write(i+1, 5, total_males_to_females_list[i])
+		data_sheet.write(i+1, 6, total_edges_per_agent_list[i])
+
+
+
+
+
+
+
+
+
+
+

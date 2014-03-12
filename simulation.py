@@ -66,7 +66,7 @@ class Simulation:
 		self.dot_directory = dot_directory
 		self.json_directory = json_directory
 
-	def run_simulation(self):
+	def run_simulation(self, save_to_dot=True, save_to_json=True):
 		#import Seed and lifetable data
 		this_generation_population = Population()
 		next_generation_population = None
@@ -112,7 +112,7 @@ class Simulation:
 		del this_generation_population.groups[0]
 
 		for i in range (0, NUMBER_OF_GENERATIONS):
-			print (str(i))
+			self.per_generation_printout(i)
 			#analytics
 			this_age_record = []
 			this_population_record = 0
@@ -232,8 +232,10 @@ class Simulation:
 				adult_females_per_group/adult_males_per_group
 				)
 
-			self.save_data_to_dot(this_generation_population.get_dot_string(), i)
-			self.save_data_to_json(this_generation_population.get_json_string(), i)
+			if (save_to_dot):
+				self.save_data_to_dot(this_generation_population.get_dot_string(), i)
+			if (save_to_json):
+				self.save_data_to_json(this_generation_population.get_json_string(), i)
 
 			average_edges_per_agent =\
 			 float(this_edges_per_agent)/this_population_record
@@ -258,6 +260,9 @@ class Simulation:
 
 		print (birth_counter.getCount())
 		print (death_counter.getCount())
+
+	def per_generation_printout(self, generation_index):
+		print generation_index
 
 	def conduct_changes_unique_to_experiment(self,
 		this_generation_population, next_generation_population,
