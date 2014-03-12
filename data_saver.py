@@ -120,8 +120,21 @@ def save_experiment_data(book,
 		data_sheet.write(i+1, 5, total_males_to_females_list[i])
 		data_sheet.write(i+1, 6, total_edges_per_agent_list[i])
 
+def save_experiment_population_data(book,
+	last_gen_population_breakdown):
+	data_sheet = book.add_sheet('Population breakdown')
 
+	data_sheet.write(0,1,'Adult Males')
+	data_sheet.write(0,2,'Adult Females')
+	data_sheet.write(0,3,'Male Children')
+	data_sheet.write(0,4,'Female Children')
 
+	for i in range(0, len(last_gen_population_breakdown)):
+		data_sheet.write(i+1,0, i)
+		data_sheet.write(i+1,1, last_gen_population_breakdown[i][0])
+		data_sheet.write(i+1,2, last_gen_population_breakdown[i][1])
+		data_sheet.write(i+1,3, last_gen_population_breakdown[i][2])
+		data_sheet.write(i+1,4, last_gen_population_breakdown[i][3])
 
 
 

@@ -21,6 +21,7 @@ class ControlExperiment:
 		total_number_of_groups_list = []
 		total_females_per_males_list = []
 		total_edges_per_agent_list = []
+		total_population_breakdown_list = []
 
 		for i in range(self.NUMBER_OF_SIMULATIONS):
 			
@@ -41,6 +42,8 @@ class ControlExperiment:
 				simulation.last_gen_fpm)
 			total_edges_per_agent_list.append(
 				simulation.last_gen_epa)
+			total_population_breakdown_list.append(
+				simulation.last_gen_population_breakdown)
 
 			print i
 
@@ -49,14 +52,16 @@ class ControlExperiment:
 			total_age_sd_record_list,
 			total_number_of_groups_list,
 			total_females_per_males_list,
-			total_edges_per_agent_list)
+			total_edges_per_agent_list,
+			total_population_breakdown_list)
 
 	def save_output_data(self, total_population_record_list,
 			total_age_record_list,
 			total_age_sd_record_list,
 			total_number_of_groups_list,
 			total_females_per_males_list,
-			total_edges_per_agent_list):
+			total_edges_per_agent_list,
+			total_population_breakdown_list):
 
 		book = Workbook()
 		data_saver.save_experiment_data(book,
@@ -66,6 +71,9 @@ class ControlExperiment:
 			total_number_of_groups_list,
 			total_females_per_males_list,
 			total_edges_per_agent_list)
+
+		data_saver.save_experiment_population_data(
+			book, total_population_breakdown_list)
 
 		output_directory =\
 		 constants.OUTPUT_FOLDER + OUTPUT_XLS_NAME

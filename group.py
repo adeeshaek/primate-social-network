@@ -217,7 +217,6 @@ class AgentGroup():
 			if (agent.sex == 'm'):
 				self.remove_male_from_aggressives(agent)
 				self.male_set.remove(agent.index)
-
 				#clear the agent's parent
 				#to prevent a relationship from
 				#skewing the SNG
@@ -232,6 +231,11 @@ class AgentGroup():
 		except KeyError:
 			pass
 
+		try:
+			self.underage_set.remove(agent.index)
+		except:
+			pass
+
 		#since this method recursively marks all
 		#children as being dead, it can be called 
 		#several times for a given agent in a single
@@ -244,6 +248,7 @@ class AgentGroup():
 			marked = True
 		except KeyError:
 			pass
+
 		"""
 		#if agent is a parent and if the child is 
 		#still underage, kill the child as well

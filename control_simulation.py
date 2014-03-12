@@ -6,7 +6,7 @@ import math
 
 class ControlSimulation(Simulation):
 
-	def conduct_changes_unique_to_experiment(self,
+	def conduct_changes_unique_to_experiment_at_agent(self,
 		this_generation_population, next_generation_population,
 		this_generation, new_generation, this_agent, new_agent,
 		females_to_male, lifetable, random_module):
@@ -15,6 +15,43 @@ class ControlSimulation(Simulation):
 		to this simulation
 		"""
 		self.last_gen_groups = len(next_generation_population.groups)
+
+	def conduct_changes_unique_to_experiment_at_gen(self,
+		this_generation_population, next_generation_population):
+		self.last_gen_population_breakdown =\
+		 self.get_population_breakdown(this_generation_population)
+
+	def get_population_breakdown(self, 
+		this_generation_population):
+		"""	
+		constructs a population breakdown: a 4-tuple of the 
+		following:
+			(adult males,
+			 adult females,
+			 male children,
+			 female children)
+		in the current population. This tuple is saved to a 
+		global variable, which is then extracted in the 
+		experiment, and saved at the end of the experiment
+		"""
+		adult_males = 0
+		adult_females = 0
+		male_children = 0
+		female_children = 0
+
+		for group in this_generation_population.groups:
+			adult_males += len(group.male_set)
+			adult_females += len(group.female_set)
+			for child_index in group.underage_set:
+				child = group.agent_dict[child_index]
+				if (child.sex == "m"):
+					male_children += 1
+				else:
+					assert(child.sex == "f")
+					female_children += 1
+
+		return (adult_males, adult_females, 
+			male_children, female_children)
 
 	def save_age_stats(self, data_list):
 		"""
@@ -66,7 +103,8 @@ class ControlSimulation(Simulation):
 	 adult_females_per_males_list,
 	 group_composition_list):
 		"""
-		saves output data to a file.
+		saves output data to global variables, which are 
+		then saved at the end of the experiment
 
 		parameters
 		----------

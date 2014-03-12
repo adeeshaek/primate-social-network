@@ -182,7 +182,7 @@ class Simulation:
 						random_module)
 
 					#unique changes
-					self.conduct_changes_unique_to_experiment(
+					self.conduct_changes_unique_to_experiment_at_agent(
 						this_generation_population, 
 						next_generation_population,
 						this_generation, new_generation, this_agent, 
@@ -209,6 +209,9 @@ class Simulation:
 				this_generation_group_composition_list.append(
 					len(this_generation.whole_set)
 					)
+
+			self.conduct_changes_unique_to_experiment_at_gen(
+				this_generation_population, next_generation_population)
 
 			#set the old gen to the new one
 			this_generation_population = next_generation_population
@@ -264,7 +267,15 @@ class Simulation:
 	def per_generation_printout(self, generation_index):
 		print generation_index
 
-	def conduct_changes_unique_to_experiment(self,
+	def conduct_changes_unique_to_experiment_at_gen(self,
+		this_generation_population, next_generation_population):
+		"""
+		this method can be overloaded to add changes unique
+		to the simulation
+		"""
+		pass
+
+	def conduct_changes_unique_to_experiment_at_agent(self,
 		this_generation_population, next_generation_population,
 		this_generation, new_generation, this_agent, new_agent,
 		females_to_male, lifetable, random_module):
