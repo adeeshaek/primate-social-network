@@ -24,6 +24,7 @@ from agent import AgentClass
 from group import AgentGroup
 from lifetable import LifeTable
 from population import Population
+import friendships
 import seed
 import copy
 import loader
@@ -100,9 +101,16 @@ class Simulation:
 
 		#assign all_groups by creating several copies of the 
 		#seed generation
-		for i in range(0, NUMBER_OF_SEED_GROUPS):
+		for i in range(0, NUMBER_OF_SEED_GROUPS + 1):
 			this_generation_population.add_group(copy.deepcopy(seed_group))
 		
+		"""
+		I was having a strange error where the 0th group 
+		was loaded incorrectly. This is a temporary fix
+
+		"""
+		del this_generation_population.groups[0]
+
 		for i in range (0, NUMBER_OF_GENERATIONS):
 			print (str(i))
 			#analytics
@@ -169,6 +177,9 @@ class Simulation:
 						next_generation_population, random_module)
 
 					#check for friendships
+					friendships.check_for_friendships(this_agent,
+						new_agent, this_generation, new_generation,
+						random_module)
 
 					#unique changes
 					self.conduct_changes_unique_to_experiment(

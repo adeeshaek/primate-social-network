@@ -28,12 +28,12 @@ class Population():
 	"""
 	groups = []
 	top_index = 0 #highest agent index in the population
-	group_top_index = 0 #highest group index in the pop
+	group_top_index = 1 #highest group index in the pop
 	generation = 0
 
 	def __init__(self):
 		self.groups = []
-		self.top_index = 0
+		self.top_index = 2
 		self.group_top_index = 0
 
 	def __deepcopy__(self, memo):
@@ -52,6 +52,7 @@ class Population():
 		adds a new group into the population
 		"""
 		new_group.parent_population = self
+		self.group_top_index += 1
 		new_group.group_index = self.group_top_index
 
 		#go through the group, and increment all indices
@@ -59,11 +60,7 @@ class Population():
 		#then find the new index.
 		#the purpose of this is to keep all indexes
 		#unique
-		new_top_index = 0
-		current_top_index = self.top_index
-		self.top_index = new_group.update_indices(current_top_index)
-		self.group_top_index += 2
-		new_group.group_index = self.group_top_index - 1
+		self.top_index = new_group.update_indices(self.top_index)
 		self.groups.append(new_group)
 
 	def get_new_agent_index(self):

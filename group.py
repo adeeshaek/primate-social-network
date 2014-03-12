@@ -86,6 +86,7 @@ class AgentGroup():
 		self.in_relationships_set = set()
 		self.whole_set = set()
 		self.agent_dict = {}
+		aggressive_chain_head = None
 
 	def update_indices(self, top_index):
 		"""
@@ -98,8 +99,8 @@ class AgentGroup():
 		new top index: the highest index in the group, after
 		being incremented
 		"""
-		current_top_index = 0
-		new_top_index = 0
+		current_top_index = top_index
+		new_top_index = top_index
 
 		list_of_agents_to_add = []
 
@@ -107,7 +108,7 @@ class AgentGroup():
 			agent = self.agent_dict[agent_index]
 			agent.update_indices(top_index)
 
-			if (agent.index > current_top_index):
+			if (agent.index > new_top_index):
 				new_top_index = agent.index
 		
 			list_of_agents_to_add.append(agent)
@@ -207,6 +208,9 @@ class AgentGroup():
 		----------
 		agent: agent to mark as dead
 		"""
+		#remove all agent's friends
+		self.unmark_agents_friends(agent)
+
 		#remove agent from sexed sets, and don't panic
 		#for the same reason as below
 		try:
@@ -449,10 +453,34 @@ class AgentGroup():
 		----------
 		agent_a, agent_b: agents to mark as friends
 		"""
-		agent_a.friends.append(agent_b.index)
-		agent_b.friends.append(agent_a.index)
-		self.in_relationships_set.add(agent_a.index)
-		self.in_relationships_set.add(agent_b.index)
+		if (agent_a.index in self.whole_set and\
+			agent_b.index in self.whole_set):
+			agent_a.friends.add(agent_b.index)
+			agent_b.friends.add(agent_a.index)
+			self.in_relationships_set.add(agent_a.index)
+			self.in_relationships_set.add(agent_b.index)
+			assert(agent_a.index in agent_b.friends)
+			assert(agent_b.index in agent_a.friends)
+
+
+	def unmark_agents_friends(self, agent):
+		"""
+		removes all friendships from an agent
+
+		parameters
+		----------
+		agent: target agent
+		"""
+		for friend_index in agent.friends:
+			friend = self.agent_dict[friend_index]
+			try:
+				friend.friends.remove(agent.index)
+			except:
+				#if the friend doesn't recognize you,
+				#don't panic
+				pass 
+		agent.friends = set()
+			
 
 	def mark_agents_as_sisters(self, agent_a, agent_b):
 		"""

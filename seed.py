@@ -120,6 +120,8 @@ class SeedGenerator:
 				parent = None
 
 			#create new agent
+			friend = set(friend)
+
 			this_agent = AgentClass(age_in_years, sex, \
 				rank, parent, sister, friend, \
 				agent_index)

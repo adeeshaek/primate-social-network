@@ -11,7 +11,7 @@ class AgentClass:
 	is_alpha = False
 	parent = None
 	sisters = []
-	friends = []
+	friends = set()
 	children = set()
 	index = 0
 	#how many years ago did it last migrate, if male?
@@ -64,13 +64,14 @@ class AgentClass:
 			self.sisters = []
 
 		if self.friends == None:
-			self.friends = []
+			self.friends = set()
 
 		if self.children == None:
 			self.children = set()
 
 		#make sure that children is a set
 		assert(type(self.children) is set)
+		assert(type(self.friends) is set)
 
 	def get_selfstring(self):
 		"""
@@ -97,14 +98,19 @@ class AgentClass:
 		self.index += top_index
 		if self.parent:
 			self.parent += top_index
+			
 		children_list = list(self.children)
 		for i in range(len(children_list)):
 			children_list[i] += top_index
 		self.children = set(children_list)
+
 		for i in range(len(self.sisters)):
 			self.sisters[i] += top_index
-		for i in range(len(self.friends)):
-			self.friends[i] += top_index
+
+		friends_list = list(self.friends)
+		for i in range(len(friends_list)):
+			friends_list[i] += top_index
+		self.friends = set(friends_list)
 
 		if (self.aggressive_next != None):
 			self.aggressive_next += top_index

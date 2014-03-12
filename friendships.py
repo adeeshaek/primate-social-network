@@ -21,8 +21,18 @@ procedure for making new friends
 
 import agent
 import random_module
+import constants
 
-def chance_of_making_friends(number_of_friends):
+def chance_of_making_friends(agent):
+	"""
+	returns the probability that an agent can make friends.
+
+	parameters
+	----------
+	agent: target agent
+	"""
+	number_of_friends = len(agent.friends)
+
 	if (number_of_friends > 2):
 		return 0
 
@@ -35,44 +45,68 @@ def chance_of_making_friends(number_of_friends):
 	elif (number_of_friends == 0):
 		return 0.15
 
-def make_friend(agent, group, random_module):
+def check_for_friendships(this_agent, new_agent,
+	this_generation, new_generation, random_module):
 	"""
-	checks whether the agent is able to make friends. If it can,
-	returns the index of an individual in the group who is to be a
-	friend. If it cannot, it returns None.
+	checks if an agent is eligible to make friends.
+	If so, it obtains the probability that the agent
+	will make a friend. It then flips a coin to check
+	if a friendship will be made, where the probability
+	of the coin coming up heads is the probability of the 
+	agent making friends. If the coin comes up heads, a 
+	friendship is formed between the agent and a suitable
+	other agent from within the group.
+
+	Males can only make friends with females, whereas
+	females can also form friendships with other females.
+	Sisters cannot form friendships with each other.
 
 	parameters
 	----------
-	agent: the method checks if this agent can make a new friend
-	group: the agent's group
-	random_module: used to calculate chance}}}}
+	agent: target agent
 	"""
-	#any agent whose age is < 5 is underage
-	if (agent.age < 5):
-		return None
+	probability_of_making_friends = chance_of_making_friends(
+		this_agent)
 
-	#male agents where age < 7 are underage
-	elif (agent.age < 7 and agent.sex == "m"):
-		return None
+	if (random_module.roll(probability_of_making_friends)):
 
-	#friends can't already have a relationship
-	elif (agent in group.in_relationships_set):
-		return None
+		#select a friend
+		if (new_agent.sex == "m"):
+			target_population =\
+			 new_generation.whole_set -\
+			 set([new_agent.index])
 
-	else:
-		#dieroll
-		probability = chance_of_making_friends(len(agent.friends))
+			if (len(target_population) == 0):
+				return
 
-		if random_module.roll(probability):
-			list_of_candidates =\
-			 group.get_unrelated_members_of_age(agent)	
-			new_friend =\
-			 random_module.shuffle(list(list_of_candidates))
+			randomized_population = list(target_population)
+			random_module.shuffle(randomized_population)
 
-			return new_friend
+			target_friend_index = randomized_population[0]
+			target_friend = new_generation.agent_dict[
+			 target_friend_index]
+			new_generation.mark_agents_as_friends(
+				new_agent, target_friend)
 
+		else:
+			assert(new_agent.sex == "f")
+			agent_sisters_set = set(new_agent.sisters)
+			target_population =\
+			 new_generation.whole_set -\
+			 set([new_agent.index]) -\
+			 set(new_agent.sisters)
 
+			if (len(target_population) == 0):
+				return
 
+			randomized_population = list(target_population)
+			random_module.shuffle(randomized_population)
+
+			target_friend_index = randomized_population[0]			
+			target_friend = new_generation.agent_dict[
+			 target_friend_index]
+			new_generation.mark_agents_as_friends(
+				new_agent, target_friend)
 
 
 
