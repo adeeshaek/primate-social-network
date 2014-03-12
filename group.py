@@ -240,6 +240,7 @@ class AgentGroup():
 		marked = False
 		try:
 			self.whole_set.remove(agent.index)
+			self.agent_dict[agent.index]
 			marked = True
 		except KeyError:
 			pass

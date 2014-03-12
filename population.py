@@ -68,7 +68,7 @@ class Population():
 		gets a unique index for a new agent in the population
 		"""
 		self.top_index += 1 #pre increment the top_index
-		return self.top_index - 1 #send the old top_index
+		return self.top_index #send the old top_index
 
 	def get_json_string(self):
 		"""
