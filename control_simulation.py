@@ -17,9 +17,11 @@ class ControlSimulation(Simulation):
 		self.last_gen_groups = len(next_generation_population.groups)
 
 	def conduct_changes_unique_to_experiment_at_gen(self,
-		this_generation_population, next_generation_population):
-		self.last_gen_population_breakdown =\
-		 self.get_population_breakdown(this_generation_population)
+		this_generation_population, next_generation_population,
+		this_generation_index, number_of_generations):
+		if (this_generation_index == number_of_generations - 1):
+			self.last_gen_population_breakdown =\
+			 self.get_population_breakdown(this_generation_population)
 
 	def get_population_breakdown(self, 
 		this_generation_population):
@@ -38,7 +40,6 @@ class ControlSimulation(Simulation):
 		adult_females = 0
 		male_children = 0
 		female_children = 0
-
 		for group in this_generation_population.groups:
 			adult_males += len(group.male_set)
 			adult_females += len(group.female_set)

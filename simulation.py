@@ -35,9 +35,6 @@ from xlwt import Workbook
 import constants
 from counter import Counter
 
-NUMBER_OF_GENERATIONS = 50
-NUMBER_OF_SEED_GROUPS = 10
-
 def main():
 	simulation = Simulation()
 	simulation.run_simulation()
@@ -51,6 +48,8 @@ class Simulation:
 	output_xls_name = ""
 	dot_directory = ""
 	json_directory = ""
+	NUMBER_OF_GENERATIONS = 50
+	NUMBER_OF_SEED_GROUPS = 10
 
 	def __init__(self, output_xls_name="output_data.xls",
 	 dot_directory="dot/", json_directory="json/"):
@@ -101,7 +100,7 @@ class Simulation:
 
 		#assign all_groups by creating several copies of the 
 		#seed generation
-		for i in range(0, NUMBER_OF_SEED_GROUPS + 1):
+		for i in range(0, self.NUMBER_OF_SEED_GROUPS + 1):
 			this_generation_population.add_group(copy.deepcopy(seed_group))
 		
 		"""
@@ -111,7 +110,7 @@ class Simulation:
 		"""
 		del this_generation_population.groups[0]
 
-		for i in range (0, NUMBER_OF_GENERATIONS):
+		for i in range (0, self.NUMBER_OF_GENERATIONS):
 			self.per_generation_printout(i)
 			#analytics
 			this_age_record = []
@@ -211,7 +210,8 @@ class Simulation:
 					)
 
 			self.conduct_changes_unique_to_experiment_at_gen(
-				this_generation_population, next_generation_population)
+				this_generation_population, next_generation_population,
+				i, self.NUMBER_OF_GENERATIONS)
 
 			#set the old gen to the new one
 			this_generation_population = next_generation_population
@@ -268,7 +268,8 @@ class Simulation:
 		print generation_index
 
 	def conduct_changes_unique_to_experiment_at_gen(self,
-		this_generation_population, next_generation_population):
+		this_generation_population, next_generation_population,
+		generation_index, number_of_generations):
 		"""
 		this method can be overloaded to add changes unique
 		to the simulation

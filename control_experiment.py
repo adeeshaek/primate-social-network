@@ -13,7 +13,7 @@ def main():
 class ControlExperiment:
 
 	NUMBER_OF_SIMULATIONS = 1
-
+	
 	def run(self):
 		total_population_record_list = []
 		total_age_record_list = []
@@ -73,7 +73,8 @@ class ControlExperiment:
 			total_edges_per_agent_list)
 
 		data_saver.save_experiment_population_data(
-			book, total_population_breakdown_list)
+			book, total_population_breakdown_list,
+			total_population_record_list)
 
 		output_directory =\
 		 constants.OUTPUT_FOLDER + OUTPUT_XLS_NAME
