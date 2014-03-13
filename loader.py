@@ -17,6 +17,7 @@ structured as follows:
 import xlrd
 from lifetable import LifeTable
 from dispersaltable import DispersalTable
+from translocation_table import TranslocationTable
 
 def load_data():
 	"""
@@ -84,6 +85,11 @@ class Loader:
 		#load dispersaltable
 		dispersal_table_sheet = book.sheet_by_index(1)
 		self.dispersal_table = self.load_dispersal_table(dispersal_table_sheet)
+
+		#load translocation table
+		translocation_table_sheet = book.sheet_by_index(4)
+		self.translocation_table =\
+		 self.load_translocation_table(translocation_table_sheet)
 
 	def load_life_table(self, life_table_sheet):
 		"""
@@ -182,6 +188,60 @@ class Loader:
 
 		return dispersal_table
 
+	def load_translocation_table(self, translocation_table_sheet):
+		"""
+		loads the table with data on translocation
+		"""
+		end_flag = True #used to let user customize number of rows in excel
+						 #file by setting an END flag at the end of the table
+
+		translocation_table = TranslocationTable()
+
+		for row_index in range (self.STARTING_ROW, translocation_table_sheet.nrows):
+
+			if translocation_table_sheet.cell_value(row_index,6) == 'END':
+				end_flag = False
+
+			elif end_flag:
+				age = int(
+					translocation_table_sheet.cell_value(row_index,6)
+					)
+
+				#control likelihoods
+				control_male_likelihood = float(
+					translocation_table_sheet.cell_value(row_index,8)
+					)
+				control_female_likelihood = float(
+					translocation_table_sheet.cell_value(row_index,7)
+					)
+				#male biased likelihoods	
+				male_biased_male_likelihood = float(
+					translocation_table_sheet.cell_value(row_index,12)
+					)
+				male_biased_female_likelihood = float(
+					translocation_table_sheet.cell_value(row_index,11)
+					)
+				#female biased likelihoods
+				female_biased_male_likelihood = float(
+					translocation_table_sheet.cell_value(row_index,16)
+					)
+				female_biased_female_likelihood = float(
+					translocation_table_sheet.cell_value(row_index,15)
+					)				
+
+				translocation_table.control_translocation_likelihood[
+				age] = (control_male_likelihood,
+					control_female_likelihood)
+
+				translocation_table.male_biased_translocation_likelihood[
+				age] = (male_biased_male_likelihood,
+					male_biased_female_likelihood)
+
+				translocation_table.female_biased_translocation_likelihood[
+				age] = (female_biased_male_likelihood,
+					female_biased_female_likelihood)
+
+		return translocation_table
 
 
 
