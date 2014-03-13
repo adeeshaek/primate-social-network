@@ -186,7 +186,7 @@ class Simulation:
 						next_generation_population,
 						this_generation, new_generation, this_agent, 
 						new_agent, females_to_male, lifetable, 
-						random_module
+						random_module, table_data
 						)
 
 					#analytics

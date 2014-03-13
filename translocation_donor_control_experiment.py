@@ -1,11 +1,11 @@
 from control_experiment import ControlExperiment
-from translocation_control_simulation import TranslocationControlSimulation
+from translocation_donor_control_simulation import TranslocationDonorControlSimulation
 
 def main():
-	control_experiment = TranslocationControlExperiment()
+	control_experiment = TranslocationDonorControlExperiment()
 	control_experiment.run()
 
-class TranslocationControlExperiment(ControlExperiment):
+class TranslocationDonorControlExperiment(ControlExperiment):
 
 	OUTPUT_XLS_NAME = "translocation_control_output.xls"
 	NUMBER_OF_SIMULATIONS = 1
@@ -20,7 +20,7 @@ class TranslocationControlExperiment(ControlExperiment):
 
 		for i in range(self.NUMBER_OF_SIMULATIONS):
 			
-			simulation = TranslocationControlSimulation()
+			simulation = TranslocationDonorControlSimulation()
 			simulation.simulation_index = i
 			simulation.total_simulations = self.NUMBER_OF_SIMULATIONS
 			simulation.run_simulation()
