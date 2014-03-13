@@ -12,8 +12,8 @@ def main():
 
 class ControlExperiment:
 
-	NUMBER_OF_SIMULATIONS = 1
-	
+	NUMBER_OF_SIMULATIONS = 50
+
 	def run(self):
 		total_population_record_list = []
 		total_age_record_list = []
