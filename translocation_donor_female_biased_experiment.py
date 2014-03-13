@@ -1,13 +1,13 @@
 from control_experiment import ControlExperiment
-from translocation_donor_control_simulation import TranslocationDonorControlSimulation
+from translocation_donor_female_biased_simulation import TranslocationDonorFemaleBiasedSimulation
 
 def main():
-	control_experiment = TranslocationDonorControlExperiment()
+	control_experiment = TranslocationDonorFemaleBiasedExperiment()
 	control_experiment.run()
 
-class TranslocationDonorControlExperiment(ControlExperiment):
+class TranslocationDonorFemaleBiasedExperiment(ControlExperiment):
 
-	OUTPUT_XLS_NAME = "translocation_donor_control_output.xls"
+	OUTPUT_XLS_NAME = "translocation_donor_female_biased_output.xls"
 	NUMBER_OF_SIMULATIONS = 50
 
 	def run_loop(self, total_population_record_list,
@@ -20,7 +20,7 @@ class TranslocationDonorControlExperiment(ControlExperiment):
 
 		for i in range(self.NUMBER_OF_SIMULATIONS):
 			
-			simulation = TranslocationDonorControlSimulation()
+			simulation = TranslocationDonorFemaleBiasedSimulation()
 			simulation.simulation_index = i
 			simulation.total_simulations = self.NUMBER_OF_SIMULATIONS
 			simulation.run_simulation()
