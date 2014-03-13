@@ -7,7 +7,7 @@ def main():
 
 class TranslocationDonorControlExperiment(ControlExperiment):
 
-	OUTPUT_XLS_NAME = "translocation_control_output.xls"
+	OUTPUT_XLS_NAME = "translocation_donor_control_output.xls"
 	NUMBER_OF_SIMULATIONS = 1
 
 	def run_loop(self, total_population_record_list,
