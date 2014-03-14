@@ -1,33 +1,24 @@
+from translocation_recipient_control_simulation import TranslocationRecipientControlSimulation
 from control_simulation import ControlSimulation
 from translocation_table import TranslocationTable
 import constants
 from random_module import RandomModule
 from agent import AgentClass
-__metaclass__ = type
 
-class TranslocationRecipientControlSimulation(ControlSimulation):
+
+class TranslocationRecipientMaleBiasedSimulation(TranslocationRecipientControlSimulation):
 
 	INDIVIDUALS_INTRODUCED_PER_GENERATION = 3
-	CHANCE_OF_NEW_FEMALE = 0.7
+	CHANCE_OF_NEW_FEMALE = 0.85
 	AGENT_AGE_LOWER_BOUND = 5
 	AGENT_AGE_UPPER_BOUND = 30
 
-	def conduct_changes_unique_to_experiment_at_agent(self,
-		this_generation_population, next_generation_population,
-		this_generation, new_generation, this_agent, new_agent,
-		females_to_male, lifetable, random_module, table_data):
-		"""
-		this method can be overloaded to add changes unique
-		to this simulation
-		"""
-		ControlSimulation.conduct_changes_unique_to_experiment_at_agent(
-			self,
-			this_generation_population, 
-			next_generation_population,
-			this_generation, new_generation, 
-			this_agent, new_agent,
-			females_to_male, lifetable, random_module,
-			table_data)
+	OLDER_AGENT_AGE_LOWER_BOUND = 10
+	OLDER_AGENT_AGE_UPPER_BOUND = 30
+	YOUNGER_AGENT_AGE_LOWER_BOUND = 5
+	YOUNGER_AGENT_AGE_UPPER_BOUND = 9
+
+	CHANGE_OF_YOUNGER_AGENT = 0.67
 
 	def conduct_changes_unique_to_experiment_at_gen(self,
 		this_generation_population, next_generation_population,
@@ -60,22 +51,31 @@ class TranslocationRecipientControlSimulation(ControlSimulation):
 			 AgentClass(agent_age, agent_sex, False, None, None,
 				None, 
 				next_generation_population.get_new_agent_index())
-			if (new_agent.sex == "m"):
+
+			if (new_agent.sex == "f"):
+
+				#age can be either 5-9 or 10+
+				if (random_module.roll(self.CHANGE_OF_YOUNGER_AGENT)):
+					new_agent.age = self.get_age_of_new_agent(
+						self.YOUNGER_AGENT_AGE_LOWER_BOUND,
+						self.YOUNGER_AGENT_AGE_UPPER_BOUND,
+						random_module)
+
+				else: #older agent
+					new_agent.age = self.get_age_of_new_agent(
+						self.OLDER_AGENT_AGE_LOWER_BOUND,
+						self.OLDER_AGENT_AGE_UPPER_BOUND,
+						random_module)
+
 				self.add_new_agent_to_population(
 					new_agent, table_data, this_generation_population,
 					next_generation_population, random_module)
 
 			else:
-				assert(new_agent.sex == "f")
+				assert(new_agent.sex == "m")
 				self.add_new_agent_to_population(
 					new_agent, table_data, this_generation_population,
 					next_generation_population, random_module)
-
-	def get_age_of_new_agent(self, lower_bound, upper_bound, 
-		random_module):
-		agent_age_list = range(lower_bound, upper_bound)
-		random_module.shuffle(agent_age_list)
-		return agent_age_list[0]
 
 	def add_new_agent_to_population(self, agent, table_data,
 		this_generation_population, next_generation_population,
