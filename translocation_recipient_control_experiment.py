@@ -19,8 +19,8 @@ class TranslocationRecipientControlExperiment(ControlExperiment):
 		total_population_breakdown_list):
 
 		for i in range(self.NUMBER_OF_SIMULATIONS):
-			
-			simulation = TranslocationRecipientControlSimulation()
+		
+			simulation = self.init_simulation()
 			simulation.simulation_index = i
 			simulation.total_simulations = self.NUMBER_OF_SIMULATIONS
 			simulation.run_simulation()
@@ -41,6 +41,9 @@ class TranslocationRecipientControlExperiment(ControlExperiment):
 				simulation.last_gen_population_breakdown)
 
 			print i
+
+	def init_simulation(self):
+		return TranslocationRecipientControlSimulation()
 
 if __name__ == '__main__':
 	main()

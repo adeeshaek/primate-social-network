@@ -10,8 +10,8 @@ def main():
 
 class ControlExperiment:
 
-	OUTPUT_XLS_NAME = "control_output.xls"
-	NUMBER_OF_SIMULATIONS = 2
+	OUTPUT_XLS_NAME = "control_control_output.xls"
+	NUMBER_OF_SIMULATIONS = 50
 
 	def run(self):
 		total_population_record_list = []
