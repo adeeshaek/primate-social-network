@@ -318,7 +318,10 @@ class AgentGroup():
 				self.underage_set.remove(agent.index)
 			except KeyError:
 				pass
-			self.add_male_to_aggressives(agent)
+			if(self.aggressive_chain_head != agent.index and\
+				agent.aggressive_next == None and\
+				agent.aggressive_prev == None):
+				self.add_male_to_aggressives(agent)
 			self.male_set.add(agent.index)
 			agent.age = agent.age + 1
 
@@ -370,6 +373,7 @@ class AgentGroup():
 				else:
 					#first, get an aggressive relationship
 					assert(agent.parent == None)
+
 					self.add_male_to_aggressives(agent)
 					#even if aggressive relationship does not get
 					#added the male has to be added to the set
@@ -389,11 +393,7 @@ class AgentGroup():
 			#except for the first gen, where adult agents are
 			#added to the population from the seed group
 			#adult females are NEVER added to a group
-			if (self.parent_population.generation != 0):
-				assert (agent.age == 1)
-				self.underage_set.add(agent.index)
-
-			elif agent.age > self.FEMALE_MINIMUM_AGE:
+			if agent.age > self.FEMALE_MINIMUM_AGE:
 				self.female_set.add(agent.index)
 
 			else:
@@ -561,9 +561,9 @@ class AgentGroup():
 		"""
 		#make sure the agent has been removed 
 		#from the previous group correctly
+		assert(agent.sex == 'm')
 		assert(agent.aggressive_next == None)
 		assert(agent.aggressive_prev == None)
-		assert(agent.sex == 'm')
 
 		if (self.aggressive_chain_head == None):
 			self.aggressive_chain_head = agent.index

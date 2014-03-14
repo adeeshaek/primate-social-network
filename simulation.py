@@ -269,7 +269,7 @@ class Simulation:
 
 	def conduct_changes_unique_to_experiment_at_gen(self,
 		this_generation_population, next_generation_population,
-		generation_index, number_of_generations):
+		generation_index, number_of_generations, table_data):
 		"""
 		this method can be overloaded to add changes unique
 		to the simulation
