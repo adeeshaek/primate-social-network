@@ -9,8 +9,7 @@ class ControlSimulation(Simulation):
 	def conduct_changes_unique_to_experiment_at_agent(self,
 		this_generation_population, next_generation_population,
 		this_generation, new_generation, this_agent, new_agent,
-		females_to_male, lifetable, random_module,
-		table_data):
+		females_to_male, lifetable, random_module, table_data):
 		"""
 		this method can be overloaded to add changes unique
 		to this simulation
@@ -19,7 +18,8 @@ class ControlSimulation(Simulation):
 
 	def conduct_changes_unique_to_experiment_at_gen(self,
 		this_generation_population, next_generation_population,
-		this_generation_index, number_of_generations):
+		this_generation_index, number_of_generations,
+		table_data):
 		if (this_generation_index == number_of_generations - 1):
 			self.last_gen_population_breakdown =\
 			 self.get_population_breakdown(this_generation_population)

@@ -19,8 +19,7 @@ class TranslocationDonorControlSimulation(ControlSimulation):
 			next_generation_population,
 			this_generation, new_generation, 
 			this_agent, new_agent,
-			females_to_male, lifetable, random_module,
-			table_data
+			females_to_male, lifetable, random_module, table_data
 			)
 
 		probability_of_translocation = 0.0

@@ -211,7 +211,7 @@ class Simulation:
 
 			self.conduct_changes_unique_to_experiment_at_gen(
 				this_generation_population, next_generation_population,
-				i, self.NUMBER_OF_GENERATIONS)
+				i, self.NUMBER_OF_GENERATIONS, table_data)
 
 			#set the old gen to the new one
 			this_generation_population = next_generation_population
@@ -279,7 +279,7 @@ class Simulation:
 	def conduct_changes_unique_to_experiment_at_agent(self,
 		this_generation_population, next_generation_population,
 		this_generation, new_generation, this_agent, new_agent,
-		females_to_male, lifetable, random_module):
+		females_to_male, lifetable, random_module, table_data):
 		"""
 		this method can be overloaded to add changes unique
 		to this simulation
@@ -437,9 +437,6 @@ class Simulation:
 					#now shuffle all groups (while removing this)
 					#one. 
 					groups = this_generation_population.groups
-					chance_of_acceptance =\
-					 dispersal_table.chance_of_acceptance(
-					 	females_to_male, this_agent.age)
 					max_group_index = len(groups)
 					group_indices = range(0, max_group_index)
 
@@ -450,6 +447,13 @@ class Simulation:
 						target_group_index = group_indices[0]
 
 						if (target_group_index != this_generation.group_index):
+							target_group = this_generation_population.\
+							 groups[target_group_index]
+							group_females_per_male =\
+							 target_group.get_females_to_male()
+							chance_of_acceptance =\
+							 dispersal_table.chance_of_acceptance(
+							 	females_to_male, this_agent.age)
 							if (random_module.roll(chance_of_acceptance[tries])):
 								next_generation_population.groups[target_group_index].add_agent(new_agent)
 								return

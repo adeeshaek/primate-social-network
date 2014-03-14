@@ -44,6 +44,15 @@ class DispersalTable:
 
 		return likelihood_of_emigration
 
+	def sexed_chance_of_acceptance(self, females_to_male, age,
+		sex):
+		if (sex == "m"):
+			return self.chance_of_acceptance(females_to_male, age)
+
+		else:
+			assert(sex == "f")
+			return (0.85, 0.25, 0.85, 1)
+
 	def chance_of_acceptance(self, females_to_male, age):
 		"""
 		calculates the chance for a male of a given age to be accepted
