@@ -226,14 +226,18 @@ class Simulation:
 			 this_generation_adult_females/number_of_groups
 			adult_males_list.append(adult_males_per_group)
 			adult_females_list.append(adult_females_per_group)
+			#handle div by 0 errors in calculating 
+			#females per male
 			if (adult_males_per_group == 0):
-				adult_males_per_group = 0.0000001
+				adult_females_per_males_list.append(
+					adult_females_per_group/1
+					)
 			if (adult_females_per_group == 0):
-				adult_females_per_group = 0.0000001
-
-			adult_females_per_males_list.append(
-				adult_females_per_group/adult_males_per_group
-				)
+				adult_females_per_males_list.append(0)
+			else:
+				adult_females_per_males_list.append(
+					adult_females_per_group/adult_males_per_group
+					)
 
 			if (save_to_dot):
 				self.save_data_to_dot(this_generation_population.get_dot_string(), i)

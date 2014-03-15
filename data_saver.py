@@ -124,6 +124,7 @@ def save_experiment_population_data(book,
 	last_gen_population_breakdown, total_population_list):
 	data_sheet = book.add_sheet('Population breakdown')
 
+	data_sheet.write(0,1,'Simulation number')
 	data_sheet.write(0,1,'Adult Males')
 	data_sheet.write(0,2,'Male Children')
 	data_sheet.write(0,3,'Adult Females')
