@@ -6,7 +6,7 @@ from random_module import RandomModule
 from agent import AgentClass
 
 
-class TranslocationRecipientMaleBiasedSimulation(TranslocationRecipientControlSimulation):
+class TranslocationRecipientFemaleBiasedSimulation(TranslocationRecipientControlSimulation):
 
 	INDIVIDUALS_INTRODUCED_PER_GENERATION = 3
 	CHANCE_OF_NEW_FEMALE = 0.85

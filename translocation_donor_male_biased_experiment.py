@@ -23,7 +23,7 @@ class TranslocationDonorMaleBiasedExperiment(ControlExperiment):
 			simulation = TranslocationDonorMaleBiasedSimulation()
 			simulation.simulation_index = i
 			simulation.total_simulations = self.NUMBER_OF_SIMULATIONS
-			simulation.run_simulation()
+			simulation.run_simulation(False, False)
 
 			total_population_record_list.append(
 				simulation.last_gen_population)

@@ -8,7 +8,7 @@ def main():
 class TranslocationRecipientMaleBiasedExperiment(TranslocationRecipientControlExperiment):
 
 	OUTPUT_XLS_NAME = "translocation_recipient_female_biased_output.xls"
-	NUMBER_OF_SIMULATIONS = 1
+	NUMBER_OF_SIMULATIONS = 50
 
 	def init_simulation(self):
 		return TranslocationRecipientFemaleBiasedSimulation()
