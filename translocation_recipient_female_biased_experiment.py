@@ -2,7 +2,7 @@ from translocation_recipient_control_experiment import TranslocationRecipientCon
 from translocation_recipient_female_biased_simulation import TranslocationRecipientFemaleBiasedSimulation
 
 def main():
-	control_experiment = TranslocationRecipientMaleBiasedExperiment()
+	control_experiment = TranslocationRecipientFemaleBiasedExperiment()
 	control_experiment.run()
 
 class TranslocationRecipientFemaleBiasedExperiment(TranslocationRecipientControlExperiment):
