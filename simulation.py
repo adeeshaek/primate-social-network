@@ -223,9 +223,9 @@ class Simulation:
 			number_of_groups = len(this_generation_population.groups)
 
 			adult_males_per_group =\
-			 this_generation_adult_males/number_of_groups
+			 float(this_generation_adult_males)/number_of_groups
 			adult_females_per_group =\
-			 this_generation_adult_females/number_of_groups
+			 float(this_generation_adult_females)/number_of_groups
 			adult_males_list.append(adult_males_per_group)
 			adult_females_list.append(adult_females_per_group)
 
