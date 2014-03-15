@@ -51,7 +51,7 @@ class Simulation:
 	NUMBER_OF_GENERATIONS = 50
 	NUMBER_OF_SEED_GROUPS = 10
 
-	def __init__(self, output_xls_name="output_data.xls",
+	def __init__(self, output_xls_name="simulation_output_data.xls",
 	 dot_directory="dot/", json_directory="json/"):
 		"""
 		constructor
