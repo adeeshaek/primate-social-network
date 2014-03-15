@@ -226,6 +226,7 @@ class Simulation:
 			 this_generation_adult_females/number_of_groups
 			adult_males_list.append(adult_males_per_group)
 			adult_females_list.append(adult_females_per_group)
+
 			#handle div by 0 errors in calculating 
 			#females per male
 			if (adult_males_per_group == 0):
@@ -236,7 +237,7 @@ class Simulation:
 				adult_females_per_males_list.append(0)
 			else:
 				adult_females_per_males_list.append(
-					adult_females_per_group/adult_males_per_group
+					float(adult_females_per_group)/float(adult_males_per_group)
 					)
 
 			if (save_to_dot):
@@ -495,7 +496,7 @@ class Simulation:
 			for agent_age in generation:
 				average_age += agent_age
 
-			average_age = average_age/number_of_agents
+			average_age = float(average_age)/float(number_of_agents)
 
 			#now calculate standard dev
 			for agent_age in generation:
