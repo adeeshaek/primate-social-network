@@ -1,0 +1,7 @@
+python control_experiment.py
+python translocation_donor_control_experiment.py
+python translocation_donor_male_biased_experiment.py
+python translocation_donor_female_biased_experiment.py
+python translocation_recipient_control_experiment.py
+python translocation_recipient_male_biased_experiment.py
+python translocation_recipient_female_biased_experiment.py
