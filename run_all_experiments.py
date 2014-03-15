@@ -11,6 +11,9 @@ from translocation_recipient_female_biased_experiment import TranslocationRecipi
 import gc
 NUMBER_OF_SIMULATIONS = 50
 
+#garbage collection off
+gc.disable()
+
 print "------------------------------------"
 print "starting all experiments"
 print "------------------------------------"
