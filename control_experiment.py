@@ -3,8 +3,11 @@ from xlwt import Workbook
 import data_saver
 import constants
 import math
+import gc
 
 def main():
+	#disable gc for all experiment
+	gc.disable()
 	control_experiment = ControlExperiment()
 	control_experiment.run()
 
