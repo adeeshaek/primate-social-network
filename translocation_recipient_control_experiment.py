@@ -16,7 +16,8 @@ class TranslocationRecipientControlExperiment(ControlExperiment):
 		total_number_of_groups_list,
 		total_females_per_males_list,
 		total_edges_per_agent_list,
-		total_population_breakdown_list):
+		total_population_breakdown_list,
+		total_population_relationships_list):
 
 		for i in range(self.NUMBER_OF_SIMULATIONS):
 		
@@ -39,7 +40,8 @@ class TranslocationRecipientControlExperiment(ControlExperiment):
 				simulation.last_gen_epa)
 			total_population_breakdown_list.append(
 				simulation.last_gen_population_breakdown)
-
+			total_population_relationships_list.append(
+				simulation.total_agent_relationships_list)
 			print i
 
 	def init_simulation(self):

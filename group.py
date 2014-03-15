@@ -153,6 +153,32 @@ class AgentGroup():
 
 		return females_to_male
 
+	def get_group_relationship_stats(self):
+		"""
+		returns the number of relationships of this group as a 
+		tuple where (parent-child, sisters, aggressive, friends)
+		"""
+		friendships = 0
+		parent_child = 0
+		sisters = 0
+		aggressive = 0
+
+		for agent_index in self.whole_set:
+			agent = self.agent_dict[agent_index]
+
+			agent_stats = agent.get_agent_relationship_stats()
+			parent_child += agent_stats[0]
+			sisters += agent_stats[1]
+			aggressive += agent_stats[2]
+			friendships += agent_stats[3]
+
+		friendships = friendships/2
+		parent_child = parent_child/2
+		sisters = sisters/2
+		aggressive = aggressive/2
+
+		return (parent_child, sisters, aggressive, friendships)
+
 	def give_birth_to_agent(
 		self, parent_agent, random_module, 
 		group):

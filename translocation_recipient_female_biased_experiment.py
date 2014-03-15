@@ -5,7 +5,7 @@ def main():
 	control_experiment = TranslocationRecipientMaleBiasedExperiment()
 	control_experiment.run()
 
-class TranslocationRecipientMaleBiasedExperiment(TranslocationRecipientControlExperiment):
+class TranslocationRecipientFemaleBiasedExperiment(TranslocationRecipientControlExperiment):
 
 	OUTPUT_XLS_NAME = "translocation_recipient_female_biased_output.xls"
 	NUMBER_OF_SIMULATIONS = 50

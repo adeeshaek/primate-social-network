@@ -91,6 +91,8 @@ class Simulation:
 		adult_females_list = []
 		adult_females_per_males_list = []
 
+		total_agent_relationships_list = []
+
 		group_composition_list = []
 
 		death_counter = Counter() #used to make sure the correct number
@@ -233,7 +235,7 @@ class Simulation:
 				adult_females_per_males_list.append(
 					adult_females_per_group/1
 					)
-			if (adult_females_per_group == 0):
+			elif (adult_females_per_group == 0):
 				adult_females_per_males_list.append(0)
 			else:
 				adult_females_per_males_list.append(
@@ -258,13 +260,18 @@ class Simulation:
 			female_population_record_list.append(
 				this_female_population_record)
 			population_record_list.append(this_population_record)
+			
+			total_agent_relationships_list = (
+				this_generation_population.\
+				get_population_relationship_stats())
 
 		self.save_data(population_record_list, male_population_record_list,
 		 female_population_record_list, age_record_list, 
 		 real_birth_rate_list, real_death_rate_list,
 		 edges_per_agent_list,
 		 adult_females_per_males_list,
-		 group_composition_list)
+		 group_composition_list,
+		 total_agent_relationships_list)
 
 		print (birth_counter.getCount())
 		print (death_counter.getCount())
@@ -469,8 +476,6 @@ class Simulation:
 								else:
 									tries += 2
 
-
-
 	def save_age_stats(self, data_list, book):
 		"""
 		collates and saves age-related stats.
@@ -573,7 +578,8 @@ class Simulation:
 	 real_birth_rate_list, real_death_rate_list,
 	 average_edges_per_agent, 
 	 adult_females_per_males_list,
-	 group_composition_list):
+	 group_composition_list,
+	 total_agent_relationships_list):
 		"""
 		saves output data to a file.
 

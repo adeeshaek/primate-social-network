@@ -103,4 +103,35 @@ class Population():
 
 		return output_string
 
+	def get_population_relationship_stats(self):
+		"""
+		returns the number of relationships of this pop as a 
+		tuple where (parent-child, sisters, aggressive, friends)
+		"""
+		friendships = 0
+		parent_child = 0
+		sisters = 0
+		aggressive = 0
+
+		for group in self.groups:
+
+			group_stats = group.get_group_relationship_stats()
+			parent_child += group_stats[0]
+			sisters += group_stats[1]
+			aggressive += group_stats[2]
+			friendships += group_stats[3]
+
+		return (parent_child, sisters, aggressive, friendships)
+
+
+
+
+
+
+
+
+
+
+
+
 

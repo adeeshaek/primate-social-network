@@ -103,7 +103,8 @@ class ControlSimulation(Simulation):
 	 real_birth_rate_list, real_death_rate_list,
 	 average_edges_per_agent, 
 	 adult_females_per_males_list,
-	 group_composition_list):
+	 group_composition_list,
+	 total_agent_relationships_list):
 		"""
 		saves output data to global variables, which are 
 		then saved at the end of the experiment
@@ -121,6 +122,8 @@ class ControlSimulation(Simulation):
 		self.last_gen_population = population_record_list[-1]
 		self.last_gen_fpm = adult_females_per_males_list[-1]
 		self.last_gen_epa = average_edges_per_agent[-1]
+		self.total_agent_relationships_list =\
+		 total_agent_relationships_list
 
 	def per_generation_printout(self, generation_index):
 		print self.simulation_index, "of", self.total_simulations, generation_index

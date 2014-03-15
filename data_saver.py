@@ -124,7 +124,7 @@ def save_experiment_population_data(book,
 	last_gen_population_breakdown, total_population_list):
 	data_sheet = book.add_sheet('Population breakdown')
 
-	data_sheet.write(0,1,'Simulation number')
+	data_sheet.write(0,0,'Simulation number')
 	data_sheet.write(0,1,'Adult Males')
 	data_sheet.write(0,2,'Male Children')
 	data_sheet.write(0,3,'Adult Females')
@@ -139,7 +139,22 @@ def save_experiment_population_data(book,
 		data_sheet.write(i+1,4, last_gen_population_breakdown[i][3])
 		data_sheet.write(i+1,5, total_population_list[i])
 
+def save_experiment_relationship_data(book,
+	relationships_list):
+	data_sheet = book.add_sheet('Relationships')
 
+	data_sheet.write(0,0,'Simulation number')
+	data_sheet.write(0,1,'Parent-child')
+	data_sheet.write(0,2,'Sisters')
+	data_sheet.write(0,3,'Aggressive')
+	data_sheet.write(0,4,'Friendships')
+
+	for i in range(0, len(relationships_list)):
+		data_sheet.write(i+1,0, i)
+		data_sheet.write(i+1,1, relationships_list[i][0])
+		data_sheet.write(i+1,2, relationships_list[i][1])
+		data_sheet.write(i+1,3, relationships_list[i][2])
+		data_sheet.write(i+1,4, relationships_list[i][3])
 
 
 

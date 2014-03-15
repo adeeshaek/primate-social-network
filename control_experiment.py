@@ -11,7 +11,9 @@ def main():
 class ControlExperiment:
 
 	OUTPUT_XLS_NAME = "control_control_output.xls"
-	NUMBER_OF_SIMULATIONS = 50
+
+	def __init__(self, number_of_simulations = 50):
+		self.NUMBER_OF_SIMULATIONS = number_of_simulations
 
 	def run(self):
 		total_population_record_list = []
@@ -21,6 +23,7 @@ class ControlExperiment:
 		total_females_per_males_list = []
 		total_edges_per_agent_list = []
 		total_population_breakdown_list = []
+		total_population_relationships_list = []
 
 		self.run_loop(total_population_record_list,
 		 total_age_record_list,
@@ -28,7 +31,8 @@ class ControlExperiment:
 		 total_number_of_groups_list,
 		 total_females_per_males_list,
 		 total_edges_per_agent_list,
-		 total_population_breakdown_list)
+		 total_population_breakdown_list,
+		 total_population_relationships_list)
 
 		self.save_output_data(total_population_record_list,
 			total_age_record_list,
@@ -36,7 +40,8 @@ class ControlExperiment:
 			total_number_of_groups_list,
 			total_females_per_males_list,
 			total_edges_per_agent_list,
-			total_population_breakdown_list)
+			total_population_breakdown_list,
+			total_population_relationships_list)
 
 	def run_loop(self, total_population_record_list,
 		total_age_record_list,
@@ -44,7 +49,8 @@ class ControlExperiment:
 		total_number_of_groups_list,
 		total_females_per_males_list,
 		total_edges_per_agent_list,
-		total_population_breakdown_list):
+		total_population_breakdown_list,
+		total_population_relationships_list):
 
 		for i in range(self.NUMBER_OF_SIMULATIONS):
 			
@@ -67,6 +73,8 @@ class ControlExperiment:
 				simulation.last_gen_epa)
 			total_population_breakdown_list.append(
 				simulation.last_gen_population_breakdown)
+			total_population_relationships_list.append(
+				simulation.total_agent_relationships_list)
 
 			print i
 
@@ -76,7 +84,8 @@ class ControlExperiment:
 			total_number_of_groups_list,
 			total_females_per_males_list,
 			total_edges_per_agent_list,
-			total_population_breakdown_list):
+			total_population_breakdown_list,
+			total_population_relationships_list):
 
 		book = Workbook()
 		data_saver.save_experiment_data(book,
@@ -90,6 +99,9 @@ class ControlExperiment:
 		data_saver.save_experiment_population_data(
 			book, total_population_breakdown_list,
 			total_population_record_list)
+
+		data_saver.save_experiment_relationship_data(
+			book, total_population_relationships_list)
 
 		output_directory =\
 		 constants.OUTPUT_FOLDER + self.OUTPUT_XLS_NAME

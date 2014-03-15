@@ -205,9 +205,23 @@ class AgentClass:
 		 number_of_edges += 1
 
 		return number_of_edges
-	
 
-
+	def get_agent_relationship_stats(self):
+		"""
+		returns the number of relationships of this agent as a 
+		tuple where (parent-child, sisters, aggressive, friends)
+		"""
+		friendships = len(self.friends)
+		parent_child = len(self.children)
+		sisters = len(self.sisters)
+		aggressive = 0
+		if (self.aggressive_next):
+			aggressive += 1
+		if (self.aggressive_prev):
+			aggressive += 1
+		if (self.parent):
+			parent_child += 1
+		return (parent_child, sisters, aggressive, friendships)
 
 
 
