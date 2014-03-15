@@ -21,7 +21,7 @@ print "------------------------------------"
 control_experiment =\
  ControlExperiment(NUMBER_OF_SIMULATIONS)
 control_experiment.run()
-control_experiment = None
+del(control_experiment)
 gc.collect()
 
 print "------------------------------------"
@@ -30,7 +30,7 @@ print "------------------------------------"
 donor_control_experiment =\
  TranslocationDonorControlExperiment(NUMBER_OF_SIMULATIONS)
 donor_control_experiment.run()
-donor_control_experiment = None
+del(donor_control_experiment)
 gc.collect()
 
 print "------------------------------------"
@@ -39,7 +39,7 @@ print "------------------------------------"
 donor_male_biased_experiment =\
  TranslocationRecipientMaleBiasedExperiment(NUMBER_OF_SIMULATIONS)
 donor_male_biased_experiment.run()
-donor_male_biased_experiment = None
+del(donor_male_biased_experiment)
 gc.collect()
 
 print "------------------------------------"
@@ -48,7 +48,7 @@ print "------------------------------------"
 donor_female_biased_experiment =\
  TranslocationDonorFemaleBiasedExperiment(NUMBER_OF_SIMULATIONS)
 donor_female_biased_experiment.run()
-donor_female_biased_experiment = None
+del(donor_female_biased_experiment)
 gc.collect()
 
 print "------------------------------------"
@@ -57,7 +57,7 @@ print "------------------------------------"
 recipient_control_experiment =\
  TranslocationRecipientControlExperiment(NUMBER_OF_SIMULATIONS)
 recipient_control_experiment.run()
-recipient_control_experiment = None
+del(recipient_control_experiment)
 gc.collect()
 
 print "------------------------------------"
@@ -66,7 +66,7 @@ print "------------------------------------"
 recipient_male_biased_experiment =\
  TranslocationRecipientMaleBiasedExperiment(NUMBER_OF_SIMULATIONS)
 recipient_male_biased_experiment.run()
-recipient_male_biased_experiment = None
+del(recipient_male_biased_experiment)
 gc.collect()
 
 print "------------------------------------"
@@ -75,7 +75,7 @@ print "------------------------------------"
 recipient_female_biased_experiment =\
  TranslocationRecipientFemaleBiasedExperiment(NUMBER_OF_SIMULATIONS)
 recipient_female_biased_experiment.run()
-recipient_female_biased_experiment = None
+del(recipient_female_biased_experiment)
 gc.collect()
 
 print "------------------------------------"
