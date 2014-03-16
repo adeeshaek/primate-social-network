@@ -82,7 +82,9 @@ class Population():
 		for group in self.groups:
 			for agent_index in group.agent_dict:
 				agent = group.agent_dict[agent_index]
-				nodes.append(agent.get_json_name())
+				agent_json = agent.get_json_name()
+				agent_json["group"] = group.group_index
+				nodes.append(agent_json)
 				links += agent.get_json_links()
 
 		return json.dumps({"nodes":nodes, "links":links})

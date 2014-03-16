@@ -170,7 +170,31 @@ class AgentClass:
 
 		for child_index in self.children:
 			output_dict = {"source":self.index,
-			"target":child_index}
+			"target":child_index, "type":"parent-child"}
+			output.append(output_dict)
+
+		for sister_index in self.sisters:
+			if (sister_index in parent_group.whole_set):
+				output_dict = {"source":self.index,
+				"target":sister_index, "type":"sister"}
+				output.append(output_dict)
+
+		for friend_index in self.friends:
+			if (friend_index in parent_group.whole_set):
+				output_dict = {"source":self.index,
+				"target":friend_index, "type":"friend"}
+				output.append(output_dict)
+
+		if (self.aggressive_prev != None):
+			output_dict = {"source":self.index,
+			"target":self.aggressive_prev, 
+			"type":"aggressive"}
+			output.append(output_dict)
+
+		if (self.aggressive_next != None):
+			output_dict = {"source":self.index,
+			"target":self.aggressive_next,
+			"type":"aggressive"}
 			output.append(output_dict)
 
 		return output
