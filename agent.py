@@ -161,7 +161,7 @@ class AgentClass:
 
 		return name_dict
 
-	def get_json_links(self):
+	def get_json_links(self, parent_group):
 		"""
 		returns links relating to this object in JSON.
 		Used for visualizing populations in javascript

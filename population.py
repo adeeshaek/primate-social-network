@@ -85,7 +85,7 @@ class Population():
 				agent_json = agent.get_json_name()
 				agent_json["group"] = group.group_index
 				nodes.append(agent_json)
-				links += agent.get_json_links()
+				links += agent.get_json_links(group)
 
 		return json.dumps({"nodes":nodes, "links":links})
 
