@@ -1,3 +1,5 @@
+import os
+
 from control_simulation import ControlSimulation
 
 from translocation_donor_control_simulation import TranslocationDonorControlSimulation
@@ -48,6 +50,15 @@ simulations = [ControlSimulation(
  TranslocationRecipientFemaleBiasedSimulation(
  	recipient_female_biased_excel_filename, 
  	recipient_female_biased_dot_directory)]
+
+directories = ["control/","donor_control/",
+"recipient_control/", "donor_male_biased/",
+"donor_female_biased/", "recipient_male_biased/",
+"recipient_female_biased"]
+
+for directory in directories:
+	if not os.path.exists(directory):
+    os.makedirs(directory)
 
 number_of_simulations = len(simulations)
 for i in range (number_of_simulations):

@@ -1,5 +1,9 @@
-for file in *.dot
+
+for dir in *;
 do 
-dot -Tpng "$file" > "${file%.dot}.png"
-echo "$file"
+	for file in *.dot
+	do 
+	dot -Tpng "$file" > "${file%.dot}.png"
+	echo "$file, $dir"
+	done
 done
