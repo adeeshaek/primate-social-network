@@ -8,7 +8,6 @@ def main():
 class TranslocationRecipientControlExperiment(ControlExperiment):
 
 	OUTPUT_XLS_NAME = "translocation_recipient_control_output.xls"
-	NUMBER_OF_SIMULATIONS = 50
 
 	def run_loop(self, total_population_record_list,
 		total_age_record_list,
@@ -17,7 +16,8 @@ class TranslocationRecipientControlExperiment(ControlExperiment):
 		total_females_per_males_list,
 		total_edges_per_agent_list,
 		total_population_breakdown_list,
-		total_population_relationships_list):
+		total_population_relationships_list,
+	    total_group_composition_list):
 
 		for i in range(self.NUMBER_OF_SIMULATIONS):
 		
@@ -42,6 +42,8 @@ class TranslocationRecipientControlExperiment(ControlExperiment):
 				simulation.last_gen_population_breakdown)
 			total_population_relationships_list.append(
 				simulation.total_agent_relationships_list)
+			total_group_composition_list.append(
+				simulation.last_gen_composition)
 			print i
 
 	def init_simulation(self):
