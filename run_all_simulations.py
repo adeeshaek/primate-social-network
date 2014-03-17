@@ -58,7 +58,7 @@ directories = ["control/","donor_control/",
 
 for directory in directories:
 	if not os.path.exists(directory):
-    	os.makedirs(directory)
+		os.makedirs(directory)
 
 number_of_simulations = len(simulations)
 for i in range (number_of_simulations):
