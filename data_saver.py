@@ -157,6 +157,20 @@ def save_experiment_relationship_data(book,
 		data_sheet.write(i+1,4, relationships_list[i][3])
 
 
+def save_group_composition_data(book,
+	group_composition_list):
+	age_sheet = book.add_sheet('Groups')
+
+	#init the sheet
+	age_sheet.write(0,0,'Generation')
+	age_sheet.write(0,1,'Avg agents per group')
+	age_sheet.write(0,2,'Standard deviation')
+
+	for i in range(0, len(group_composition_list)):
+		current_generation = group_composition_list[i]
+		age_sheet.write(i+1,0,i+1)
+		age_sheet.write(i+1,1,current_generation[0])
+		age_sheet.write(i+1,2,current_generation[1])
 
 
 

@@ -124,6 +124,59 @@ class ControlSimulation(Simulation):
 		self.last_gen_epa = average_edges_per_agent[-1]
 		self.total_agent_relationships_list =\
 		 total_agent_relationships_list
+		self.save_group_composition_stats(group_composition_list, None)
+
+	def save_group_composition_stats(self, data_list, book):
+		"""
+		collates and saves group composition stats.
+
+		parameters
+		----------
+		data_list: list of lists
+			data_list = [[1,2,3], [2,3,4]]
+			each sublist represents the population of 
+			all the groups in a generation. 
+			each element in a sublist is the population
+			of a group in a generation.
+			In the above example, there were two generations
+			in the simulation. Both generations had 3 groups.
+			In the 1st generation, 1 group had 1 agent,
+			another had 2, and the last had 3.
+		"""
+		output_list = []
+
+		for generation in data_list:
+			average_population = 0
+			standard_deviation_aggregate = 0
+
+			if len(generation) != 0:
+				number_of_groups = len(generation)
+			else:
+				number_of_groups = 0.00001 #avoid div by 0
+
+			#first calculate the average age
+			for group_population in generation:
+				average_population += group_population
+
+			average_population = average_population/\
+			 number_of_groups
+
+			#now calculate standard dev
+			for group_population in generation:
+				standard_deviation_increment =\
+				 math.pow((group_population - average_population), 2)
+				standard_deviation_aggregate +=\
+				 standard_deviation_increment
+
+			standard_deviation = math.sqrt(
+				(standard_deviation_aggregate/number_of_groups)
+				)
+
+			output_list.append((average_population, standard_deviation))
+
+		#save the average age
+		self.last_gen_composition =\
+		 output_list[-1]
 
 	def per_generation_printout(self, generation_index):
 		print self.simulation_index, "of", self.total_simulations, generation_index

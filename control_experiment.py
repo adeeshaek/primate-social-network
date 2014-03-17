@@ -27,6 +27,7 @@ class ControlExperiment:
 		total_edges_per_agent_list = []
 		total_population_breakdown_list = []
 		total_population_relationships_list = []
+		total_group_composition_list = []
 
 		self.run_loop(total_population_record_list,
 		 total_age_record_list,
@@ -35,7 +36,8 @@ class ControlExperiment:
 		 total_females_per_males_list,
 		 total_edges_per_agent_list,
 		 total_population_breakdown_list,
-		 total_population_relationships_list)
+		 total_population_relationships_list,
+		 total_group_composition_list)
 
 		self.save_output_data(total_population_record_list,
 			total_age_record_list,
@@ -44,7 +46,8 @@ class ControlExperiment:
 			total_females_per_males_list,
 			total_edges_per_agent_list,
 			total_population_breakdown_list,
-			total_population_relationships_list)
+			total_population_relationships_list,
+			total_group_composition_list)
 
 	def run_loop(self, total_population_record_list,
 		total_age_record_list,
@@ -53,7 +56,8 @@ class ControlExperiment:
 		total_females_per_males_list,
 		total_edges_per_agent_list,
 		total_population_breakdown_list,
-		total_population_relationships_list):
+		total_population_relationships_list,
+		total_group_composition_list):
 
 		for i in range(self.NUMBER_OF_SIMULATIONS):
 			
@@ -78,6 +82,8 @@ class ControlExperiment:
 				simulation.last_gen_population_breakdown)
 			total_population_relationships_list.append(
 				simulation.total_agent_relationships_list)
+			total_group_composition_list.append(
+				simulation.last_gen_composition)
 
 			print i
 
@@ -88,7 +94,8 @@ class ControlExperiment:
 			total_females_per_males_list,
 			total_edges_per_agent_list,
 			total_population_breakdown_list,
-			total_population_relationships_list):
+			total_population_relationships_list,
+			total_group_composition_list):
 
 		book = Workbook()
 		data_saver.save_experiment_data(book,
@@ -105,6 +112,9 @@ class ControlExperiment:
 
 		data_saver.save_experiment_relationship_data(
 			book, total_population_relationships_list)
+
+		data_saver.save_group_composition_data(book,
+			total_group_composition_list)
 
 		output_directory =\
 		 constants.OUTPUT_FOLDER + self.OUTPUT_XLS_NAME
