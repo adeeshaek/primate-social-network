@@ -57,8 +57,8 @@ directories = ["control/","donor_control/",
 "recipient_female_biased"]
 
 for directory in directories:
-	if not os.path.exists(directory):
-		os.makedirs(directory)
+	if not os.path.exists("dot/" + directory):
+		os.makedirs("dot/" + directory)
 
 number_of_simulations = len(simulations)
 for i in range (number_of_simulations):
