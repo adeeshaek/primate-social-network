@@ -3,7 +3,7 @@ for dir in *;
 do 
 	for file in *.dot
 	do 
-	dot -Tpng "$file" > "${file%.dot}.png"
-	echo "$file, $dir"
+	dot -Tpng "$dir/$file" > "$dir/${file%.dot}.png"
+	echo "$dir/$file"
 	done
 done
