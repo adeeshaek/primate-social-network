@@ -35,7 +35,7 @@ def save_age_data(data_list, book):
 		age_sheet.write(i+1,1,current_generation[0])
 		age_sheet.write(i+1,2,current_generation[1])
 
-def save_group_composition_data(data_list, book):
+def save_group_composition_data_for_simulation(data_list, book):
 	"""
 	saves data to an excel file in the specified workbook
 

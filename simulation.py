@@ -566,9 +566,8 @@ class Simulation:
 				)
 
 			output_list.append((average_population, standard_deviation))
-
 		#save the average age
-		data_saver.save_group_composition_data(
+		data_saver.save_group_composition_data_for_simulation(
 			output_list, book
 			)
 

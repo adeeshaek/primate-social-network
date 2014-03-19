@@ -80,7 +80,7 @@ class Population():
 		links = []
 
 		for group in self.groups:
-			for agent_index in group.agent_dict:
+			for agent_index in group.whole_set:
 				agent = group.agent_dict[agent_index]
 				agent_json = agent.get_json_name()
 				agent_json["group"] = group.group_index
