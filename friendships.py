@@ -73,8 +73,7 @@ def check_for_friendships(this_agent, new_agent,
 		#select a friend
 		if (new_agent.sex == "m"):
 			target_population =\
-			 new_generation.whole_set -\
-			 set([new_agent.index])
+			 new_generation.female_set
 
 			if (len(target_population) == 0):
 				return
