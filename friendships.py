@@ -65,6 +65,15 @@ def check_for_friendships(this_agent, new_agent,
 	----------
 	agent: target agent
 	"""
+	#check if this agent is an adult. If not, 
+	#don't let them make friends
+	if (this_agent.sex == 'm'):
+		if (this_agent.age < constants.ADULTHOOD_AGE['m']):
+			return
+	else:
+		if (this_agent.age < constants.ADULTHOOD_AGE['f']):
+			return
+
 	probability_of_making_friends = chance_of_making_friends(
 		this_agent)
 
@@ -90,8 +99,10 @@ def check_for_friendships(this_agent, new_agent,
 		else:
 			assert(new_agent.sex == "f")
 			agent_sisters_set = set(new_agent.sisters)
+			target_population = new_generation.male_set.union(
+			 new_generation.female_set)
 			target_population =\
-			 new_generation.whole_set -\
+			 target_population -\
 			 set([new_agent.index]) -\
 			 set(new_agent.sisters)
 
