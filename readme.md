@@ -13,7 +13,6 @@ How to run
 ```
   * The machine running this experiment must have at least 8gb of memory available in order to execute it in a reasonable timeframe
   * We are working on a python script to execute the project
-  * 
 
 * To obtain social network graphs of the simulation, please execute
 ```
