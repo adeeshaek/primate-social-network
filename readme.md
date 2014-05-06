@@ -5,6 +5,15 @@ This project aims to simulate a population of monkeys in the wild, and determine
 
 The project is conducted by [Marcy S. Weber](http://marcysweber.com), and [Adeesha Ekanayake](http://adeeshaek.com).
 
+Installation
+------------
+After downloading the project from git, ensure that *python* and *pip* are installed. In order to create the visualizations of group structure, ensure that the *graphviz* library is installed. *Dot* is a tool which is typically installed along with Graphviz, and this project requires dot to create the visualizations of group structure. 
+
+* To install the xlwt and xlrd libraries, execute the following in a terminal
+```
+    pip install xlwt xlrd
+```
+
 How to run
 -----------
 * To run the entire experiment, execute 
